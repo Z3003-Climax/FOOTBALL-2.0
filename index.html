@@ -2026,7 +2026,7 @@ function _renderClubModal(clubId, club, meta, tactics, canon, logo) {
   const formations = Object.keys(MatchEngine.FORMATIONS);
 
   // Calcule le XI actuel selon la formation (ou custom)
-  const currentXI = MatchEngine._selectStartingXI(allPlayers, currentFormation);
+  const currentXI = MatchEngine._selectStartingXI(allPlayers, currentFormation, tactics.customXI);
   const xiIds = new Set(currentXI.map(p => p.id||p.name));
 
   // Rendu des joueurs en deux colonnes : titulaires | remplaçants
@@ -2259,19 +2259,16 @@ window.resetCustomXI = function(clubId) {
 // ─── VISUALISATION TERRAIN ─────────────────────────────────
 // Génère un SVG d'un terrain 4:5 avec les joueurs positionnés
 function _buildFormationPitch(xi, formation, accentColor) {
-  const W = 280, H = 370;
+  const W = 300, H = 400;
 
-  const posColor = {
-    GK:'#f59e0b', CB:'#3b82f6', LB:'#3b82f6', RB:'#3b82f6',
-    CDM:'#10b981', CM:'#10b981', CAM:'#10b981',
-    LW:'#ef4444',  RW:'#ef4444', ST:'#ef4444',
-  };
+  const posColor = { GK:'#f59e0b', CB:'#3b82f6', LB:'#3b82f6', RB:'#3b82f6',
+    CDM:'#10b981', CM:'#10b981', CAM:'#10b981', LW:'#ef4444', RW:'#ef4444', ST:'#ef4444' };
 
-  // Y canonique par slot — LB/CB/RB partagent la même ligne
+  // Ligne Y canonique — LB/CB/RB partagent la même ligne
   const ROW_Y = {
-    GK:7, LB:22, CB:22, RB:22,
-    CDM:40, CM:52, CAM:64,
-    LW:76, RW:76, ST:87,
+    GK:7, LB:21, CB:21, RB:21,
+    CDM:38, CM:50, CAM:62,
+    LW:76, RW:76, ST:88,
   };
 
   // Regroupe tous les joueurs par ligne Y
@@ -2283,8 +2280,8 @@ function _buildFormationPitch(xi, formation, accentColor) {
   }
 
   // Distribue les X uniformément sur chaque ligne
-  const MARGIN = 18;
-  const usable = W - 2 * MARGIN;
+  const MARGIN = 22;
+  const usable  = W - 2 * MARGIN;
 
   const playerPositions = [];
   for (const [yStr, players] of Object.entries(rowMap)) {
@@ -2300,40 +2297,43 @@ function _buildFormationPitch(xi, formation, accentColor) {
   const dots = playerPositions.map(({ p, x, y }) => {
     const col     = posColor[p.slotPosition] || '#888';
     const rowSize = rowMap[String(ROW_Y[p.slotPosition] ?? 50)]?.length || 1;
-    const maxChars = rowSize >= 4 ? 4 : rowSize === 3 ? 5 : 7;
-    const name    = p.name.split(' ').slice(-1)[0].slice(0, maxChars);
-    const minSpacing = rowSize > 1 ? usable / (rowSize - 1) : usable;
-    const labelW  = Math.min(Math.max(name.length * 5.5 + 6, 24), minSpacing - 2);
+    // Noms : tronqués selon la densité de la ligne
+    const maxChars = rowSize >= 4 ? 5 : rowSize === 3 ? 6 : 8;
+    const name = p.name.split(' ').slice(-1)[0].slice(0, maxChars);
+    // Largeur du label : ne dépasse pas l'espacement entre cercles
+    const spacing = rowSize > 1 ? usable / (rowSize - 1) : usable;
+    const labelW  = Math.min(Math.max(name.length * 6.2 + 6, 28), spacing - 4);
+
     return `
-      <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" fill="${col}" opacity="0.93"/>
+      <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="15" fill="${col}" opacity="0.93"/>
       <text x="${x.toFixed(1)}" y="${(y+1).toFixed(1)}" text-anchor="middle"
-        dominant-baseline="middle" font-size="7" font-weight="700"
+        dominant-baseline="middle" font-size="8" font-weight="700"
         fill="#000" font-family="monospace">${p.slotPosition}</text>
-      <rect x="${(x-labelW/2).toFixed(1)}" y="${(y+15).toFixed(1)}"
-        width="${labelW.toFixed(1)}" height="11" rx="3" fill="rgba(0,0,0,0.6)"/>
-      <text x="${x.toFixed(1)}" y="${(y+22).toFixed(1)}" text-anchor="middle"
-        font-size="6.5" fill="white" font-weight="500">${name}</text>`;
+      <rect x="${(x-labelW/2).toFixed(1)}" y="${(y+17).toFixed(1)}"
+        width="${labelW.toFixed(1)}" height="13" rx="3" fill="rgba(0,0,0,0.65)"/>
+      <text x="${x.toFixed(1)}" y="${(y+25.5).toFixed(1)}" text-anchor="middle"
+        font-size="8.5" fill="white" font-weight="600">${name}</text>`;
   }).join('');
 
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px">
     <rect width="${W}" height="${H}" fill="#1a3a1a" rx="6"/>
     <rect x="18" y="10" width="${W-36}" height="${H-20}" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.5" rx="3"/>
     <line x1="18" y1="${H/2}" x2="${W-18}" y2="${H/2}" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
-    <circle cx="${W/2}" cy="${H/2}" r="32" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
-    <rect x="${W/2-40}" y="10" width="80" height="46" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
-    <rect x="${W/2-40}" y="${H-56}" width="80" height="46" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+    <circle cx="${W/2}" cy="${H/2}" r="34" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+    <rect x="${W/2-42}" y="10" width="84" height="48" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+    <rect x="${W/2-42}" y="${H-58}" width="84" height="48" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
     ${dots}
   </svg>`;
 }
 
-// Conservée pour compatibilité (plus utilisée par _buildFormationPitch)
+// Conservée pour compatibilité
 function _slotXY(slot, count, idx) {
   const cx = 50;
   const totalSpread = Math.min(84, count * 22);
   const startX = cx - totalSpread/2 + totalSpread/(2*Math.max(count,1));
   const step   = count > 1 ? totalSpread/count : 0;
   const x      = count > 1 ? startX + (idx-1)*step : cx;
-  const yMap   = { GK:7, LB:22, CB:22, RB:22, CDM:40, CM:52, CAM:64, LW:76, RW:76, ST:87 };
+  const yMap   = { GK:7, LB:21, CB:21, RB:21, CDM:38, CM:50, CAM:62, LW:76, RW:76, ST:88 };
   return [x, yMap[slot] ?? 50];
 }
 
