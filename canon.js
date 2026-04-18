@@ -1554,14 +1554,14 @@ const CANON = {
       "stats": {
         "rapidite": 84,
         "acceleration": 88,
-        "endurance": 83,
-        "puissance": 66,
+        "endurance": 85,
+        "puissance": 72,
         "controle": 94,
         "passe": 95,
         "tir": 84,
         "tacle": 64
       },
-      "ovr": 85,
+      "ovr": 86,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00004"
@@ -1569,7 +1569,7 @@ const CANON = {
     "P00005": {
       "name": "Sai Itoshy",
       "nationality": "ishgar",
-      "age": 20,
+      "age": 22,
       "position": "CAM",
       "positions": [
         "CAM"
@@ -1741,8 +1741,8 @@ const CANON = {
         "CAM"
       ],
       "stats": {
-        "rapidite": 81,
-        "acceleration": 81,
+        "rapidite": 82,
+        "acceleration": 83,
         "endurance": 74,
         "puissance": 67,
         "controle": 87,
@@ -1750,7 +1750,7 @@ const CANON = {
         "tir": 85,
         "tacle": 51
       },
-      "ovr": 78,
+      "ovr": 81,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00012"
@@ -1789,16 +1789,16 @@ const CANON = {
         "CDM"
       ],
       "stats": {
-        "rapidite": 79,
+        "rapidite": 82,
         "acceleration": 86,
         "endurance": 83,
-        "puissance": 60,
+        "puissance": 72,
         "controle": 79,
-        "passe": 74,
+        "passe": 75,
         "tir": 67,
         "tacle": 75
       },
-      "ovr": 76,
+      "ovr": 81,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00014"
@@ -1822,7 +1822,7 @@ const CANON = {
         "tir": 79,
         "tacle": 32
       },
-      "ovr": 78,
+      "ovr": 79,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00015"
@@ -52073,21 +52073,21 @@ const CANON = {
       "club": "ETOILE_ROUGE_BLASE"
     },
     "P02478": {
-      "name": "Javier González",
-      "nationality": "porespagne",
+      "name": "Hugo",
+      "nationality": "paystropmignon",
       "age": 24,
       "position": "CAM",
       "stats": {
-        "rapidite": 94,
+        "rapidite": 89,
         "acceleration": 89,
         "endurance": 92,
         "puissance": 82,
         "controle": 90,
         "passe": 93,
-        "tir": 95,
+        "tir": 82,
         "tacle": 55
       },
-      "ovr": 90,
+      "ovr": 86,
       "canonical": false,
       "id": "P02478",
       "club": "ETOILE_ROUGE_BLASE"
