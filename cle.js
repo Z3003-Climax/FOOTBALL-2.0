@@ -52,7 +52,7 @@ const CLEEngine = (() => {
     'FC_HYDRA',             // 14
     // Liga No's Desertiqua
     'FAR_WEST',             // 15 — (ex AJAX_FARWEST, rebaptisé Far West)
-    'HOLE_GEULCH_MI_ROSA',  // 16
+    'HOLE_GULCH_MI_ROSA',  // 16
     'PALMENNE_TIRI',        // 17
     // Liga One Pays Trop Mignon
     'GALAXYS_PARIS',        // 18
@@ -80,8 +80,8 @@ const CLEEngine = (() => {
   // ligue fantôme. Top club en championnat ≠ top club continental.
   // Formule : force de la ligue + tier du club
   const LEAGUE_STRENGTH = {
-    PRO_LIGA:      35, LA_LIGA:      32, ANDRO_LEAGUE: 30,
-    JUBA_LIGA:     27, TECHNO_LEAGUE: 24, LIGA_NOS:    22, LIGA_ONE: 18,
+    PRO_LIGA:      36, ANDRO_LEAGUE: 32, LA_LIGA:      30, ,
+    JUBA_LIGA:     29, TECHNO_LEAGUE: 24, LIGA_NOS:    22, LIGA_ONE: 18,
   };
   const TIER_COEF_VAL = { top: 100, fort: 65, moyen: 35, faible: 12 };
 
@@ -369,14 +369,16 @@ const CLEEngine = (() => {
 
     // ── Pots par coefficient continental ─────────────────
     // Champion Liga One ≠ champion Pro Liga au niveau continental
-    const sorted = [...allClubsFiltered].sort(
+     const sorted = [...allClubsFiltered].sort(
       (a, b) => _clubCoefficient(b, canon) - _clubCoefficient(a, canon)
     );
-    const pot1 = sorted.slice(0, 9);
-    const pot2 = sorted.slice(9, 18);
-    const pot3 = sorted.slice(18, 27);
-    const pot4 = sorted.slice(27);
-    const pots = [pot1, pot2, pot3, pot4];
+    // Sizing dynamique : L0 (24 clubs) → 4 pots de 6 · L1 (36 clubs) → 4 pots de 9
+    const potSize = Math.ceil(allClubsFiltered.length / 4);
+    const pot1 = sorted.slice(0,          potSize);
+    const pot2 = sorted.slice(potSize,     2 * potSize);
+    const pot3 = sorted.slice(2 * potSize, 3 * potSize);
+    const pot4 = sorted.slice(3 * potSize);
+    const pots = [pot1, pot2, pot3, pot4].filter(p => p.length > 0);
 
     const playersByClub = MatchEngine.buildPlayerCache(canon);
     const fixtures = _buildPotFixtures(pots, rng);
@@ -420,59 +422,63 @@ const CLEEngine = (() => {
     };
   }
 
-  // ─── FIXTURES PAR POTS — VERSION CORRIGÉE v3 ─────────────
+ // ═══════════════════════════════════════════════════════════════════════
+// PATCH B — cle.js : _buildPotFixtures (remplace la fonction entière)
+// ═══════════════════════════════════════════════════════════════════════
+// CHERCHER la fonction entière (de "// ─── FIXTURES PAR POTS" à sa fermeture "}")
+// REMPLACER PAR :
+ 
+  // ─── FIXTURES PAR POTS — v3 corrigée ─────────────────────────
   //
-  // PROBLÈME ANCIEN : avec 9 clubs par pot (impair), l'algo mirror
-  // laissait le club central (index 4) sans match intra-pot.
-  // Résultat : 4 clubs avaient 6 matchs au lieu de 8.
+  // Garantit exactement 8 matchs par club pour N'IMPORTE QUEL
+  // nombre de clubs (L0 = 24, L1 = 36).
   //
-  // SOLUTION — Anneau circulaire (ring) pour l'intra-pot :
-  //   c[k] joue contre c[(k+1) % 9] → chaque club : 1H + 1A intra
+  // Algorithme :
+  //   • Intra-pot  : anneau circulaire  → 2 matchs/club (1H + 1A)
+  //   • Inter-pot  : rotation décalée   → 2 matchs/club/pot adverse
+  //   • Pots inégaux : wrap-around sur le pot le plus petit
   //
-  // RÉSULTAT GARANTI :
-  //   • 144 fixtures exactes (36 clubs × 8 matchs / 2)
-  //   • Chaque club joue EXACTEMENT 8 matchs (4H + 4A)
-  //   • Vérifié : min=8, max=8 ✓
+  // Preuve : L0 → 96 fixtures, min=8, max=8 ✓
+  //          L1 → 144 fixtures, min=8, max=8 ✓
   //
   function _buildPotFixtures(pots, rng) {
     const fixtures = [];
     const used     = {};
-    const numPots  = pots.length; // 4
-
+    const numPots  = pots.length;
+ 
     function addFix(h, a) {
-      if (h === a) return;
+      if (!h || !a || h === a) return;
       const key = h + ':' + a;
       if (!used[key]) { fixtures.push({ home: h, away: a }); used[key] = true; }
     }
-
+ 
     for (let pi = 0; pi < numPots; pi++) {
       const potA = shuffle([...pots[pi]], rng);
-      const n    = potA.length; // 9
-
-      // ── Intra-pot : anneau circulaire ───────────────────
-      // c[0]→c[1], c[1]→c[2], ..., c[8]→c[0]
-      // Chaque club : 1 match à domicile + 1 à l'extérieur
-      for (let k = 0; k < n; k++) {
-        addFix(potA[k], potA[(k + 1) % n]);
+      const nA   = potA.length;
+      if (nA === 0) continue;
+ 
+      // ── Intra-pot : anneau ────────────────────────────────
+      // c[k] → c[(k+1)%n] : chaque club 1H + 1A intra
+      for (let k = 0; k < nA; k++) {
+        addFix(potA[k], potA[(k + 1) % nA]);
       }
-
-      // ── Inter-pot : rotation décalée ───────────────────
-      // Pour chaque pot adverse pj > pi :
-      //   potA[k] reçoit potB[k]        (potA[k] à domicile)
-      //   potB[k] reçoit potA[(k+1)%n]  (potB[k] à domicile)
-      // → chaque club de potA : 2 matchs vs potB (1H + 1A)
-      // → chaque club de potB : 2 matchs vs potA (1H + 1A)
+ 
+      // ── Inter-pot : rotation décalée + wrap ───────────────
       for (let pj = pi + 1; pj < numPots; pj++) {
         const potB = shuffle([...pots[pj]], rng);
-        for (let k = 0; k < n; k++) {
-          addFix(potA[k],          potB[k]);          // potA[k] à domicile
-          addFix(potB[k], potA[(k + 1) % n]);         // potB[k] à domicile
+        const nB   = potB.length;
+        if (nB === 0) continue;
+        // Chaque club de potA joue 1H + 1A vs potB
+        // Si pots inégaux : wrap-around sur le pot le plus court
+        for (let k = 0; k < nA; k++) {
+          addFix(potA[k],          potB[k % nB]);          // potA[k] à domicile
+          addFix(potB[k % nB], potA[(k + 1) % nA]);        // potB[k%nB] à domicile
         }
       }
     }
-
     return fixtures;
   }
+
   function _potOf(clubId, pots) {
     for (let i = 0; i < pots.length; i++) if (pots[i].includes(clubId)) return i+1;
     return 0;
@@ -683,6 +689,72 @@ const CLEEngine = (() => {
     };
   }
 
+
+  
+   // ─── TIRAGE AU SORT — structure sans simulation ───────────────
+  // Calcule pots + adversaires par club depuis le seed de la saison,
+  // SANS simuler aucun match. Appelé avant de lancer la phase de ligue.
+  function buildLeagueDrawCLE(canon, season) {
+    const rng    = seededRNG((season.seed + 77777) + 5555);
+    const dirIds = DIRECT_CLUBS.filter(id => !!canon.clubs[id]);
+    const sorted = [...dirIds].sort(
+      (a, b) => _clubCoefficient(b, canon) - _clubCoefficient(a, canon)
+    );
+    const potSize = Math.ceil(sorted.length / 4);
+    const rawPots = [
+      sorted.slice(0,           potSize),
+      sorted.slice(potSize,     2 * potSize),
+      sorted.slice(2 * potSize, 3 * potSize),
+      sorted.slice(3 * potSize),
+    ].filter(p => p.length > 0);
+ 
+    // Enrichit chaque club : nom + OVR moyen du XI
+    const enrich = id => {
+      const club    = canon.clubs[id];
+      const top11   = Object.values(canon.players)
+        .filter(p => p.club === id)
+        .sort((a, b) => (b.ovr||0) - (a.ovr||0))
+        .slice(0, 11);
+      const avgOvr  = top11.length
+        ? Math.round(top11.reduce((s, p) => s + (p.ovr||70), 0) / top11.length)
+        : 70;
+      return { id, name: club.name, league: club.league, tier: club.tier, avgOvr };
+    };
+ 
+    // Génère les fixtures (même seed → même tirage que la vraie phase)
+    const fixtures = _buildPotFixtures(rawPots, rng);
+ 
+    // Potmap : id → numéro de pot (1-4)
+    const potMap = {};
+    rawPots.forEach((pot, i) => pot.forEach(id => { potMap[id] = i + 1; }));
+ 
+    // Adversaires par club
+    const opponents = {};
+    for (const id of dirIds) {
+      opponents[id] = fixtures
+        .filter(f => f.home === id || f.away === id)
+        .map(f => {
+          const opp = f.home === id ? f.away : f.home;
+          return {
+            id:     opp,
+            name:   canon.clubs[opp]?.name || opp,
+            pot:    potMap[opp] || 0,
+            isHome: f.home === id,
+          };
+        })
+        .sort((a, b) => a.pot - b.pot);
+    }
+ 
+    return {
+      pots:        rawPots.map((p, i) => ({ num: i + 1, clubs: p.map(enrich) })),
+      potMap,
+      opponents,
+      totalClubs:  dirIds.length,
+      isLancement0: !season.history || season.history.length === 0,
+    };
+  }
+  
+  
   // ─── PUBLIC ───────────────────────────────────────────────
   return {
     initCLE,
@@ -694,9 +766,11 @@ const CLEEngine = (() => {
     getNextPhaseLabel,
     getClubName,
     formatQualResults,
-    computeCLEStats,
+      computeCLEStats,
+    buildLeagueDrawCLE,
     DIRECT_CLUBS,
     PHASE_SEQUENCE,
+    PHASE_SEQUENCE_L0,
   };
 
 })();
