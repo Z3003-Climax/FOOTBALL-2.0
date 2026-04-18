@@ -62,7 +62,7 @@ const CLEEngine = (() => {
     'APOEL_ZAITE',          // 21 — Wesfalie
     'OLYMPIAKOS_AERIA',     // 22 — Wakanda
     'MANNSCHAFT_ALLEMAGNE', // 23 — Vulgarie
-    'FC_BARCELONNE',        // 24 — Porespagne (Barka — vérifier ID dans canon)
+    'FC_BARKA',        // 24 — Porespagne (Barka — vérifier ID dans canon)
   ];
 
   // Séquence des phases — version complète (lancement 1 = saison ≥ 2)
@@ -420,41 +420,59 @@ const CLEEngine = (() => {
     };
   }
 
-  // ─── FIXTURES PAR POTS (style UEFA) ──────────────────────
+  // ─── FIXTURES PAR POTS — VERSION CORRIGÉE v3 ─────────────
+  //
+  // PROBLÈME ANCIEN : avec 9 clubs par pot (impair), l'algo mirror
+  // laissait le club central (index 4) sans match intra-pot.
+  // Résultat : 4 clubs avaient 6 matchs au lieu de 8.
+  //
+  // SOLUTION — Anneau circulaire (ring) pour l'intra-pot :
+  //   c[k] joue contre c[(k+1) % 9] → chaque club : 1H + 1A intra
+  //
+  // RÉSULTAT GARANTI :
+  //   • 144 fixtures exactes (36 clubs × 8 matchs / 2)
+  //   • Chaque club joue EXACTEMENT 8 matchs (4H + 4A)
+  //   • Vérifié : min=8, max=8 ✓
+  //
   function _buildPotFixtures(pots, rng) {
     const fixtures = [];
-    const used = {};
-    const numPots = pots.length;
+    const used     = {};
+    const numPots  = pots.length; // 4
+
+    function addFix(h, a) {
+      if (h === a) return;
+      const key = h + ':' + a;
+      if (!used[key]) { fixtures.push({ home: h, away: a }); used[key] = true; }
+    }
 
     for (let pi = 0; pi < numPots; pi++) {
-      for (let pj = pi; pj < numPots; pj++) {
-        const potA = shuffle([...pots[pi]], rng);
+      const potA = shuffle([...pots[pi]], rng);
+      const n    = potA.length; // 9
+
+      // ── Intra-pot : anneau circulaire ───────────────────
+      // c[0]→c[1], c[1]→c[2], ..., c[8]→c[0]
+      // Chaque club : 1 match à domicile + 1 à l'extérieur
+      for (let k = 0; k < n; k++) {
+        addFix(potA[k], potA[(k + 1) % n]);
+      }
+
+      // ── Inter-pot : rotation décalée ───────────────────
+      // Pour chaque pot adverse pj > pi :
+      //   potA[k] reçoit potB[k]        (potA[k] à domicile)
+      //   potB[k] reçoit potA[(k+1)%n]  (potB[k] à domicile)
+      // → chaque club de potA : 2 matchs vs potB (1H + 1A)
+      // → chaque club de potB : 2 matchs vs potA (1H + 1A)
+      for (let pj = pi + 1; pj < numPots; pj++) {
         const potB = shuffle([...pots[pj]], rng);
-        if (pi === pj) {
-          // Matchs internes au même pot
-          for (let k = 0; k < Math.floor(potA.length / 2); k++) {
-            const h = potA[k];
-            const a = potA[potA.length - 1 - k];
-            if (h === a) continue;
-            const k1 = h+':'+a, k2 = a+':'+h;
-            if (!used[k1]) { fixtures.push({ home:h, away:a }); used[k1]=true; }
-            if (!used[k2]) { fixtures.push({ home:a, away:h }); used[k2]=true; }
-          }
-        } else {
-          // Matchs entre deux pots différents
-          for (let k = 0; k < Math.min(potA.length, potB.length); k++) {
-            const h = potA[k], a = potB[k];
-            if (h === a) continue;
-            const k1 = h+':'+a, k2 = a+':'+h;
-            if (!used[k1]) { fixtures.push({ home:h, away:a }); used[k1]=true; }
-            if (!used[k2]) { fixtures.push({ home:a, away:h }); used[k2]=true; }
-          }
+        for (let k = 0; k < n; k++) {
+          addFix(potA[k],          potB[k]);          // potA[k] à domicile
+          addFix(potB[k], potA[(k + 1) % n]);         // potB[k] à domicile
         }
       }
     }
+
     return fixtures;
   }
-
   function _potOf(clubId, pots) {
     for (let i = 0; i < pots.length; i++) if (pots[i].includes(clubId)) return i+1;
     return 0;
