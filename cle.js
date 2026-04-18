@@ -80,7 +80,7 @@ const CLEEngine = (() => {
   // ligue fantôme. Top club en championnat ≠ top club continental.
   // Formule : force de la ligue + tier du club
   const LEAGUE_STRENGTH = {
-    PRO_LIGA:      36, ANDRO_LEAGUE: 32, LA_LIGA:      30, ,
+    PRO_LIGA:      36, ANDRO_LEAGUE: 32, LA_LIGA:      30,
     JUBA_LIGA:     29, TECHNO_LEAGUE: 24, LIGA_NOS:    22, LIGA_ONE: 18,
   };
   const TIER_COEF_VAL = { top: 100, fort: 65, moyen: 35, faible: 12 };
