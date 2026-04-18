@@ -200,7 +200,7 @@ const GHOST_NATIONS_DATA = {
       "nation": "wesfalie",
       "tier": "fort",
       "stadium": "Municipal Berkane",
-      "capacity": 18000,
+      "capacity": 29000,
       "city": "Berkane",
       "rivalries": []
     },
@@ -239,7 +239,7 @@ const GHOST_NATIONS_DATA = {
     },
     "MAZEMBE_WESF": {
       "id": "MAZEMBE_WESF",
-      "name": "Mazembé United",
+      "name": "Mazembé",
       "league": "SATRUNA_PREMIER",
       "nation": "wesfalie",
       "tier": "fort",
@@ -277,7 +277,7 @@ const GHOST_NATIONS_DATA = {
       "nation": "wesfalie",
       "tier": "moyen",
       "stadium": "Benjamin Mkapa",
-      "capacity": 60000,
+      "capacity": 57000,
       "city": "Dar Salam",
       "rivalries": []
     },
@@ -354,7 +354,7 @@ const GHOST_NATIONS_DATA = {
       "nation": "wakanda",
       "tier": "fort",
       "stadium": "Stade Montréal",
-      "capacity": 20000,
+      "capacity": 49000,
       "city": "Montréal",
       "rivalries": []
     },
@@ -431,7 +431,7 @@ const GHOST_NATIONS_DATA = {
       "nation": "wakanda",
       "tier": "moyen",
       "stadium": "Cotton Bowl",
-      "capacity": 92000,
+      "capacity": 59000,
       "city": "Dallas",
       "rivalries": []
     },
@@ -496,7 +496,7 @@ const GHOST_NATIONS_DATA = {
       "league": "VIKINGA_PREMIER",
       "nation": "vulgarie",
       "tier": "top",
-      "stadium": "Allianzen Arena",
+      "stadium": "DFB Arena",
       "capacity": 75000,
       "city": "Allemagne",
       "rivalries": []
@@ -530,7 +530,7 @@ const GHOST_NATIONS_DATA = {
       "nation": "vulgarie",
       "tier": "fort",
       "stadium": "Ceres Park",
-      "capacity": 20000,
+      "capacity": 42000,
       "city": "Danmark",
       "rivalries": []
     },
@@ -618,7 +618,7 @@ const GHOST_NATIONS_DATA = {
       "nation": "vulgarie",
       "tier": "moyen",
       "stadium": "Aspmyra",
-      "capacity": 8000,
+      "capacity": 38000,
       "city": "Bodo",
       "rivalries": []
     },
@@ -629,7 +629,7 @@ const GHOST_NATIONS_DATA = {
       "nation": "vulgarie",
       "tier": "faible",
       "stadium": "Bolt Arena",
-      "capacity": 10770,
+      "capacity": 27770,
       "city": "Helsink",
       "rivalries": []
     },
@@ -640,7 +640,7 @@ const GHOST_NATIONS_DATA = {
       "nation": "vulgarie",
       "tier": "faible",
       "stadium": "Tallaght",
-      "capacity": 8000,
+      "capacity": 28000,
       "city": "Viking City",
       "rivalries": []
     },
@@ -666,31 +666,31 @@ const GHOST_NATIONS_DATA = {
       "city": "Posnor",
       "rivalries": []
     },
-    "REAL_TENERIFE": {
-      "id": "REAL_TENERIFE",
-      "name": "Real Ténérife",
+    "REAL": {
+      "id": "REAL",
+      "name": "Real",
       "league": "LIGA_IBERICA",
       "nation": "porespagne",
       "tier": "top",
       "stadium": "Santiago Bernabéo",
-      "capacity": 85000,
-      "city": "Ténérife",
+      "capacity": 73000,
+      "city": "Philadelphia",
       "rivalries": []
     },
-    "FC_BARCELONNE": {
-      "id": "FC_BARCELONNE",
-      "name": "FC Barcelonne",
+    "FC_BARKA": {
+      "id": "FC_BARKA",
+      "name": "FC Barka",
       "league": "LIGA_IBERICA",
       "nation": "porespagne",
       "tier": "top",
-      "stadium": "Camp Noué",
-      "capacity": 99000,
+      "stadium": "Camp Nou",
+      "capacity": 82000,
       "city": "Barcelonne",
       "rivalries": []
     },
-    "ATLETIK_MADRIK": {
-      "id": "ATLETIK_MADRIK",
-      "name": "Atlétik de Madrik",
+    "ATLETIK": {
+      "id": "ATLETIK",
+      "name": "Atlétik",
       "league": "LIGA_IBERICA",
       "nation": "porespagne",
       "tier": "top",
@@ -710,26 +710,26 @@ const GHOST_NATIONS_DATA = {
       "city": "Sevillio",
       "rivalries": []
     },
-    "SPORTING_LISBONNÉ": {
-      "id": "SPORTING_LISBONNÉ",
-      "name": "Sporting Lisbonné",
+    "SPORTING_LISBON": {
+      "id": "SPORTING_LISBON",
+      "name": "Sporting Lisbon",
       "league": "LIGA_IBERICA",
       "nation": "porespagne",
       "tier": "fort",
       "stadium": "José Alvalade",
       "capacity": 50000,
-      "city": "Lisbonné",
+      "city": "Lisbon",
       "rivalries": []
     },
-    "BENFICA_LISBONNÉ": {
-      "id": "BENFICA_LISBONNÉ",
-      "name": "Benfica Lisbonné",
+    "BENFICA_LISBON": {
+      "id": "BENFICA_LISBON",
+      "name": "Benfica Lisbon",
       "league": "LIGA_IBERICA",
       "nation": "porespagne",
       "tier": "fort",
       "stadium": "Luz",
       "capacity": 65000,
-      "city": "Lisbonné",
+      "city": "Lisbon",
       "rivalries": []
     },
     "BILBAO_ATHLETIC": {
@@ -842,13 +842,13 @@ const GHOST_NATIONS_DATA = {
       "city": "Guimarães",
       "rivalries": []
     },
-    "FC_MUNIKEN": {
-      "id": "FC_MUNIKEN",
-      "name": "FC Muniken",
+    "FC_MUNCHEN": {
+      "id": "FC_MUNCHEN",
+      "name": "FC Munchen",
       "league": "BUNDESLIGA_PAX",
       "nation": "paxifista",
       "tier": "top",
-      "stadium": "Allianz Pax",
+      "stadium": "PAX",
       "capacity": 75000,
       "city": "Munik",
       "rivalries": []
@@ -952,15 +952,15 @@ const GHOST_NATIONS_DATA = {
       "city": "Wolfsberg",
       "rivalries": []
     },
-    "FRIBURGO_SC": {
-      "id": "FRIBURGO_SC",
-      "name": "Friburgo SC",
+    "FRIBURG_SC": {
+      "id": "FRIBURG_SC",
+      "name": "Friburg SC",
       "league": "BUNDESLIGA_PAX",
       "nation": "paxifista",
       "tier": "moyen",
       "stadium": "Europa-Park Stadion",
       "capacity": 34700,
-      "city": "Friburgo",
+      "city": "Friburg",
       "rivalries": []
     },
     "FC_AUGSBERG": {
@@ -1029,13 +1029,13 @@ const GHOST_NATIONS_DATA = {
       "city": "Canterlot",
       "rivalries": []
     },
-    "MANCHBURY_CITY": {
-      "id": "MANCHBURY_CITY",
-      "name": "Manchbury City",
+    "MANSHINE_CITY": {
+      "id": "MANSHINE_CITY",
+      "name": "Manshine City",
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "top",
-      "stadium": "Canterlot Arena",
+      "stadium": "Ethiad Arena",
       "capacity": 53000,
       "city": "Manchbury",
       "rivalries": []
@@ -1046,8 +1046,8 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "top",
-      "stadium": "Old Trafford Canterlot",
-      "capacity": 76000,
+      "stadium": "Old Trafford",
+      "capacity": 66000,
       "city": "Manchbury",
       "rivalries": []
     },
@@ -1057,7 +1057,7 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "fort",
-      "stadium": "Anfield Canterlot",
+      "stadium": "Liverstown Arena",
       "capacity": 61000,
       "city": "Liverstown",
       "rivalries": []
@@ -1068,14 +1068,14 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "fort",
-      "stadium": "Spurs Canterlot",
+      "stadium": "Spurs",
       "capacity": 62000,
       "city": "Canterlot",
       "rivalries": []
     },
-    "CHELSKI_FC": {
-      "id": "CHELSKI_FC",
-      "name": "Chelski FC",
+    "CHELSEA_FC": {
+      "id": "CHELSEA_FC",
+      "name": "Chelsea FC",
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "fort",
@@ -1084,15 +1084,15 @@ const GHOST_NATIONS_DATA = {
       "city": "Canterlot",
       "rivalries": []
     },
-    "ASSTON_HILL": {
-      "id": "ASSTON_HILL",
-      "name": "Asston Hill FC",
+    "ASHTON_HILL": {
+      "id": "ASHTON_HILL",
+      "name": "AsHton Hill FC",
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "fort",
-      "stadium": "Villa Park Canterlot",
+      "stadium": "Villa Park",
       "capacity": 42000,
-      "city": "Asston",
+      "city": "Ashton",
       "rivalries": []
     },
     "NEWCASTE_UNITED": {
@@ -1101,7 +1101,7 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "moyen",
-      "stadium": "St James Canterlot",
+      "stadium": "St Harms Park",
       "capacity": 52000,
       "city": "Newcaste",
       "rivalries": []
@@ -1111,9 +1111,9 @@ const GHOST_NATIONS_DATA = {
       "name": "Canterlot Protectors",
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
-      "tier": "moyen",
+      "tier": "fort",
       "stadium": "Canterlot Royal",
-      "capacity": 35000,
+      "capacity": 65000,
       "city": "Canterlot",
       "rivalries": []
     },
@@ -1123,7 +1123,7 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "moyen",
-      "stadium": "Goodison Canterlot",
+      "stadium": "Goodison",
       "capacity": 39000,
       "city": "Evertown",
       "rivalries": []
@@ -1134,7 +1134,7 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "moyen",
-      "stadium": "Amex Canterlot",
+      "stadium": "Amex",
       "capacity": 31000,
       "city": "Brenton",
       "rivalries": []
@@ -1145,7 +1145,7 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "moyen",
-      "stadium": "London Canterlot",
+      "stadium": "London",
       "capacity": 60000,
       "city": "West Hamton",
       "rivalries": []
@@ -1156,7 +1156,7 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "faible",
-      "stadium": "Selhurst Canterlot",
+      "stadium": "Selhurst",
       "capacity": 25500,
       "city": "Crystal",
       "rivalries": []
@@ -1167,7 +1167,7 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "faible",
-      "stadium": "GTech Canterlot",
+      "stadium": "GTech",
       "capacity": 17250,
       "city": "Brenford",
       "rivalries": []
@@ -1178,7 +1178,7 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "faible",
-      "stadium": "Craven Canterlot",
+      "stadium": "Craven",
       "capacity": 25700,
       "city": "Fullbridge",
       "rivalries": []
@@ -1189,8 +1189,8 @@ const GHOST_NATIONS_DATA = {
       "league": "PREMIER_LEAGUE_CANT",
       "nation": "canterlot",
       "tier": "faible",
-      "stadium": "Vitality Canterlot",
-      "capacity": 11400,
+      "stadium": "Vitality",
+      "capacity": 21400,
       "city": "Bourneham",
       "rivalries": []
     },
