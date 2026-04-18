@@ -2910,8 +2910,8 @@ function renderAwardsContent(el, awards, canon) {
     const motm=m.motm?.name||m.motm?.id;
     if(motm){if(!cleStats[motm])cleStats[motm]={name:motm,goals:0,assists:0,matches:0,motm:0};cleStats[motm].motm++;}
   }
-  for (const r of (cle.leaguePhase?.results||[])) _trackMatch(r);
-  for (const round of Object.values(cle.knockout||{})) {
+  for (const r of (CLE_DATA?.leaguePhase?.results||[])) _trackMatch(r);
+  for (const round of Object.values(CLE_DATA?.knockout||{})) {
     for (const r of (round?.results||[])) {
       if (r.leg1) _trackMatch({events:r.leg1.events,ratings:r.leg1.ratings,motm:r.leg1.motm});
       if (r.leg2) _trackMatch({events:r.leg2.events,ratings:r.leg2.ratings,motm:r.leg2.motm});
