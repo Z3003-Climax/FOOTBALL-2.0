@@ -91,9 +91,9 @@ const CANON = {
       "league": "PRO_LIGA",
       "nation": "ishgar",
       "tier": "top",
-      "stadium": "Eidler Stadium",
-      "capacity": 65000,
-      "city": "Eidler",
+      "stadium": "Eidler",
+      "capacity": 69900,
+      "city": "Olfra",
       "rivalries": []
     },
     "PORT_YONEUVE": {
@@ -116,7 +116,8 @@ const CANON = {
       "stadium": "Suncorp Stadium",
       "capacity": 52500,
       "city": "Brisbane",
-      "rivalries": []
+      "rivalries": ["FC SYDNEY"
+                   ]
     },
     "BLACKS_CLOVER": {
       "id": "BLACKS_CLOVER",
@@ -160,7 +161,8 @@ const CANON = {
       "stadium": "Moore Park",
       "capacity": 45000,
       "city": "Sydney",
-      "rivalries": []
+      "rivalries": ["BRISBANE_ROAR"
+                   ]
     },
     "YAN_TREIZ": {
       "id": "YAN_TREIZ",
@@ -192,7 +194,7 @@ const CANON = {
       "tier": "moyen",
       "stadium": "Magnolia Park",
       "capacity": 42000,
-      "city": "Magnolia",
+      "city": "Magnoria",
       "rivalries": []
     },
     "MELBOURNE_DEMONS": {
@@ -296,7 +298,8 @@ const CANON = {
       "stadium": "Sainsy Metropolitan",
       "capacity": 73300,
       "city": "Poneyville",
-      "rivalries": []
+      "rivalries": ["AS_PONEYS"
+                   ]
     },
     "FC_DIMSDALLE": {
       "id": "FC_DIMSDALLE",
@@ -331,7 +334,8 @@ const CANON = {
       "stadium": "Stalion Arena",
       "capacity": 63200,
       "city": "Poneyville",
-      "rivalries": []
+      "rivalries": ["GEARS_PONEYS"
+                   ]
     },
     "JORICKJONSON_FC": {
       "id": "JORICKJONSON_FC",
@@ -493,7 +497,8 @@ const CANON = {
       "stadium": "Wert Island",
       "capacity": 70000,
       "city": "Vapir",
-      "rivalries": []
+      "rivalries": ["VAPIR_FC"
+                   ]
     },
     "FENERBACHE_CLOBSDEL": {
       "id": "FENERBACHE_CLOBSDEL",
@@ -528,7 +533,8 @@ const CANON = {
       "stadium": "Skulivar",
       "capacity": 69200,
       "city": "Vapir",
-      "rivalries": []
+      "rivalries": [ "SSC_NESERT_WERT"
+                   ]
     },
     "LAS_VEGAS_MYSTICS": {
       "id": "LAS_VEGAS_MYSTICS",
@@ -659,7 +665,7 @@ const CANON = {
       "nation": "brislovia",
       "tier": "faible",
       "stadium": "Olimpiyskiy",
-      "capacity": 70050,
+      "capacity": 50050,
       "city": "Kiev",
       "rivalries": []
     },
@@ -698,7 +704,8 @@ const CANON = {
       "stadium": "Einthract Park",
       "capacity": 75000,
       "city": "City",
-      "rivalries": []
+      "rivalries": ["FC_ZANZIBAR"
+                   ]
     },
     "FC_ZANZIBAR": {
       "id": "FC_ZANZIBAR",
@@ -709,7 +716,8 @@ const CANON = {
       "stadium": "Amani",
       "capacity": 70400,
       "city": "Zanzibar",
-      "rivalries": []
+      "rivalries": ["FENRIR"
+                   ]
     },
     "FC_DAR_ES_SALAM": {
       "id": "FC_DAR_ES_SALAM",
@@ -729,7 +737,7 @@ const CANON = {
       "nation": "savanna",
       "tier": "fort",
       "stadium": "Portland",
-      "capacity": 40000,
+      "capacity": 60000,
       "city": "Togo",
       "rivalries": [
         "FC_TOGO"
@@ -786,7 +794,7 @@ const CANON = {
       "nation": "savanna",
       "tier": "fort",
       "stadium": "Portland",
-      "capacity": 40000,
+      "capacity": 60000,
       "city": "Togo",
       "rivalries": [
         "TOGO_AS_PORT"
@@ -1075,7 +1083,7 @@ const CANON = {
       "nation": "bermudes",
       "tier": "faible",
       "stadium": "Luvona Std",
-      "capacity": 41200,
+      "capacity": 31200,
       "city": "Ringo",
       "rivalries": []
     },
@@ -1109,19 +1117,21 @@ const CANON = {
       "tier": "top",
       "stadium": "San Siero",
       "capacity": 75000,
-      "city": "Far West Hole Geulch",
-      "rivalries": []
+      "city": "Hole Gulch",
+      "rivalries": ["HOLE_GULCH_MI_ROSA"
+                   ]
     },
-    "HOLE_GEULCH_MI_ROSA": {
-      "id": "HOLE_GEULCH_MI_ROSA",
-      "name": "Hole Geulch Mi Rosa",
+    "HOLE_GULCH_MI_ROSA": {
+      "id": "HOLE_GULCH_MI_ROSA",
+      "name": "Hole Gulch Mi Rosa",
       "league": "LIGA_NOS",
       "nation": "desertiqua",
       "tier": "top",
       "stadium": "Stanford Bridge",
       "capacity": 75000,
-      "city": "Hole Geulch",
-      "rivalries": []
+      "city": "Hole Gulch",
+      "rivalries": ["FAR_WEST"
+                   ]
     },
     "BRESIL_FC": {
       "id": "BRESIL_FC",
@@ -1197,7 +1207,7 @@ const CANON = {
       "tier": "fort",
       "stadium": "Maracana",
       "capacity": 70200,
-      "city": "Rio de Janeiro",
+      "city": "Sao Paulo",
       "rivalries": []
     },
     "RIVER_PLATE": {
@@ -1207,7 +1217,7 @@ const CANON = {
       "nation": "desertiqua",
       "tier": "moyen",
       "stadium": "El Monumental",
-      "capacity": 84567,
+      "capacity": 54567,
       "city": "Buenos Aires",
       "rivalries": []
     },
@@ -1229,7 +1239,7 @@ const CANON = {
       "nation": "desertiqua",
       "tier": "moyen",
       "stadium": "Estadio Azteca",
-      "capacity": 87523,
+      "capacity": 57523,
       "city": "Mexico City",
       "rivalries": []
     },
@@ -1296,7 +1306,7 @@ const CANON = {
       "league": "LIGA_ONE",
       "nation": "paysTropMignon",
       "tier": "top",
-      "stadium": "Andfield",
+      "stadium": "Anfield",
       "capacity": 70000,
       "city": "Blase",
       "rivalries": [
@@ -1545,7 +1555,7 @@ const CANON = {
         "rapidite": 84,
         "acceleration": 88,
         "endurance": 83,
-        "puissance": 64,
+        "puissance": 66,
         "controle": 94,
         "passe": 95,
         "tir": 84,
@@ -1568,13 +1578,13 @@ const CANON = {
         "rapidite": 84,
         "acceleration": 85,
         "endurance": 90,
-        "puissance": 71,
+        "puissance": 72,
         "controle": 94,
         "passe": 95,
         "tir": 83,
         "tacle": 54
       },
-      "ovr": 85,
+      "ovr": 86,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00005"
@@ -1662,13 +1672,13 @@ const CANON = {
         "rapidite": 89,
         "acceleration": 82,
         "endurance": 89,
-        "puissance": 75,
-        "controle": 85,
+        "puissance": 79,
+        "controle": 87,
         "passe": 93,
         "tir": 82,
         "tacle": 84
       },
-      "ovr": 84,
+      "ovr": 87,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00009"
@@ -1691,7 +1701,7 @@ const CANON = {
         "tir": 72,
         "tacle": 84
       },
-      "ovr": 86,
+      "ovr": 87,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00010"
@@ -1705,18 +1715,18 @@ const CANON = {
         "GK"
       ],
       "stats": {
-        "rapidite": 61,
+        "rapidite": 67,
         "acceleration": 57,
         "endurance": 72,
         "puissance": 69,
-        "controle": 64,
-        "passe": 64,
-        "tir": 30,
+        "controle": 87,
+        "passe": 87,
+        "tir": 55,
         "tacle": 50,
-        "rg": 86,
-        "mg": 86
+        "rg": 89,
+        "mg": 89
       },
-      "ovr": 80,
+      "ovr": 88,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00011"
@@ -1755,16 +1765,16 @@ const CANON = {
         "CAM"
       ],
       "stats": {
-        "rapidite": 80,
+        "rapidite": 83,
         "acceleration": 83,
-        "endurance": 75,
-        "puissance": 69,
-        "controle": 75,
-        "passe": 83,
+        "endurance": 82,
+        "puissance": 82,
+        "controle": 81,
+        "passe": 84,
         "tir": 74,
         "tacle": 52
       },
-      "ovr": 75,
+      "ovr": 82,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00013"
@@ -1808,17 +1818,17 @@ const CANON = {
         "endurance": 83,
         "puissance": 60,
         "controle": 79,
-        "passe": 74,
-        "tir": 67,
+        "passe": 79,
+        "tir": 79,
         "tacle": 32
       },
-      "ovr": 72,
+      "ovr": 78,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00015"
     },
     "P00016": {
-      "name": "Hassan Mansouri",
+      "name": "Ah Shnm",
       "nationality": "wesfalie",
       "age": 21,
       "position": "GK",
@@ -1840,7 +1850,7 @@ const CANON = {
       "club": "BAYERN_ILUMYSS"
     },
     "P00017": {
-      "name": "Ciarán Ryan",
+      "name": "Ciarán",
       "nationality": "crannbanie",
       "age": 29,
       "position": "GK",
@@ -1868,21 +1878,21 @@ const CANON = {
       "position": "CB",
       "stats": {
         "rapidite": 92,
-        "acceleration": 96,
+        "acceleration": 93,
         "endurance": 82,
         "puissance": 95,
         "controle": 83,
-        "passe": 86,
+        "passe": 84,
         "tir": 53,
         "tacle": 89
       },
-      "ovr": 88,
+      "ovr": 86,
       "canonical": false,
       "id": "P00018",
       "club": "BAYERN_ILUMYSS"
     },
     "P00019": {
-      "name": "Eduardo Carvalho",
+      "name": "Eduardo",
       "nationality": "desertiqua",
       "age": 34,
       "position": "CB",
@@ -1902,21 +1912,21 @@ const CANON = {
       "club": "BAYERN_ILUMYSS"
     },
     "P00020": {
-      "name": "Ryad Chaabane",
+      "name": "Chaabane",
       "nationality": "wesfalie",
       "age": 31,
       "position": "LB",
       "stats": {
-        "rapidite": 97,
-        "acceleration": 90,
-        "endurance": 89,
-        "puissance": 98,
+        "rapidite": 86,
+        "acceleration": 86,
+        "endurance": 87,
+        "puissance": 90,
         "controle": 84,
-        "passe": 94,
+        "passe": 90,
         "tir": 41,
-        "tacle": 94
+        "tacle": 92
       },
-      "ovr": 91,
+      "ovr": 86,
       "canonical": false,
       "id": "P00020",
       "club": "BAYERN_ILUMYSS"
@@ -1927,42 +1937,42 @@ const CANON = {
       "age": 27,
       "position": "RB",
       "stats": {
-        "rapidite": 90,
+        "rapidite": 86,
         "acceleration": 83,
         "endurance": 81,
-        "puissance": 96,
+        "puissance": 92,
         "controle": 83,
-        "passe": 87,
+        "passe": 86,
         "tir": 58,
         "tacle": 90
       },
-      "ovr": 87,
+      "ovr": 85,
       "canonical": false,
       "id": "P00021",
       "club": "BAYERN_ILUMYSS"
     },
     "P00022": {
-      "name": "Ebo Gueye",
+      "name": "Nart",
       "nationality": "savanna",
-      "age": 23,
+      "age": 26,
       "position": "CDM",
       "stats": {
         "rapidite": 87,
-        "acceleration": 90,
+        "acceleration": 86,
         "endurance": 85,
         "puissance": 80,
         "controle": 88,
-        "passe": 95,
-        "tir": 90,
-        "tacle": 96
+        "passe": 89,
+        "tir": 85,
+        "tacle": 91
       },
-      "ovr": 89,
+      "ovr": 86,
       "canonical": false,
       "id": "P00022",
       "club": "BAYERN_ILUMYSS"
     },
     "P00023": {
-      "name": "Sofiane Sassi",
+      "name": "Sofiane Senzi",
       "nationality": "wesfalie",
       "age": 33,
       "position": "CDM",
@@ -2040,16 +2050,16 @@ const CANON = {
         "LW"
       ],
       "stats": {
-        "rapidite": 86,
-        "acceleration": 87,
+        "rapidite": 87,
+        "acceleration": 89,
         "endurance": 89,
         "puissance": 89,
-        "controle": 86,
+        "controle": 87,
         "passe": 88,
         "tir": 91,
         "tacle": 53
       },
-      "ovr": 86,
+      "ovr": 88,
       "canonical": true,
       "club": "FAIRY_TAIL",
       "id": "P00026"
@@ -2063,16 +2073,16 @@ const CANON = {
         "CM"
       ],
       "stats": {
-        "rapidite": 84,
+        "rapidite": 85,
         "acceleration": 88,
-        "endurance": 83,
-        "puissance": 64,
+        "endurance": 85,
+        "puissance": 70,
         "controle": 86,
         "passe": 87,
         "tir": 84,
         "tacle": 64
       },
-      "ovr": 81,
+      "ovr": 84,
       "canonical": true,
       "club": "FAIRY_TAIL",
       "id": "P00027"
@@ -2089,13 +2099,13 @@ const CANON = {
         "rapidite": 84,
         "acceleration": 85,
         "endurance": 90,
-        "puissance": 71,
+        "puissance": 82,
         "controle": 85,
         "passe": 93,
         "tir": 83,
         "tacle": 54
       },
-      "ovr": 83,
+      "ovr": 84,
       "canonical": true,
       "club": "FAIRY_TAIL",
       "id": "P00028"
@@ -2117,9 +2127,9 @@ const CANON = {
         "controle": 88,
         "passe": 84,
         "tir": 85,
-        "tacle": 81
+        "tacle": 85
       },
-      "ovr": 87,
+      "ovr": 88,
       "canonical": true,
       "club": "FAIRY_TAIL",
       "id": "P00029"
@@ -2165,7 +2175,7 @@ const CANON = {
         "tir": 63,
         "tacle": 96
       },
-      "ovr": 89,
+      "ovr": 87,
       "canonical": true,
       "club": "FAIRY_TAIL",
       "id": "P00031"
@@ -2205,13 +2215,13 @@ const CANON = {
         "rapidite": 93,
         "acceleration": 92,
         "endurance": 94,
-        "puissance": 80,
+        "puissance": 86,
         "controle": 85,
-        "passe": 84,
+        "passe": 88,
         "tir": 72,
         "tacle": 84
       },
-      "ovr": 86,
+      "ovr": 87,
       "canonical": true,
       "club": "FAIRY_TAIL",
       "id": "P00033"
@@ -2225,18 +2235,18 @@ const CANON = {
         "GK"
       ],
       "stats": {
-        "rapidite": 61,
-        "acceleration": 57,
+        "rapidite": 68,
+        "acceleration": 68,
         "endurance": 72,
         "puissance": 69,
         "controle": 64,
         "passe": 64,
         "tir": 30,
         "tacle": 50,
-        "rg": 86,
-        "mg": 86
+        "rg": 89,
+        "mg": 78
       },
-      "ovr": 80,
+      "ovr": 87,
       "canonical": true,
       "club": "FAIRY_TAIL",
       "id": "P00034"
@@ -2306,7 +2316,7 @@ const CANON = {
       "club": "FAIRY_TAIL"
     },
     "P00038": {
-      "name": "Henrik Richter",
+      "name": "Richter",
       "nationality": "paxifista",
       "age": 33,
       "position": "CB",
@@ -2328,19 +2338,19 @@ const CANON = {
     "P00039": {
       "name": "Andrew Hughes",
       "nationality": "wales",
-      "age": 24,
+      "age": 28,
       "position": "LB",
       "stats": {
-        "rapidite": 92,
+        "rapidite": 87,
         "acceleration": 86,
         "endurance": 97,
-        "puissance": 99,
-        "controle": 88,
-        "passe": 87,
+        "puissance": 92,
+        "controle": 85,
+        "passe": 85,
         "tir": 56,
-        "tacle": 92
+        "tacle": 85
       },
-      "ovr": 90,
+      "ovr": 86,
       "canonical": false,
       "id": "P00039",
       "club": "FAIRY_TAIL"
@@ -2366,21 +2376,21 @@ const CANON = {
       "club": "FAIRY_TAIL"
     },
     "P00041": {
-      "name": "Sergei Lebedev",
+      "name": "Lebedev",
       "nationality": "brislovia",
       "age": 31,
       "position": "CDM",
       "stats": {
-        "rapidite": 93,
-        "acceleration": 94,
-        "endurance": 97,
+        "rapidite": 87,
+        "acceleration": 92,
+        "endurance": 86,
         "puissance": 90,
         "controle": 92,
         "passe": 92,
         "tir": 86,
-        "tacle": 98
+        "tacle": 91
       },
-      "ovr": 93,
+      "ovr": 88,
       "canonical": false,
       "id": "P00041",
       "club": "FAIRY_TAIL"
@@ -2411,16 +2421,16 @@ const CANON = {
       "age": 24,
       "position": "LW",
       "stats": {
-        "rapidite": 94,
-        "acceleration": 98,
-        "endurance": 92,
-        "puissance": 93,
-        "controle": 95,
-        "passe": 91,
+        "rapidite": 86,
+        "acceleration": 87,
+        "endurance": 90,
+        "puissance": 89,
+        "controle": 89,
+        "passe": 87,
         "tir": 91,
         "tacle": 34
       },
-      "ovr": 90,
+      "ovr": 86,
       "canonical": false,
       "id": "P00043",
       "club": "FAIRY_TAIL"
@@ -2456,17 +2466,17 @@ const CANON = {
         "endurance": 92,
         "puissance": 90,
         "controle": 91,
-        "passe": 95,
-        "tir": 92,
+        "passe": 85,
+        "tir": 85,
         "tacle": 46
       },
-      "ovr": 89,
+      "ovr": 86,
       "canonical": false,
       "id": "P00045",
       "club": "FAIRY_TAIL"
     },
     "P00046": {
-      "name": "Ryad Laïdouni",
+      "name": "Laïdouni",
       "nationality": "wesfalie",
       "age": 26,
       "position": "RW",
@@ -2521,16 +2531,16 @@ const CANON = {
         "RW"
       ],
       "stats": {
-        "rapidite": 82,
+        "rapidite": 83,
         "acceleration": 83,
         "endurance": 83,
-        "puissance": 80,
+        "puissance": 82,
         "controle": 84,
         "passe": 87,
         "tir": 83,
         "tacle": 45
       },
-      "ovr": 82,
+      "ovr": 83,
       "canonical": true,
       "club": "OLFRA_KE_CONGERE",
       "id": "P00048"
@@ -2618,13 +2628,13 @@ const CANON = {
         "endurance": 71,
         "puissance": 69,
         "controle": 64,
-        "passe": 64,
+        "passe": 69,
         "tir": 30,
         "tacle": 50,
-        "rg": 83,
-        "mg": 82
+        "rg": 86,
+        "mg": 87
       },
-      "ovr": 77,
+      "ovr": 85,
       "canonical": true,
       "club": "OLFRA_KE_CONGERE",
       "id": "P00052"
@@ -2652,7 +2662,7 @@ const CANON = {
       "club": "OLFRA_KE_CONGERE"
     },
     "P00054": {
-      "name": "Abena Traoré",
+      "name": "Mako",
       "nationality": "savanna",
       "age": 24,
       "position": "GK",
@@ -2668,7 +2678,7 @@ const CANON = {
         "rg": 78,
         "mg": 75
       },
-      "ovr": 72,
+      "ovr": 78,
       "canonical": false,
       "id": "P00054",
       "club": "OLFRA_KE_CONGERE"
@@ -2944,11 +2954,11 @@ const CANON = {
         "endurance": 85,
         "puissance": 80,
         "controle": 91,
-        "passe": 93,
-        "tir": 95,
+        "passe": 88,
+        "tir": 85,
         "tacle": 49
       },
-      "ovr": 88,
+      "ovr": 87,
       "canonical": false,
       "id": "P00068",
       "club": "OLFRA_KE_CONGERE"
@@ -2985,16 +2995,16 @@ const CANON = {
         "CAM"
       ],
       "stats": {
-        "rapidite": 82,
+        "rapidite": 86,
         "acceleration": 84,
-        "endurance": 79,
-        "puissance": 78,
+        "endurance": 86,
+        "puissance": 85,
         "controle": 84,
-        "passe": 80,
+        "passe": 84,
         "tir": 85,
-        "tacle": 37
+        "tacle": 47
       },
-      "ovr": 80,
+      "ovr": 84,
       "canonical": true,
       "club": "PORT_YONEUVE",
       "id": "P00070"
@@ -3118,19 +3128,19 @@ const CANON = {
     "P00076": {
       "name": "Egon Roth",
       "nationality": "ishgar",
-      "age": 21,
+      "age": 24,
       "position": "CB",
       "stats": {
-        "rapidite": 94,
+        "rapidite": 85,
         "acceleration": 82,
         "endurance": 88,
-        "puissance": 97,
+        "puissance": 93,
         "controle": 87,
         "passe": 92,
         "tir": 67,
-        "tacle": 97
+        "tacle": 93
       },
-      "ovr": 91,
+      "ovr": 85,
       "canonical": false,
       "id": "P00076",
       "club": "PORT_YONEUVE"
@@ -3158,7 +3168,7 @@ const CANON = {
     "P00078": {
       "name": "Stefan Roth",
       "nationality": "ishgar",
-      "age": 19,
+      "age": 23,
       "position": "CB",
       "stats": {
         "rapidite": 81,
@@ -43786,7 +43796,7 @@ const CANON = {
     },
     "P02072": {
       "name": "Gabo Morreti",
-      "nationality": "ishgar",
+      "nationality": "desertiqua",
       "age": 23,
       "position": "RW",
       "positions": [
@@ -43794,13 +43804,13 @@ const CANON = {
         "CAM"
       ],
       "stats": {
-        "rapidite": 88,
-        "acceleration": 93,
+        "rapidite": 86,
+        "acceleration": 90,
         "endurance": 83,
         "puissance": 80,
         "controle": 98,
         "passe": 93,
-        "tir": 94,
+        "tir": 87,
         "tacle": 51
       },
       "ovr": 90,
@@ -43846,16 +43856,16 @@ const CANON = {
         "LB"
       ],
       "stats": {
-        "rapidite": 84,
+        "rapidite": 86,
         "acceleration": 88,
-        "endurance": 83,
-        "puissance": 80,
+        "endurance": 85,
+        "puissance": 88,
         "controle": 88,
         "passe": 95,
-        "tir": 84,
-        "tacle": 79
+        "tir": 85,
+        "tacle": 82
       },
-      "ovr": 86,
+      "ovr": 88,
       "canonical": true,
       "club": "FAR_WEST",
       "id": "P02074"
@@ -43875,7 +43885,7 @@ const CANON = {
         "puissance": 71,
         "controle": 94,
         "passe": 95,
-        "tir": 80,
+        "tir": 82,
         "tacle": 54
       },
       "ovr": 84,
@@ -43932,7 +43942,7 @@ const CANON = {
       "id": "P02077"
     },
     "P02078": {
-      "name": "Lem Lorsato",
+      "name": "Clem Lorsato",
       "nationality": "ishgar",
       "age": 29,
       "position": "CB",
@@ -43943,7 +43953,7 @@ const CANON = {
       "stats": {
         "rapidite": 89,
         "acceleration": 82,
-        "endurance": 83,
+        "endurance": 85,
         "puissance": 96,
         "controle": 89,
         "passe": 85,
@@ -43965,15 +43975,15 @@ const CANON = {
       ],
       "stats": {
         "rapidite": 89,
-        "acceleration": 82,
+        "acceleration": 87,
         "endurance": 89,
-        "puissance": 75,
+        "puissance": 87,
         "controle": 85,
         "passe": 93,
-        "tir": 82,
+        "tir": 84,
         "tacle": 84
       },
-      "ovr": 84,
+      "ovr": 87,
       "canonical": true,
       "club": "FAR_WEST",
       "id": "P02079"
@@ -44015,13 +44025,13 @@ const CANON = {
         "endurance": 72,
         "puissance": 70,
         "controle": 64,
-        "passe": 64,
+        "passe": 70,
         "tir": 30,
         "tacle": 50,
-        "rg": 86,
+        "rg": 87,
         "mg": 86
       },
-      "ovr": 80,
+      "ovr": 82,
       "canonical": true,
       "club": "FAR_WEST",
       "id": "P02081"
@@ -44076,16 +44086,16 @@ const CANON = {
       "age": 25,
       "position": "CB",
       "stats": {
-        "rapidite": 88,
-        "acceleration": 93,
-        "endurance": 90,
-        "puissance": 92,
+        "rapidite": 87,
+        "acceleration": 87,
+        "endurance": 87,
+        "puissance": 87,
         "controle": 85,
         "passe": 96,
         "tir": 43,
         "tacle": 96
       },
-      "ovr": 90,
+      "ovr": 86,
       "canonical": false,
       "id": "P02084",
       "club": "FAR_WEST"
@@ -44111,7 +44121,7 @@ const CANON = {
       "club": "FAR_WEST"
     },
     "P02086": {
-      "name": "Sergio Alba",
+      "name": "Serginio",
       "nationality": "porespagne",
       "age": 29,
       "position": "LB",
@@ -44151,7 +44161,7 @@ const CANON = {
       "club": "FAR_WEST"
     },
     "P02088": {
-      "name": "Eder Carvalho",
+      "name": "Elder",
       "nationality": "desertiqua",
       "age": 27,
       "position": "CDM",
@@ -44160,12 +44170,12 @@ const CANON = {
         "acceleration": 94,
         "endurance": 88,
         "puissance": 90,
-        "controle": 94,
+        "controle": 91,
         "passe": 91,
         "tir": 78,
-        "tacle": 95
+        "tacle": 92
       },
-      "ovr": 90,
+      "ovr": 88,
       "canonical": false,
       "id": "P02088",
       "club": "FAR_WEST"
@@ -44191,21 +44201,21 @@ const CANON = {
       "club": "FAR_WEST"
     },
     "P02090": {
-      "name": "Pavel Belov",
+      "name": "Rossi",
       "nationality": "brislovia",
       "age": 20,
       "position": "LW",
       "stats": {
-        "rapidite": 91,
+        "rapidite": 86,
         "acceleration": 90,
         "endurance": 87,
         "puissance": 81,
-        "controle": 90,
+        "controle": 86,
         "passe": 84,
-        "tir": 95,
+        "tir": 90,
         "tacle": 35
       },
-      "ovr": 87,
+      "ovr": 85,
       "canonical": false,
       "id": "P02090",
       "club": "FAR_WEST"
@@ -44242,10 +44252,10 @@ const CANON = {
         "puissance": 85,
         "controle": 90,
         "passe": 85,
-        "tir": 92,
+        "tir": 85,
         "tacle": 47
       },
-      "ovr": 87,
+      "ovr": 84,
       "canonical": false,
       "id": "P02092",
       "club": "FAR_WEST"
@@ -44271,7 +44281,7 @@ const CANON = {
       "club": "FAR_WEST"
     },
     "P02094": {
-      "name": "Paulo Alves",
+      "name": "Santos",
       "nationality": "desertiqua",
       "age": 20,
       "position": "GK",
@@ -44290,7 +44300,7 @@ const CANON = {
       "ovr": 86,
       "canonical": false,
       "id": "P02094",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02095": {
       "name": "Max Oderberg",
@@ -44312,7 +44322,7 @@ const CANON = {
       "ovr": 72,
       "canonical": false,
       "id": "P02095",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02096": {
       "name": "Ilalio Nonu",
@@ -44334,7 +44344,7 @@ const CANON = {
       "ovr": 77,
       "canonical": false,
       "id": "P02096",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02097": {
       "name": "Calvin Thompson",
@@ -44354,7 +44364,7 @@ const CANON = {
       "ovr": 89,
       "canonical": false,
       "id": "P02097",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02098": {
       "name": "Tarek Khaled",
@@ -44374,7 +44384,7 @@ const CANON = {
       "ovr": 75,
       "canonical": false,
       "id": "P02098",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02099": {
       "name": "Lucas Cardoso",
@@ -44394,7 +44404,7 @@ const CANON = {
       "ovr": 83,
       "canonical": false,
       "id": "P02099",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02100": {
       "name": "Eduardo Gomes",
@@ -44414,7 +44424,7 @@ const CANON = {
       "ovr": 77,
       "canonical": false,
       "id": "P02100",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02101": {
       "name": "Diego Ferreira",
@@ -44434,7 +44444,7 @@ const CANON = {
       "ovr": 91,
       "canonical": false,
       "id": "P02101",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02102": {
       "name": "Axel Svensson",
@@ -44454,7 +44464,7 @@ const CANON = {
       "ovr": 79,
       "canonical": false,
       "id": "P02102",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02103": {
       "name": "Neymar Ribeiro",
@@ -44474,7 +44484,7 @@ const CANON = {
       "ovr": 90,
       "canonical": false,
       "id": "P02103",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02104": {
       "name": "Colm Smith",
@@ -44494,11 +44504,11 @@ const CANON = {
       "ovr": 82,
       "canonical": false,
       "id": "P02104",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02105": {
       "name": "Jordan Taylor",
-      "nationality": "wakanda",
+      "nationality": "wakan*da",
       "age": 26,
       "position": "CDM",
       "stats": {
@@ -44514,7 +44524,7 @@ const CANON = {
       "ovr": 91,
       "canonical": false,
       "id": "P02105",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02106": {
       "name": "Aaron Griffiths",
@@ -44534,10 +44544,10 @@ const CANON = {
       "ovr": 77,
       "canonical": false,
       "id": "P02106",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02107": {
-      "name": "Timur Orlov",
+      "name": "Orlov",
       "nationality": "brislovia",
       "age": 22,
       "position": "CM",
@@ -44554,7 +44564,7 @@ const CANON = {
       "ovr": 89,
       "canonical": false,
       "id": "P02107",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02108": {
       "name": "Gustavo Barbosa",
@@ -44574,7 +44584,7 @@ const CANON = {
       "ovr": 76,
       "canonical": false,
       "id": "P02108",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02109": {
       "name": "Luis Souza",
@@ -44597,7 +44607,7 @@ const CANON = {
       "club": "HOLE_GEULCH_MI_ROSA"
     },
     "P02110": {
-      "name": "Rodrigo Lima",
+      "name": "Rodrigo Barbarosa",
       "nationality": "desertiqua",
       "age": 21,
       "position": "CAM",
@@ -44614,7 +44624,7 @@ const CANON = {
       "ovr": 86,
       "canonical": false,
       "id": "P02110",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02111": {
       "name": "Vinicius Santos",
@@ -44634,27 +44644,27 @@ const CANON = {
       "ovr": 81,
       "canonical": false,
       "id": "P02111",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02112": {
-      "name": "Ebo Koné",
-      "nationality": "savanna",
-      "age": 19,
-      "position": "LW",
+      "name": "Don Aldo",
+      "nationality": "desertiqua",
+      "age": 26,
+      "position": "RW",
       "stats": {
         "rapidite": 86,
         "acceleration": 94,
-        "endurance": 79,
+        "endurance": 85,
         "puissance": 88,
-        "controle": 89,
+        "controle": 92,
         "passe": 86,
         "tir": 87,
         "tacle": 35
       },
-      "ovr": 85,
+      "ovr": 88,
       "canonical": false,
       "id": "P02112",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02113": {
       "name": "Danny Allen",
@@ -44674,12 +44684,12 @@ const CANON = {
       "ovr": 77,
       "canonical": false,
       "id": "P02113",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02114": {
-      "name": "Henri Girard",
+      "name": "Henry",
       "nationality": "javanie",
-      "age": 33,
+      "age": 34,
       "position": "RW",
       "stats": {
         "rapidite": 92,
@@ -44694,7 +44704,7 @@ const CANON = {
       "ovr": 85,
       "canonical": false,
       "id": "P02114",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02115": {
       "name": "Loseli Nonu",
@@ -44714,27 +44724,27 @@ const CANON = {
       "ovr": 76,
       "canonical": false,
       "id": "P02115",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02116": {
-      "name": "Oleg Orlov",
-      "nationality": "brislovia",
+      "name": "Liquido",
+      "nationality": "bermudes",
       "age": 27,
       "position": "ST",
       "stats": {
-        "rapidite": 84,
-        "acceleration": 81,
+        "rapidite": 90,
+        "acceleration": 89,
         "endurance": 80,
-        "puissance": 76,
+        "puissance": 82,
         "controle": 82,
         "passe": 91,
         "tir": 89,
         "tacle": 56
       },
-      "ovr": 83,
+      "ovr": 89,
       "canonical": false,
       "id": "P02116",
-      "club": "HOLE_GEULCH_MI_ROSA"
+      "club": "HOLE_GULCH_MI_ROSA"
     },
     "P02117": {
       "name": "Nikolai Pavlov",
@@ -44883,7 +44893,7 @@ const CANON = {
       "club": "BRESIL_FC"
     },
     "P02124": {
-      "name": "Artyom Rodionov",
+      "name": "Artyom Rodio",
       "nationality": "brislovia",
       "age": 27,
       "position": "LB",
@@ -44903,7 +44913,7 @@ const CANON = {
       "club": "BRESIL_FC"
     },
     "P02125": {
-      "name": "Ekow Coulibaly",
+      "name": "Ewon Silas",
       "nationality": "savanna",
       "age": 27,
       "position": "LB",
@@ -44943,7 +44953,7 @@ const CANON = {
       "club": "BRESIL_FC"
     },
     "P02127": {
-      "name": "Tobi Diallo",
+      "name": "Tobi McGwuire",
       "nationality": "savanna",
       "age": 35,
       "position": "RB",
@@ -45023,7 +45033,7 @@ const CANON = {
       "club": "BRESIL_FC"
     },
     "P02131": {
-      "name": "Bjorn Persson",
+      "name": "Persson",
       "nationality": "vulgarie",
       "age": 29,
       "position": "CM",
@@ -45063,9 +45073,9 @@ const CANON = {
       "club": "BRESIL_FC"
     },
     "P02133": {
-      "name": "Gustavo Pinto",
+      "name": "Gustavo",
       "nationality": "desertiqua",
-      "age": 20,
+      "age": 23,
       "position": "CAM",
       "stats": {
         "rapidite": 95,
@@ -45083,7 +45093,7 @@ const CANON = {
       "club": "BRESIL_FC"
     },
     "P02134": {
-      "name": "Sofiane Slimani",
+      "name": "Lamar Siloam",
       "nationality": "wesfalie",
       "age": 26,
       "position": "CAM",
@@ -51759,22 +51769,19 @@ const CANON = {
       "name": "Shakses Mokuena",
       "nationality": "savanna",
       "age": 29,
-      "position": "CDM",
-      "positions": [
-        "CDM",
-        "CM"
-      ],
+      "position": "ST",
+      
       "stats": {
-        "rapidite": 83,
+        "rapidite": 84,
         "acceleration": 84,
         "endurance": 91,
         "puissance": 90,
         "controle": 85,
         "passe": 88,
-        "tir": 72,
+        "tir": 84,
         "tacle": 89
       },
-      "ovr": 86,
+      "ovr": 87,
       "canonical": true,
       "club": "ETOILE_ROUGE_BLASE",
       "id": "P02463"
@@ -51866,7 +51873,7 @@ const CANON = {
       "club": "ETOILE_ROUGE_BLASE"
     },
     "P02468": {
-      "name": "Mensah Mensah",
+      "name": "Mensah",
       "nationality": "savanna",
       "age": 30,
       "position": "CB",
@@ -51886,7 +51893,7 @@ const CANON = {
       "club": "ETOILE_ROUGE_BLASE"
     },
     "P02469": {
-      "name": "Dieter Becker",
+      "name": "Becker",
       "nationality": "paysTropMignon",
       "age": 19,
       "position": "CB",
@@ -52186,10 +52193,10 @@ const CANON = {
       "club": "ETOILE_ROUGE_BLASE"
     },
     "P02484": {
-      "name": "Felix Koch",
-      "nationality": "ishgar",
+      "name": "Sebastian Nackamura",
+      "nationality": "paysTropMignon",
       "age": 30,
-      "position": "ST",
+      "position": "LW",
       "stats": {
         "rapidite": 83,
         "acceleration": 96,
@@ -58739,6 +58746,25 @@ const CANON = {
       ],
       "league": "PRO_LIGA"
     },
+
+    {
+      "name": "Magnoria Derby",
+      "clubs": [
+        "FAIRY_TAIL",
+        "FC_MAGNORIA"
+      ],
+      "league": "PRO_LIGA"
+    },
+
+    {
+      "name": "Yoneuve Derby",
+      "clubs": [
+        "PORT_YONEUVE",
+        "FC_PORTO_ISH"
+      ],
+      "league": "PRO_LIGA"
+    },
+      
     {
       "name": "Di Clasico",
       "clubs": [
@@ -58756,7 +58782,7 @@ const CANON = {
       "league": "LA_LIGA"
     },
     {
-      "name": "Ballt Derby",
+      "name": "Derby di la Madolina",
       "clubs": [
         "WONDER_BALLT",
         "SHADOW_BALLT"
@@ -58783,10 +58809,20 @@ const CANON = {
       "name": "Far West Derby",
       "clubs": [
         "FAR_WEST",
-        "HOLE_GEULCH_MI_ROSA"
+        "HOLE_GULCH_MI_ROSA"
       ],
       "league": "LIGA_NOS"
     },
+
+    {
+      "name": "Brazil Derby",
+      "clubs": [
+        "PALMENNE_TIRI",
+        "BRESIL_FC"
+      ],
+      "league": "LIGA_NOS"
+    },
+    
     {
       "name": "Vegas Derby",
       "clubs": [
@@ -58794,7 +58830,18 @@ const CANON = {
         "MYSTICONS"
       ],
       "league": "ANDRO_LEAGUE"
+    },
+
+        {
+      "name": "VAPIR Derby",
+      "clubs": [
+        "SSC_NESERT_WERT",
+        "VAPIR"
+      ],
+      "league": "ANDRO_LEAGUE"
     }
+
+    
   ],
   "cle": {
     "name": "Champions League Equestria",
