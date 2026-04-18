@@ -3145,8 +3145,7 @@ window.showNationSquad = function(natId) {
     style="background:${f===curForm?'var(--gold)':'var(--surface)'};color:${f===curForm?'#000':'var(--muted)'};border:1px solid ${f===curForm?'var(--gold)':'var(--border)'};border-radius:6px;padding:4px 9px;cursor:pointer;font-size:11px;font-family:var(--font-mono)">${f}</button>`).join('');
 
   const pitch = _buildFormationPitch(xi, curForm, color);
-  const natFlag = natFlag ? '' : ''; // already a var name — use inline
-
+  
   const modal = document.createElement('div');
   modal.id = 'nation-modal';
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:20px 16px;overflow-y:auto';
