@@ -863,9 +863,61 @@ let STATE = {
   currentStandingsLeague: null,
 };
 
-let SEASON_DATA  = null; // saison active en mémoire
-let EURO_DATA    = null; // euro en mémoire
-let FINANCE_DATA = null; // finances en mémoire
+let SEASON_DATA  = null;
+let EURO_DATA    = null;
+let FINANCE_DATA = null;
+
+// ─── MASTER CALENDAR ───────────────────────────────────────
+// MC_DATA = { events: [...], pos: 0 }
+// events: tableau d'objets { type, [phase], [md] }
+//   type 'champ'    → simule 1 journée de championnat
+//   type 'cle_md'   → simule 1 matchday de phase de ligue CLE
+//   type 'cle_ko'   → simule 1 phase knockout CLE (playoff/r16/qf/sf/final)
+//   type 'cle_qual' → simule 1 tour de qualification CLE (L1 seulement)
+const MC_KEY = 'eq_mc';
+let   MC_DATA = null;
+
+function buildMasterCalendar(maxChampRound, isL0) {
+  const events = [];
+
+  // L1 : tours de qualification pré-saison
+  if (!isL0) {
+    ['qual_r1','qual_r2','qual_r3','qual_r4'].forEach(phase => {
+      events.push({ type:'cle_qual', phase });
+    });
+  }
+
+  let champUsed = 0;
+  const insertChamp = n => {
+    for (let i = 0; i < n && champUsed < maxChampRound; i++) {
+      events.push({ type:'champ' });
+      champUsed++;
+    }
+  };
+
+  // 4 journées de champ avant le 1er MD CLE
+  insertChamp(4);
+
+  // 8 matchdays CLE : 2 journées de champ entre chaque
+  for (let md = 0; md < 8; md++) {
+    if (md > 0) insertChamp(2);
+    events.push({ type:'cle_md', md });
+  }
+
+  // Phases knockout : interspersées dans les journées restantes
+  const koPhases   = ['playoff','r16','qf','sf','final'];
+  const remaining  = maxChampRound - champUsed;
+  const slotSize   = Math.max(1, Math.floor(remaining / (koPhases.length + 1)));
+  for (const phase of koPhases) {
+    insertChamp(slotSize);
+    events.push({ type:'cle_ko', phase });
+  }
+
+  // Journées restantes après la finale CLE
+  insertChamp(maxChampRound - champUsed);
+
+  return { events, pos: 0 };
+}
 
 // ─── STORAGE ───────────────────────────────────────────────
 function saveState() {
@@ -914,25 +966,141 @@ function getOrInitSeason() {
 }
 
 // ─── SEASON CONTROLS ───────────────────────────────────────
+// ─── MASTER CALENDAR : exécution d'un événement ────────────────────
+function _ensureMC(season) {
+  if (MC_DATA) return;
+  const isL0 = !season.history || season.history.length === 0;
+  MC_DATA = buildMasterCalendar(season.maxRound, isL0);
+  EQ_DB.set(MC_KEY, MC_DATA).catch(() => {});
+}
+
+function _mcNextLabel() {
+  if (!MC_DATA || MC_DATA.pos >= MC_DATA.events.length) return 'Terminé';
+  const evt = MC_DATA.events[MC_DATA.pos];
+  if (evt.type === 'champ')    return 'Journée de championnat';
+  if (evt.type === 'cle_md')   return 'CLE · Journée ' + (evt.md + 1) + '/8';
+  if (evt.type === 'cle_ko')   return 'CLE · ' + CLEEngine.getPhaseLabel(evt.phase);
+  if (evt.type === 'cle_qual') return 'CLE · ' + CLEEngine.getPhaseLabel(evt.phase);
+  return '—';
+}
+
+function _mcDone() {
+  if (!MC_DATA) return true;
+  return MC_DATA.pos >= MC_DATA.events.length;
+}
+
+function _executeEvent(evt, canon) {
+  const season = SEASON_DATA;
+
+  if (evt.type === 'champ') {
+    if (season && !season.finished) {
+      SEASON_DATA = SeasonEngine.simulateRound(season, canon);
+      SeasonEngine.saveSeason(SEASON_DATA);
+    }
+    return;
+  }
+
+  // Toutes les opérations CLE nécessitent les ghost nations
+  if (typeof mergeGhostNations === 'function' && !canon._ghostMerged) {
+    mergeGhostNations(canon);
+  }
+
+  if (evt.type === 'cle_md') {
+    // Initialise la CLE (draw seulement) si elle n'existe pas encore
+    if (!CLE_DATA || CLE_DATA.phase === 'idle') {
+      CLE_DATA = CLEEngine.initLeaguePhaseMC(canon, season);
+      saveCLEData(CLE_DATA);
+    }
+    CLE_DATA = CLEEngine.simulateLeagueMD(CLE_DATA, canon);
+    saveCLEData(CLE_DATA);
+    return;
+  }
+
+  if (evt.type === 'cle_ko') {
+    if (!CLE_DATA) return;
+    // Sécurité : si la phase de ligue n'est pas terminée, on la finit
+    if (CLE_DATA.leaguePhase && CLE_DATA.leaguePhase.currentMD < 8) {
+      while (CLE_DATA.leaguePhase.currentMD < 8) {
+        CLE_DATA = CLEEngine.simulateLeagueMD(CLE_DATA, canon);
+      }
+    }
+    CLE_DATA = CLEEngine.tickCLE(CLE_DATA, canon);
+    if (CLE_DATA.phase === 'complete') {
+      AWARDS_DATA = null;
+      EQ_DB.del(AWARDS_KEY);
+    }
+    saveCLEData(CLE_DATA);
+    return;
+  }
+
+  if (evt.type === 'cle_qual') {
+    if (!CLE_DATA || CLE_DATA.phase === 'idle') {
+      CLE_DATA = CLEEngine.initCLE(canon, season);
+      CLE_DATA.year = season.year;
+    }
+    CLE_DATA = CLEEngine.tickCLE(CLE_DATA, canon);
+    saveCLEData(CLE_DATA);
+    return;
+  }
+}
+
+// ─── simNextEvent : le bouton "Journée suivante" du masterCalendar ──
 window.simRound = function() {
   const canon = getCanon(); if (!canon) return;
-  const s = getOrInitSeason(); if (!s || s.finished) return;
-  document.getElementById('btn-sim-round').disabled = true;
-  SEASON_DATA = SeasonEngine.simulateRound(s, canon);
-  SeasonEngine.saveSeason(SEASON_DATA);
-  updateSeasonUI();
-  renderSeasonTab(STATE.currentSeasonTab);
-  document.getElementById('btn-sim-round').disabled = SEASON_DATA.finished;
+  const s = getOrInitSeason(); if (!s) return;
+
+  _ensureMC(s);
+  if (_mcDone()) return;
+
+  const btn = document.getElementById('btn-sim-round');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ ' + _mcNextLabel(); }
+
+  setTimeout(() => {
+    const evt = MC_DATA.events[MC_DATA.pos];
+    _executeEvent(evt, canon);
+    MC_DATA.pos++;
+    EQ_DB.set(MC_KEY, MC_DATA).catch(() => {});
+
+    updateSeasonUI();
+    renderSeasonTab(STATE.currentSeasonTab);
+    if (STATE.currentView === 'cle') renderCLE();
+
+    const done = _mcDone();
+    if (btn) {
+      btn.disabled  = done;
+      btn.textContent = done ? '✓ Terminé' : '▶ ' + _mcNextLabel();
+    }
+  }, 50);
 };
 
+// simAll : simule tout (championnat + CLE complète)
 window.simAll = function() {
   const canon = getCanon(); if (!canon) return;
-  const s = getOrInitSeason(); if (!s || s.finished) return;
-  document.getElementById('btn-sim-round').disabled = true;
-  SEASON_DATA = SeasonEngine.simulateAll(s, canon);
-  SeasonEngine.saveSeason(SEASON_DATA);
+  const s = getOrInitSeason(); if (!s) return;
+
+  if (!confirm('Simuler la saison complète avec la CLE ?')) return;
+
+  _ensureMC(s);
+  if (typeof mergeGhostNations === 'function' && !canon._ghostMerged) {
+    mergeGhostNations(canon);
+  }
+
+  const btn = document.getElementById('btn-sim-round');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Simulation...'; }
+
+  // Simule tous les événements restants en bloc
+  while (!_mcDone()) {
+    const evt = MC_DATA.events[MC_DATA.pos];
+    _executeEvent(evt, canon);
+    MC_DATA.pos++;
+  }
+  EQ_DB.set(MC_KEY, MC_DATA).catch(() => {});
+
   updateSeasonUI();
   renderSeasonTab(STATE.currentSeasonTab);
+  if (STATE.currentView === 'cle') renderCLE();
+
+  if (btn) { btn.disabled = true; btn.textContent = '✓ Terminé'; }
 };
 
 window.resetSeason = function() {
@@ -950,6 +1118,8 @@ window.resetSeason = function() {
   FINANCE_DATA = null; EQ_DB.del('eq_finance');
   Object.keys(CLUB_TACTICS).forEach(k => delete CLUB_TACTICS[k]);
   EQ_DB.del('eq_tactics');
+  MC_DATA = null;
+  EQ_DB.del(MC_KEY);
   updateSeasonUI();
   renderSeasonTab('standings');
 };
@@ -961,8 +1131,12 @@ window.nextSeason = function() {
   SEASON_DATA = SeasonEngine.nextSeason(s, canon);
   STATE.season = SEASON_DATA.year;
   SeasonEngine.saveSeason(SEASON_DATA);
-  CLE_DATA = null; EQ_DB.del(CLE_KEY);
+  CLE_DATA    = null; EQ_DB.del(CLE_KEY);
   AWARDS_DATA = null; EQ_DB.del(AWARDS_KEY);
+  // Reconstruit le masterCalendar pour la nouvelle saison
+  const _isL0next = !SEASON_DATA.history || SEASON_DATA.history.length === 0;
+  MC_DATA = buildMasterCalendar(SEASON_DATA.maxRound, _isL0next);
+  EQ_DB.set(MC_KEY, MC_DATA).catch(() => {});
   updateSeasonUI();
   renderSeasonTab('standings');
   saveState();
@@ -977,9 +1151,17 @@ function updateSeasonUI() {
   const badge = document.getElementById('season-view-badge');
   if (badge) badge.textContent = 'Saison ' + s.year;
   const label = document.getElementById('season-round-label');
-  if (label) label.textContent = s.finished
-    ? '✓ Saison terminée'
-    : 'Journée ' + curR + ' / ' + maxR;
+  if (label) {
+    if (_mcDone()) {
+      label.textContent = '✓ Saison + CLE terminées';
+    } else {
+      const evtLabel = _mcNextLabel();
+      const isChamp  = MC_DATA?.events?.[MC_DATA.pos]?.type === 'champ';
+      label.textContent = isChamp
+        ? 'Journée ' + (curR + 1) + ' / ' + maxR + ' — ' + evtLabel
+        : evtLabel;
+    }
+  }
   const fill = document.getElementById('season-progress');
   if (fill) fill.style.width = pct + '%';
   const sub = document.getElementById('season-round-sub');
@@ -989,7 +1171,11 @@ function updateSeasonUI() {
   const badge2 = document.getElementById('season-badge');
   if (badge2) badge2.textContent = 'SAISON ' + s.year;
   const btn = document.getElementById('btn-sim-round');
-  if (btn) btn.disabled = !!(s && s.finished);
+  if (btn) {
+    const done = _mcDone();
+    btn.disabled   = done;
+    btn.textContent = done ? '✓ Terminé' : '▶ ' + (_mcNextLabel() || 'Journée suivante');
+  }
   const nextBtn = document.getElementById('btn-next-season');
   if (nextBtn) nextBtn.style.display = (s && s.finished) ? 'inline-flex' : 'none';
   const simAllBtn = document.querySelector('.ctrl-btn-ghost[onclick="simAll()"]');
@@ -3973,13 +4159,14 @@ async function boot() {
 
   // ── Préchargement IndexedDB (tout en parallèle) ─────────
   try {
-    const [savedSeason, savedCLE, savedAwards, savedEuro, savedFinance, savedTactics] = await Promise.all([
+    const [savedSeason, savedCLE, savedAwards, savedEuro, savedFinance, savedTactics, savedMC] = await Promise.all([
       EQ_DB.get('eq_season'),
       EQ_DB.get(CLE_KEY),
       EQ_DB.get(AWARDS_KEY),
       EQ_DB.get('eq_euro'),
       EQ_DB.get('eq_finance'),
       EQ_DB.get('eq_tactics'),
+      EQ_DB.get(MC_KEY),
     ]);
 
     if (savedTactics) Object.assign(CLUB_TACTICS, savedTactics);
@@ -3999,6 +4186,7 @@ async function boot() {
     AWARDS_DATA  = savedAwards  || null;
     EURO_DATA    = savedEuro    || null;
     FINANCE_DATA = savedFinance || null;
+    MC_DATA      = savedMC      || null;
 
   } catch(e) {
     console.warn('[boot] Erreur chargement IDB:', e);
