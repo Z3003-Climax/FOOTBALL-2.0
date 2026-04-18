@@ -1,0 +1,3849 @@
+<!DOCTYPE html>
+<html lang="fr" translate="no">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Equestria Football</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ─── RESET & VARIABLES ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:   #080B10;
+  --dark:    #0D1117;
+  --surface: #141B24;
+  --panel:   #1A2332;
+  --border:  #1F2D3D;
+  --gold:    #C9A84C;
+  --gold2:   #E8C56D;
+  --amber:   #F59E0B;
+  --white:   #EEF2F7;
+  --muted:   #64748B;
+  --green:   #22C55E;
+  --red:     #EF4444;
+  --blue:    #3B82F6;
+
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+html,body{
+  height:100%;
+  background:var(--black);
+  color:var(--white);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+}
+
+/* ─── SCROLLBAR ─────────────────────────────────────────── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--dark)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* ─── LAYOUT ────────────────────────────────────────────── */
+#app{ display:flex; flex-direction:column; min-height:100vh; }
+
+/* ─── TOPBAR ────────────────────────────────────────────── */
+#topbar{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  height:52px;
+  background:rgba(8,11,16,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; padding:0 24px; gap:32px;
+}
+.logo{
+  font-family:var(--font-display);
+  font-size:22px; letter-spacing:2px;
+  color:var(--gold);
+  white-space:nowrap;
+  cursor:pointer;
+}
+.logo span{ color:var(--white); }
+
+nav{ display:flex; gap:4px; flex:1; }
+.nav-btn{
+  background:none; border:none;
+  color:var(--muted); font-family:var(--font-body);
+  font-size:13px; font-weight:500; letter-spacing:0.5px;
+  padding:6px 14px; border-radius:6px;
+  cursor:pointer; transition:all .18s;
+  white-space:nowrap;
+}
+.nav-btn:hover{ color:var(--white); background:var(--surface); }
+.nav-btn.active{ color:var(--gold); background:rgba(201,168,76,.1); }
+
+.season-badge{
+  font-family:var(--font-mono); font-size:11px;
+  color:var(--gold); background:rgba(201,168,76,.12);
+  border:1px solid rgba(201,168,76,.3);
+  padding:4px 12px; border-radius:20px;
+  white-space:nowrap; margin-left:auto;
+}
+
+/* ─── MAIN ──────────────────────────────────────────────── */
+#main{
+  margin-top:52px; flex:1;
+  padding:32px 24px;
+  max-width:1400px; width:100%;
+  margin-left:auto; margin-right:auto;
+  margin-top:84px;
+}
+
+/* ─── VIEWS ─────────────────────────────────────────────── */
+.view{ display:none; animation:fadeIn .25s ease; }
+.view.active{ display:block; }
+@keyframes fadeIn{ from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+/* ─── HUB ───────────────────────────────────────────────── */
+.hub-hero{
+  position:relative; margin-bottom:40px;
+  padding:48px 40px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px; overflow:hidden;
+}
+.hub-hero::before{
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(201,168,76,.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 0% 80%, rgba(59,130,246,.05) 0%, transparent 60%);
+}
+.hub-hero-bg{
+  position:absolute; right:-20px; top:50%; transform:translateY(-50%);
+  font-family:var(--font-display); font-size:180px;
+  color:rgba(255,255,255,.02); letter-spacing:-4px;
+  pointer-events:none; user-select:none;
+}
+.hub-title{
+  font-family:var(--font-display);
+  font-size:clamp(36px,5vw,64px);
+  letter-spacing:3px; line-height:1;
+  color:var(--white); position:relative;
+}
+.hub-title .accent{ color:var(--gold); }
+.hub-subtitle{
+  color:var(--muted); font-size:14px; margin-top:10px;
+  font-weight:400; letter-spacing:0.5px; position:relative;
+}
+.hub-stats-row{
+  display:flex; gap:24px; margin-top:28px; position:relative;
+}
+.hub-stat{
+  display:flex; flex-direction:column; gap:2px;
+}
+.hub-stat .val{
+  font-family:var(--font-display); font-size:28px;
+  color:var(--gold); letter-spacing:1px;
+}
+.hub-stat .lbl{
+  font-size:11px; color:var(--muted); letter-spacing:1px;
+  text-transform:uppercase; font-weight:500;
+}
+
+/* ─── SECTION TITLES ─────────────────────────────────────── */
+.section-header{
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:20px;
+}
+.section-title{
+  font-family:var(--font-display);
+  font-size:22px; letter-spacing:2px;
+  color:var(--white);
+}
+.section-line{
+  flex:1; height:1px; background:var(--border);
+}
+.section-tag{
+  font-family:var(--font-mono); font-size:10px;
+  color:var(--muted); letter-spacing:1px;
+}
+
+/* ─── LEAGUE GRID ────────────────────────────────────────── */
+.league-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:16px; margin-bottom:40px;
+}
+.league-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px; overflow:hidden;
+  cursor:pointer; transition:all .2s;
+  position:relative;
+}
+.league-card:hover{
+  border-color:var(--gold);
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(201,168,76,.12);
+}
+.league-card-header{
+  padding:20px 20px 16px;
+  display:flex; align-items:flex-start; gap:14px;
+}
+.league-emblem{
+  width:48px; height:48px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; flex-shrink:0;
+}
+.league-info{ flex:1; min-width:0; }
+.league-name{
+  font-family:var(--font-display); font-size:18px;
+  letter-spacing:1px; color:var(--white);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.league-nation{
+  font-size:12px; color:var(--muted); margin-top:2px;
+  font-weight:500; letter-spacing:0.5px;
+}
+.league-fed{
+  font-family:var(--font-mono); font-size:10px;
+  color:var(--gold); background:rgba(201,168,76,.1);
+  border:1px solid rgba(201,168,76,.2);
+  padding:2px 8px; border-radius:4px; margin-top:6px;
+  display:inline-block;
+}
+.league-card-footer{
+  padding:12px 20px;
+  border-top:1px solid var(--border);
+  display:flex; gap:20px;
+}
+.lstat{ display:flex; flex-direction:column; gap:1px; }
+.lstat .v{
+  font-family:var(--font-mono); font-size:16px;
+  font-weight:500; color:var(--white);
+}
+.lstat .l{
+  font-size:10px; color:var(--muted);
+  text-transform:uppercase; letter-spacing:0.8px;
+}
+.league-accent-bar{
+  height:3px; width:100%;
+}
+
+/* ─── TOP CLUBS ──────────────────────────────────────────── */
+.top-clubs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px; margin-bottom:40px;
+}
+.club-card{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:16px;
+  cursor:pointer; transition:all .18s;
+  display:flex; align-items:center; gap:12px;
+}
+.club-card:hover{
+  border-color:rgba(201,168,76,.4);
+  background:var(--panel);
+}
+.club-icon{
+  width:36px; height:36px; border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+  background:var(--panel);
+}
+.club-card-info{ flex:1; min-width:0; }
+.club-card-name{
+  font-size:13px; font-weight:600; color:var(--white);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.club-card-meta{
+  font-size:11px; color:var(--muted); margin-top:2px;
+}
+.club-tier-dot{
+  width:6px; height:6px; border-radius:50%; flex-shrink:0;
+}
+
+/* ─── CLE BRACKET DISPLAY ────────────────────────────────── */
+.cle-card{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden; margin-bottom:40px;
+}
+.cle-header{
+  padding:20px 24px;
+  background:linear-gradient(90deg,rgba(201,168,76,.1),transparent);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:12px;
+}
+.cle-title{
+  font-family:var(--font-display); font-size:20px;
+  letter-spacing:2px; color:var(--gold);
+}
+.cle-body{ padding:24px; }
+.cle-phases{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
+}
+.cle-phase{
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:8px; padding:14px;
+  transition:border-color .2s;
+}
+.cle-phase:hover{ border-color:var(--gold); }
+.phase-name{
+  font-family:var(--font-mono); font-size:10px;
+  color:var(--gold); letter-spacing:1px;
+  text-transform:uppercase; margin-bottom:8px;
+}
+.phase-row{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:3px 0;
+  font-size:12px; color:var(--muted);
+}
+.phase-row .val{ color:var(--white); font-weight:500; }
+
+/* ─── LOADING SCREEN ─────────────────────────────────────── */
+#loader{
+  position:fixed; inset:0; z-index:200;
+  background:var(--black);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:20px;
+}
+.loader-logo{
+  font-family:var(--font-display); font-size:42px;
+  letter-spacing:4px; color:var(--gold);
+}
+.loader-logo span{ color:var(--white); }
+.loader-bar{
+  width:200px; height:2px; background:var(--border);
+  border-radius:2px; overflow:hidden;
+}
+.loader-progress{
+  height:100%; background:var(--gold);
+  border-radius:2px;
+  animation:loadBar 1.2s ease forwards;
+}
+@keyframes loadBar{
+  0%{width:0%} 60%{width:70%} 100%{width:100%}
+}
+.loader-text{
+  font-family:var(--font-mono); font-size:11px;
+  color:var(--muted); letter-spacing:2px;
+}
+
+/* ─── ERROR SCREEN ───────────────────────────────────────── */
+#error-screen{
+  display:none; position:fixed; inset:0; z-index:300;
+  background:var(--black);
+  align-items:center; justify-content:center;
+  flex-direction:column; gap:16px;
+}
+#error-screen.visible{ display:flex; }
+.error-code{
+  font-family:var(--font-display); font-size:80px;
+  color:var(--red); opacity:.4; letter-spacing:4px;
+}
+.error-msg{
+  font-size:16px; color:var(--muted); text-align:center;
+  max-width:400px; line-height:1.6;
+}
+.error-btn{
+  background:var(--gold); color:var(--black);
+  border:none; border-radius:8px;
+  font-family:var(--font-body); font-weight:600;
+  padding:10px 28px; cursor:pointer; margin-top:8px;
+  font-size:14px; transition:opacity .2s;
+}
+.error-btn:hover{ opacity:.85; }
+
+/* ─── LEAGUE VIEW ────────────────────────────────────────── */
+.league-view-header{
+  display:flex; align-items:center; gap:16px; margin-bottom:28px;
+}
+.back-btn{
+  background:var(--surface); border:1px solid var(--border);
+  color:var(--muted); border-radius:8px;
+  padding:8px 16px; cursor:pointer; font-size:13px;
+  font-family:var(--font-body); transition:all .18s;
+}
+.back-btn:hover{ color:var(--white); border-color:var(--gold); }
+
+.league-view-title{
+  font-family:var(--font-display); font-size:32px;
+  letter-spacing:2px; color:var(--white);
+}
+.league-view-nation{
+  font-size:13px; color:var(--muted); margin-top:2px;
+}
+
+.standings-table{
+  width:100%; border-collapse:collapse;
+  background:var(--surface);
+  border:1px solid var(--border); border-radius:12px;
+  overflow:hidden;
+}
+.standings-table th{
+  background:var(--panel); padding:10px 14px;
+  text-align:left; font-size:11px;
+  text-transform:uppercase; letter-spacing:1px;
+  color:var(--muted); font-weight:500;
+  border-bottom:1px solid var(--border);
+}
+.standings-table td{
+  padding:10px 14px; font-size:13px;
+  border-bottom:1px solid rgba(31,45,61,.6);
+}
+.standings-table tr:last-child td{ border-bottom:none; }
+.standings-table tr:hover td{ background:rgba(255,255,255,.02); }
+.pos-num{
+  font-family:var(--font-mono); font-weight:500;
+  color:var(--muted); width:32px;
+}
+.pos-num.top{ color:var(--gold); }
+.pos-num.rel{ color:var(--red); }
+.club-row-name{ font-weight:600; }
+.tier-badge{
+  display:inline-block; font-size:9px;
+  text-transform:uppercase; letter-spacing:1px;
+  padding:1px 6px; border-radius:3px; font-weight:600;
+  vertical-align:middle; margin-left:6px;
+}
+.tier-top    { background:rgba(201,168,76,.15); color:var(--gold); }
+.tier-fort   { background:rgba(59,130,246,.15); color:#60A5FA; }
+.tier-moyen  { background:rgba(100,116,139,.15); color:var(--muted); }
+.tier-faible { background:rgba(239,68,68,.15); color:#F87171; }
+
+/* ─── UTILS ──────────────────────────────────────────────── */
+.pill{
+  display:inline-flex; align-items:center; gap:4px;
+  font-family:var(--font-mono); font-size:10px;
+  padding:3px 10px; border-radius:20px;
+}
+.pill-gold{ background:rgba(201,168,76,.12); color:var(--gold); border:1px solid rgba(201,168,76,.2); }
+.pill-blue{ background:rgba(59,130,246,.12); color:#60A5FA; border:1px solid rgba(59,130,246,.2); }
+.pill-green{ background:rgba(34,197,94,.12); color:var(--green); border:1px solid rgba(34,197,94,.2); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media(max-width:768px){
+  .hub-hero{ padding:32px 20px; }
+  .hub-stats-row{ flex-wrap:wrap; gap:16px; }
+  nav .nav-btn:nth-child(n+4){ display:none; }
+  .league-grid{ grid-template-columns:1fr; }
+  #main{ padding:20px 16px; }
+}
+
+/* ─── SEASON CONTROLS ────────────────────────────────────── */
+.season-panel{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:20px 24px;
+  margin-bottom:28px;
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+}
+.season-info{ flex:1; min-width:200px; }
+.season-info .round-label{
+  font-family:var(--font-display); font-size:18px;
+  letter-spacing:1px; color:var(--white);
+}
+.season-info .progress-bar{
+  margin-top:8px; height:4px;
+  background:var(--border); border-radius:4px; overflow:hidden;
+}
+.season-info .progress-fill{
+  height:100%; background:var(--gold);
+  border-radius:4px; transition:width .4s ease;
+}
+.season-info .round-sub{
+  font-size:12px; color:var(--muted); margin-top:6px;
+}
+.ctrl-btn{
+  border:none; border-radius:8px; cursor:pointer;
+  font-family:var(--font-body); font-weight:600;
+  font-size:13px; padding:10px 20px;
+  transition:all .18s; white-space:nowrap;
+}
+.ctrl-btn-primary{
+  background:var(--gold); color:var(--black);
+}
+.ctrl-btn-primary:hover{ background:var(--gold2); }
+.ctrl-btn-primary:disabled{
+  opacity:.4; cursor:not-allowed;
+}
+.ctrl-btn-ghost{
+  background:var(--panel); color:var(--muted);
+  border:1px solid var(--border);
+}
+.ctrl-btn-ghost:hover{ color:var(--white); border-color:var(--gold); }
+
+/* ─── TABS ───────────────────────────────────────────────── */
+.tab-bar{
+  display:flex; gap:4px; margin-bottom:20px;
+  border-bottom:1px solid var(--border); padding-bottom:0;
+}
+.tab-btn{
+  background:none; border:none; border-bottom:2px solid transparent;
+  color:var(--muted); font-family:var(--font-body);
+  font-size:13px; font-weight:500; padding:8px 16px;
+  cursor:pointer; transition:all .18s; margin-bottom:-1px;
+}
+.tab-btn:hover{ color:var(--white); }
+.tab-btn.active{ color:var(--gold); border-bottom-color:var(--gold); }
+
+/* ─── FORM DOTS ──────────────────────────────────────────── */
+.form-dots{ display:flex; gap:3px; align-items:center; }
+.form-dot{
+  width:12px; height:12px; border-radius:50%;
+  font-size:7px; display:flex; align-items:center;
+  justify-content:center; font-weight:700;
+}
+.form-dot.W{ background:rgba(34,197,94,.2); color:var(--green); border:1px solid var(--green); }
+.form-dot.D{ background:rgba(100,116,139,.2); color:var(--muted); border:1px solid var(--muted); }
+.form-dot.L{ background:rgba(239,68,68,.2); color:var(--red); border:1px solid var(--red); }
+
+/* ─── RESULTS FEED ───────────────────────────────────────── */
+.results-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:10px; margin-bottom:28px;
+}
+.result-card{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:12px 16px;
+}
+.result-teams{
+  display:flex; align-items:center; gap:8px;
+  font-size:13px; font-weight:600;
+}
+.result-score{
+  font-family:var(--font-mono); font-size:16px;
+  font-weight:700; padding:4px 10px;
+  background:var(--panel); border-radius:6px;
+  flex-shrink:0;
+}
+.result-team{ flex:1; }
+.result-team.away{ text-align:right; }
+.result-meta{
+  margin-top:6px; font-size:11px; color:var(--muted);
+  display:flex; justify-content:space-between;
+}
+.result-motm{ color:var(--gold); }
+
+/* ─── TOP STATS TABLE ────────────────────────────────────── */
+.stats-table{
+  width:100%; border-collapse:collapse;
+  background:var(--surface);
+  border:1px solid var(--border); border-radius:12px;
+  overflow:hidden; margin-bottom:28px;
+}
+.stats-table th{
+  background:var(--panel); padding:9px 14px;
+  text-align:left; font-size:11px;
+  text-transform:uppercase; letter-spacing:1px;
+  color:var(--muted); font-weight:500;
+  border-bottom:1px solid var(--border);
+}
+.stats-table td{
+  padding:9px 14px; font-size:13px;
+  border-bottom:1px solid rgba(31,45,61,.5);
+}
+.stats-table tr:last-child td{ border-bottom:none; }
+.stats-table tr:hover td{ background:rgba(255,255,255,.02); }
+.stat-num{
+  font-family:var(--font-mono); font-weight:600;
+  color:var(--gold);
+}
+.pos-badge{
+  display:inline-block; font-family:var(--font-mono);
+  font-size:9px; padding:2px 6px; border-radius:4px;
+  background:var(--panel); color:var(--muted);
+}
+</style>
+</head>
+<body translate="no">
+
+<!-- ─── ERROR FALLBACK ──────────────────────────────────── -->
+<div id="error-screen">
+  <div class="error-code">503</div>
+  <div class="error-msg" id="error-msg">Impossible de charger les données canoniques. Assurez-vous que canon.js est dans le même dossier.</div>
+  <button class="error-btn" onclick="location.reload()">Réessayer</button>
+</div>
+
+<!-- ─── LOADER ──────────────────────────────────────────── -->
+<div id="loader">
+  <div class="loader-logo">EQUESTRIA <span>FOOTBALL</span></div>
+  <div class="loader-bar"><div class="loader-progress"></div></div>
+  <div class="loader-text" id="loader-text">CHARGEMENT DU MONDE...</div>
+</div>
+
+<!-- ─── APP SHELL ───────────────────────────────────────── -->
+<div id="app" style="display:none">
+
+  <!-- Topbar -->
+  <div id="topbar">
+    <div class="logo" onclick="navigate('hub')">EQ <span>FOOTBALL</span></div>
+    <nav>
+      <button class="nav-btn active" onclick="navigate('hub')">Hub</button>
+      <button class="nav-btn" onclick="navigate('leagues')">Ligues</button>
+      <button class="nav-btn" onclick="navigate('clubs')">Clubs</button>
+      <button class="nav-btn" onclick="navigate('season')">Saison</button>
+      <button class="nav-btn" onclick="navigate('cle')">CLE</button>
+      <button class="nav-btn" onclick="navigate('euro')">Euro</button>
+      <button class="nav-btn" onclick="navigate('awards')">Awards</button>
+      <button class="nav-btn" onclick="navigate('finance')">Finance</button>
+    </nav>
+    <div class="season-badge" id="season-badge">SAISON 2025</div>
+  </div>
+
+  <!-- Main -->
+  <div id="main">
+
+    <!-- ─── HUB VIEW ──────────────────────────────────────── -->
+    <div class="view active" id="view-hub">
+
+      <!-- Hero -->
+      <div class="hub-hero">
+        <div class="hub-hero-bg">EQ</div>
+        <div class="hub-title">
+          EQUESTRIA<br><span class="accent">FOOTBALL</span>
+        </div>
+        <div class="hub-subtitle">Simulation continentale — 7 championnats — 1 univers</div>
+        <div class="hub-stats-row" id="hub-stats"></div>
+      </div>
+
+      <!-- Leagues -->
+      <div class="section-header">
+        <div class="section-title">CHAMPIONNATS</div>
+        <div class="section-line"></div>
+        <div class="section-tag">7 LIGUES ACTIVES</div>
+      </div>
+      <div class="league-grid" id="league-grid"></div>
+
+      <!-- Top Clubs -->
+      <div class="section-header">
+        <div class="section-title">CLUBS D'ÉLITE</div>
+        <div class="section-line"></div>
+        <div class="section-tag">TOP CONTINENTAL</div>
+      </div>
+      <div class="top-clubs-grid" id="top-clubs-grid"></div>
+
+      <!-- CLE Preview -->
+      <div class="section-header">
+        <div class="section-title">CHAMPIONS LEAGUE EQUESTRIA</div>
+        <div class="section-line"></div>
+        <span class="pill pill-gold">CLE</span>
+      </div>
+      <div id="cle-preview"></div>
+
+    </div><!-- /hub -->
+
+    <!-- ─── LEAGUES VIEW ───────────────────────────────────── -->
+    <div class="view" id="view-leagues">
+      <div class="section-header">
+        <div class="section-title">TOUTES LES LIGUES</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="league-grid" id="leagues-all-grid"></div>
+    </div>
+
+    <!-- ─── LEAGUE DETAIL VIEW ────────────────────────────── -->
+    <div class="view" id="view-league-detail">
+      <div class="league-view-header">
+        <button class="back-btn" onclick="navigate('leagues')">← Ligues</button>
+        <div>
+          <div class="league-view-title" id="detail-league-name">—</div>
+          <div class="league-view-nation" id="detail-league-nation">—</div>
+        </div>
+        <div style="margin-left:auto">
+          <span class="pill pill-gold" id="detail-league-fed">—</span>
+        </div>
+      </div>
+      <table class="standings-table" id="detail-standings">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Club</th>
+            <th>Tier</th>
+            <th>Stad.</th>
+            <th>Cap.</th>
+            <th>OVR</th>
+          </tr>
+        </thead>
+        <tbody id="detail-standings-body"></tbody>
+      </table>
+    </div>
+
+    <!-- ─── CLUBS VIEW ─────────────────────────────────────── -->
+    <div class="view" id="view-clubs">
+      <div class="section-header">
+        <div class="section-title">TOUS LES CLUBS</div>
+        <div class="section-line"></div>
+        <div class="section-tag" id="clubs-count-tag">— CLUBS</div>
+      </div>
+      <div id="clubs-filter-bar" style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;"></div>
+      <div class="top-clubs-grid" id="clubs-all-grid"></div>
+    </div>
+
+    <!-- ─── CLE VIEW ───────────────────────────────────────── -->
+    <div class="view" id="view-cle">
+      <div class="section-header">
+        <div class="section-title">CHAMPIONS LEAGUE EQUESTRIA</div>
+        <div class="section-line"></div>
+        <span class="pill pill-gold">CLE</span>
+      </div>
+      <div id="cle-run-panel"></div>
+      <div id="cle-full"></div>
+    </div>
+
+    <!-- ─── EURO VIEW ──────────────────────────────────────── -->
+    <div class="view" id="view-euro">
+      <div class="section-header">
+        <div class="section-title">EURO EQUESTRIA</div>
+        <div class="section-line"></div>
+        <span class="pill pill-blue">EURO</span>
+      </div>
+      <div id="euro-full"></div>
+    </div>
+
+    <!-- ─── AWARDS VIEW ────────────────────────────────────── -->
+    <div class="view" id="view-awards">
+      <div class="section-header">
+        <div class="section-title">PALMARÈS &amp; AWARDS</div>
+        <div class="section-line"></div>
+        <span class="pill pill-green">🏆</span>
+      </div>
+      <div id="awards-run-panel"></div>
+      <div id="awards-content"></div>
+    </div>
+
+    <!-- ─── SEASON VIEW ───────────────────────────────────── -->
+    <div class="view" id="view-season">
+      <div class="section-header">
+        <div class="section-title">SIMULATION</div>
+        <div class="section-line"></div>
+        <span class="pill pill-gold" id="season-view-badge">—</span>
+      </div>
+
+      <!-- Controls -->
+      <div class="season-panel">
+        <div class="season-info">
+          <div class="round-label" id="season-round-label">Journée 0 / 34</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="season-progress" style="width:0%"></div>
+          </div>
+          <div class="round-sub" id="season-round-sub">Appuie sur Simuler pour lancer la journée</div>
+        </div>
+        <button class="ctrl-btn ctrl-btn-primary" id="btn-sim-round" onclick="simRound()">
+          ▶ Journée suivante
+        </button>
+        <button class="ctrl-btn ctrl-btn-ghost" onclick="simAll()">
+          ⏩ Saison complète
+        </button>
+        <button class="ctrl-btn ctrl-btn-ghost" onclick="resetSeason()">
+          ↺ Réinitialiser
+        </button>
+        <button class="ctrl-btn ctrl-btn-primary" id="btn-next-season" onclick="nextSeason()" style="display:none;background:var(--green)">
+          ⏭ Saison suivante
+        </button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchSeasonTab('standings')">Classements</button>
+        <button class="tab-btn" onclick="switchSeasonTab('results')">Résultats</button>
+        <button class="tab-btn" onclick="switchSeasonTab('scorers')">Buteurs</button>
+        <button class="tab-btn" onclick="switchSeasonTab('assists')">Passeurs</button>
+      </div>
+
+      <div id="season-tab-content"></div>
+    </div>
+
+    <!-- ─── STANDINGS VIEW (from league) ─────────────────── -->
+    <div class="view" id="view-standings">
+      <div class="league-view-header">
+        <button class="back-btn" onclick="navigate('season')">← Simulation</button>
+        <div>
+          <div class="league-view-title" id="std-league-name">—</div>
+          <div class="league-view-nation" id="std-league-round">—</div>
+        </div>
+      </div>
+      <table class="standings-table" id="std-full-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Club</th><th>J</th><th>V</th><th>N</th>
+            <th>D</th><th>BP</th><th>BC</th><th>Diff</th><th>Pts</th><th>Forme</th>
+          </tr>
+        </thead>
+        <tbody id="std-full-body"></tbody>
+      </table>
+    </div>
+
+    <!-- ─── FINANCE VIEW ─────────────────────────────────── -->
+    <div class="view" id="view-finance">
+      <div class="section-header">
+        <div class="section-title">FINANCE</div>
+        <div class="section-line"></div>
+        <span class="pill pill-gold" id="finance-badge">B+</span>
+      </div>
+      <div id="finance-panel"></div>
+      <div id="finance-content"></div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ─── GHOST NATIONS ──────────────────────────────────── -->
+<script src="ghost_nations.js"></script>
+<!-- ─── CANON DATA ───────────────────────────────────────── -->
+<script src="canon.js"></script>
+<!-- ─── INDEXEDDB LAYER ──────────────────────────────────── -->
+<script src="db.js"></script>
+<!-- ─── LOGOS ──────────────────────────────────────────── -->
+<script src="logos.js"></script>
+<!-- ─── ENGINE ──────────────────────────────────────────── -->
+<script src="engine.js"></script>
+<!-- ─── SEASON ──────────────────────────────────────────── -->
+<script src="season.js"></script>
+<!-- ─── CLE ─────────────────────────────────────────────── -->
+<script src="cle.js"></script>
+<!-- ─── AWARDS ───────────────────────────────────────────── -->
+<script src="awards.js"></script>
+<!-- ─── EURO ───────────────────────────────────────────── -->
+<script src="euro.js"></script>
+<!-- ─── FINANCE ────────────────────────────────────────── -->
+<script src="finance.js"></script>
+<script>
+'use strict';
+
+// ─── LOGO HELPERS ──────────────────────────────────────────
+// Retourne un <img> logo si disponible, sinon un emoji/texte
+function clubLogo(clubId, size=28) {
+  if (typeof getLogo !== 'function') return '';
+  const src = getLogo(clubId);
+  if (!src) return '';
+  return `<img src="${src}" width="${size}" height="${size}" style="object-fit:contain;border-radius:3px;vertical-align:middle;flex-shrink:0" onerror="this.style.display='none'" alt="">`;
+}
+function natFlag(natId, size=24) {
+  if (typeof getLogo !== 'function') return '';
+  const src = getLogo('nat_' + natId) || getLogo(natId);
+  if (!src) return '';
+  return `<img src="${src}" width="${size}" height="${size}" style="object-fit:cover;border-radius:3px;vertical-align:middle;flex-shrink:0" onerror="this.style.display='none'" alt="">`;
+}
+function leagueLogo(leagueId, size=24) {
+  if (typeof getLogo !== 'function') return '';
+  const src = getLogo('league_' + leagueId) || getLogo(leagueId);
+  if (!src) return '';
+  return `<img src="${src}" width="${size}" height="${size}" style="object-fit:contain;border-radius:3px;vertical-align:middle;flex-shrink:0" onerror="this.style.display='none'" alt="">`;
+}
+
+// ─── CONSTANTS ────────────────────────────────────────────
+const APP_VERSION = '1.0.0';
+const STORAGE_KEY = 'eq_football_state';
+
+const LEAGUE_META = {
+  PRO_LIGA:      { emoji:'⚔️',  color:'#C9A84C', country:'Ishgar'          },
+  LA_LIGA:       { emoji:'🌿',  color:'#22C55E', country:'Javanie'         },
+  ANDRO_LEAGUE:  { emoji:'❄️',  color:'#3B82F6', country:'Brislovia'       },
+  JUBA_LIGA:     { emoji:'🌍',  color:'#F59E0B', country:'Savanna'         },
+  TECHNO_LEAGUE: { emoji:'🌊',  color:'#06B6D4', country:'Bermudes'        },
+  LIGA_NOS:      { emoji:'🏜️', color:'#EF4444', country:'Desertiqua'      },
+  LIGA_ONE:      { emoji:'🌸',  color:'#A78BFA', country:'Pays Trop Mignon'},
+};
+
+const TIER_ORDER = { top:0, fort:1, moyen:2, faible:3 };
+
+const TOP_CLUBS = [
+  'BAYERN_ILUMYSS','FAIRY_TAIL','WONDER_BALLT','AJAX_FARWEST',
+  'JUVENTUS_EARTH','BOURRUSIA_BOUVILLE','ETOILE_ROUGE_BLASE','GALAXYS_PARIS',
+  'SUPA_STRIKA','HOLE_GEULCH_MI_ROSA','FENRIR','BERU_FC',
+  'OLFRA_KE_CONGERE','PORT_YONEUVE','SSC_NESERT_WERT','FC_ZANZIBAR',
+  'GEARS_PONEYS','SHADOW_BALLT','BLACKS_CLOVER','BRISBANE_ROAR',
+];
+
+const CLUB_EMOJIS = ['⚽','🦅','🐺','🦁','🌟','🔥','💎','⚡','🏆','🛡','🦊','🐉','👑','🌙','🎯','🌊'];
+
+// ─── APP STATE ─────────────────────────────────────────────
+let STATE = {
+  version: APP_VERSION,
+  season: 2025,
+  currentView: 'hub',
+  currentLeague: null,
+  currentSeasonTab: 'standings',
+  currentStandingsLeague: null,
+};
+
+let SEASON_DATA  = null; // saison active en mémoire
+let EURO_DATA    = null; // euro en mémoire
+let FINANCE_DATA = null; // finances en mémoire
+
+// ─── STORAGE ───────────────────────────────────────────────
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch(e) {}
+}
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (saved.version !== APP_VERSION) { localStorage.removeItem(STORAGE_KEY); return; }
+    STATE = { ...STATE, ...saved };
+  } catch(e) { localStorage.removeItem(STORAGE_KEY); }
+}
+
+// ─── CANON ─────────────────────────────────────────────────
+function getCanon() {
+  return (typeof CANON !== 'undefined') ? CANON : null;
+}
+function getClubPlayers(clubId) {
+  const canon = getCanon(); if (!canon) return [];
+  return Object.values(canon.players).filter(p => p.club === clubId);
+}
+function getClubAvgOVR(clubId) {
+  const players = getClubPlayers(clubId);
+  if (!players.length) return 0;
+  const top11 = [...players].sort((a,b)=>(b.ovr||0)-(a.ovr||0)).slice(0,11);
+  return Math.round(top11.reduce((s,p)=>s+(p.ovr||0),0)/top11.length);
+}
+function getLeagueClubs(leagueId) {
+  const canon = getCanon(); if (!canon) return [];
+  return Object.values(canon.clubs)
+    .filter(c=>c.league===leagueId)
+    .sort((a,b)=>TIER_ORDER[a.tier]-TIER_ORDER[b.tier]);
+}
+
+// ─── SEASON ACCESS ─────────────────────────────────────────
+function getOrInitSeason() {
+  if (SEASON_DATA) return SEASON_DATA;
+  // boot() pré-charge depuis IndexedDB — si on est ici c'est qu'il n'y a pas de saison sauvegardée
+  const canon = getCanon(); if (!canon) return null;
+  if (typeof mergeGhostNations === 'function' && !canon._ghostMerged) mergeGhostNations(canon);
+  SEASON_DATA = SeasonEngine.initSeason(canon, STATE.season);
+  SeasonEngine.saveSeason(SEASON_DATA);
+  return SEASON_DATA;
+}
+
+// ─── SEASON CONTROLS ───────────────────────────────────────
+window.simRound = function() {
+  const canon = getCanon(); if (!canon) return;
+  const s = getOrInitSeason(); if (!s || s.finished) return;
+  document.getElementById('btn-sim-round').disabled = true;
+  SEASON_DATA = SeasonEngine.simulateRound(s, canon);
+  SeasonEngine.saveSeason(SEASON_DATA);
+  updateSeasonUI();
+  renderSeasonTab(STATE.currentSeasonTab);
+  document.getElementById('btn-sim-round').disabled = SEASON_DATA.finished;
+};
+
+window.simAll = function() {
+  const canon = getCanon(); if (!canon) return;
+  const s = getOrInitSeason(); if (!s || s.finished) return;
+  document.getElementById('btn-sim-round').disabled = true;
+  SEASON_DATA = SeasonEngine.simulateAll(s, canon);
+  SeasonEngine.saveSeason(SEASON_DATA);
+  updateSeasonUI();
+  renderSeasonTab(STATE.currentSeasonTab);
+};
+
+window.resetSeason = function() {
+  if (!confirm('Réinitialiser la saison ? Toutes les données seront perdues.')) return;
+  SeasonEngine.clearSeason();
+  const canon = getCanon(); if (!canon) return;
+  // Reset forcé à 2025 pour éviter la persistence de STATE.season depuis localStorage
+  STATE.season = 2025;
+  saveState();
+  SEASON_DATA = SeasonEngine.initSeason(canon, 2025);
+  SeasonEngine.saveSeason(SEASON_DATA);
+  CLE_DATA = null; EQ_DB.del(CLE_KEY);
+  AWARDS_DATA = null; EQ_DB.del(AWARDS_KEY);
+  EURO_DATA = null; EQ_DB.del('eq_euro');
+  FINANCE_DATA = null; EQ_DB.del('eq_finance');
+  Object.keys(CLUB_TACTICS).forEach(k => delete CLUB_TACTICS[k]);
+  EQ_DB.del('eq_tactics');
+  updateSeasonUI();
+  renderSeasonTab('standings');
+};
+
+window.nextSeason = function() {
+  const canon = getCanon(); if (!canon) return;
+  const s = getOrInitSeason(); if (!s?.finished) return;
+  if (!confirm('Passer à la saison ' + (s.year+1) + ' ? La saison actuelle sera archivée.')) return;
+  SEASON_DATA = SeasonEngine.nextSeason(s, canon);
+  STATE.season = SEASON_DATA.year;
+  SeasonEngine.saveSeason(SEASON_DATA);
+  CLE_DATA = null; EQ_DB.del(CLE_KEY);
+  AWARDS_DATA = null; EQ_DB.del(AWARDS_KEY);
+  updateSeasonUI();
+  renderSeasonTab('standings');
+  saveState();
+};
+
+function updateSeasonUI() {
+  if (!SEASON_DATA) return;
+  const s = SEASON_DATA;
+  const maxR = s.maxRound;
+  const curR = s.currentRound;
+  const pct  = maxR > 0 ? Math.round(curR/maxR*100) : 0;
+  const badge = document.getElementById('season-view-badge');
+  if (badge) badge.textContent = 'Saison ' + s.year;
+  const label = document.getElementById('season-round-label');
+  if (label) label.textContent = s.finished
+    ? '✓ Saison terminée'
+    : 'Journée ' + curR + ' / ' + maxR;
+  const fill = document.getElementById('season-progress');
+  if (fill) fill.style.width = pct + '%';
+  const sub = document.getElementById('season-round-sub');
+  if (sub) sub.textContent = s.finished
+    ? 'Saison ' + s.year + ' complète — ' + Object.values(s.leagues).reduce((t,l)=>t+l.results.length,0) + ' matchs joués'
+    : Object.values(s.leagues).reduce((t,l)=>t+l.results.length,0) + ' matchs joués';
+  const badge2 = document.getElementById('season-badge');
+  if (badge2) badge2.textContent = 'SAISON ' + s.year;
+  const btn = document.getElementById('btn-sim-round');
+  if (btn) btn.disabled = !!(s && s.finished);
+  const nextBtn = document.getElementById('btn-next-season');
+  if (nextBtn) nextBtn.style.display = (s && s.finished) ? 'inline-flex' : 'none';
+  const simAllBtn = document.querySelector('.ctrl-btn-ghost[onclick="simAll()"]');
+  if (simAllBtn) simAllBtn.style.display = (s && s.finished) ? 'none' : 'inline-flex';
+}
+
+// ─── SEASON TABS ───────────────────────────────────────────
+window.switchSeasonTab = function(tab) {
+  STATE.currentSeasonTab = tab;
+  saveState();
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const idx = {standings:0,results:1,scorers:2,assists:3}[tab];
+  const tabs = document.querySelectorAll('#view-season .tab-btn');
+  if (tabs[idx]) tabs[idx].classList.add('active');
+  renderSeasonTab(tab);
+};
+
+function renderSeasonTab(tab) {
+  const el = document.getElementById('season-tab-content');
+  if (!el) return;
+  if (tab === 'standings')  renderStandingsTab(el);
+  if (tab === 'results')    renderResultsTab(el);
+  if (tab === 'scorers')    renderScorersTab(el);
+  if (tab === 'assists')    renderAssistsTab(el);
+}
+
+// ── STANDINGS TAB ─────────────────────────────────────────
+function renderStandingsTab(el) {
+  const s = getOrInitSeason();
+  const canon = getCanon();
+  if (!s || !canon) { el.innerHTML = '<p style="color:var(--muted)">Aucune donnée.</p>'; return; }
+
+  let html = '';
+  for (const [lgId, league] of Object.entries(s.leagues)) {
+    const meta = LEAGUE_META[lgId] || { emoji:'🏆', color:'#C9A84C', country:lgId };
+    const table = SeasonEngine.getSortedStandings(league);
+    const totalClubs = table.length;
+
+    html += `
+    <div style="margin-bottom:28px">
+      <div class="section-header" style="margin-bottom:12px">
+        <span style="font-size:18px">${meta.emoji}</span>
+        <div class="section-title" style="font-size:18px;color:${meta.color}">${league.name}</div>
+        <div class="section-line"></div>
+        <span style="font-size:11px;color:var(--muted);font-family:var(--font-mono)">J${league.currentRound}/${league.totalRounds}</span>
+        <button onclick="openStandings('${lgId}')" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;font-family:var(--font-body);">Voir détail →</button>
+      </div>
+      <table class="standings-table">
+        <thead><tr>
+          <th>#</th><th>Club</th><th>Pts</th><th>J</th><th>V</th>
+          <th>N</th><th>D</th><th>GD</th><th>Forme</th>
+        </tr></thead>
+        <tbody>`;
+
+    table.forEach((row, i) => {
+      const club = canon.clubs[row.id];
+      const name = club ? club.name : row.id;
+      const pos = i+1;
+      const posClass = pos <= 3 ? 'top' : (pos > totalClubs-3 ? 'rel' : '');
+      const gd = (row.gd>=0?'+':'')+row.gd;
+      const formDots = (row.form||[]).map(r =>
+        `<div class="form-dot ${r}">${r}</div>`).join('');
+
+      html += `<tr>
+        <td><span class="pos-num ${posClass}">${pos}</span></td>
+        <td><span class="club-row-name">${name}</span>
+            <span class="tier-badge tier-${club?.tier||'moyen'}">${club?.tier||''}</span></td>
+        <td><b style="color:var(--gold);font-family:var(--font-mono)">${row.pts}</b></td>
+        <td style="color:var(--muted)">${row.played}</td>
+        <td>${row.won}</td><td>${row.drawn}</td><td>${row.lost}</td>
+        <td style="font-family:var(--font-mono);color:${row.gd>=0?'var(--green)':'var(--red)'}">${gd}</td>
+        <td><div class="form-dots">${formDots}</div></td>
+      </tr>`;
+    });
+
+    html += `</tbody></table></div>`;
+  }
+  el.innerHTML = html;
+}
+
+// ── RESULTS TAB ──────────────────────────────────────────
+function renderResultsTab(el) {
+  const s = getOrInitSeason();
+  const canon = getCanon();
+  if (!s || !canon) { el.innerHTML = ''; return; }
+
+  const selLg    = STATE.resultsLeague || null;
+  const selRound = STATE.resultsRound  || null;
+  const leagueIds = Object.keys(s.leagues);
+
+  // ── Sélecteur de ligue ────────────────────────────────
+  let tabsHtml = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+    <button onclick="setResultsFilter(null,null)"
+      style="background:${!selLg?'var(--gold)':'var(--surface)'};color:${!selLg?'#000':'var(--muted)'};border:1px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-family:var(--font-body)">
+      Tous (derniers)</button>`;
+  for (const lgId of leagueIds) {
+    const meta   = LEAGUE_META[lgId] || {};
+    const active = selLg === lgId;
+    tabsHtml += `<button onclick="setResultsFilter('${lgId}',null)"
+      style="background:${active?meta.color||'var(--gold)':'var(--surface)'};color:${active?'#000':'var(--muted)'};border:1px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-family:var(--font-body)">
+      ${meta.emoji||''} ${s.leagues[lgId].name.slice(0,18)}</button>`;
+  }
+  tabsHtml += '</div>';
+
+  // ── Si ligue sélectionnée : sélecteur de journée ──────
+  let roundSelectorHtml = '';
+  if (selLg && s.leagues[selLg]) {
+    const league    = s.leagues[selLg];
+    const rounds    = [...new Set(league.results.map(r => r.round))].sort((a,b)=>a-b);
+    const activeRnd = selRound || (rounds[rounds.length-1] ?? 1);
+    if (rounds.length) {
+      roundSelectorHtml = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <span style="color:var(--muted);font-size:12px">Journée :</span>`;
+      // Affiche un max de 10 boutons autour de la journée active
+      const start = Math.max(0, rounds.indexOf(activeRnd) - 4);
+      const slice  = rounds.slice(start, start + 9);
+      if (start > 0) roundSelectorHtml += `<button onclick="setResultsFilter('${selLg}',${rounds[0]})" style="background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:3px 8px;cursor:pointer;font-size:11px">«</button>`;
+      for (const rnd of slice) {
+        const act = rnd === activeRnd;
+        roundSelectorHtml += `<button onclick="setResultsFilter('${selLg}',${rnd})"
+          style="background:${act?'var(--gold)':'var(--surface)'};color:${act?'#000':'var(--muted)'};border:1px solid var(--border);border-radius:4px;padding:3px 9px;cursor:pointer;font-size:12px;font-weight:${act?'700':'400'}">J${rnd}</button>`;
+      }
+      const last = rounds[rounds.length-1];
+      if (slice[slice.length-1] !== last) roundSelectorHtml += `<button onclick="setResultsFilter('${selLg}',${last})" style="background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:3px 8px;cursor:pointer;font-size:11px">»</button>`;
+      roundSelectorHtml += '</div>';
+    }
+  }
+
+  // ── Résultats à afficher ──────────────────────────────
+  let allResults = [];
+  if (!selLg) {
+    // Mode "tous" : derniers résultats multi-ligues
+    for (const [lgId, league] of Object.entries(s.leagues)) {
+      for (const r of league.results) allResults.push({ ...r, lgId, lgName: league.name });
+    }
+    allResults = allResults.sort((a,b)=>b.round-a.round).slice(0,40);
+  } else {
+    const league    = s.leagues[selLg];
+    const activeRnd = selRound || ([...new Set(league.results.map(r=>r.round))].sort((a,b)=>a-b).slice(-1)[0] ?? 1);
+    STATE.resultsRound = activeRnd;
+    allResults = (league?.results || [])
+      .filter(r => r.round === activeRnd)
+      .map(r => ({ ...r, lgId: selLg, lgName: league.name }));
+  }
+
+  if (!allResults.length) {
+    el.innerHTML = tabsHtml + roundSelectorHtml + '<p style="color:var(--muted);padding:32px 0;text-align:center">Aucun résultat — simule une journée !</p>';
+    return;
+  }
+
+  let html = '<div class="results-grid">';
+  for (const r of allResults) {
+    const hClub = canon.clubs[r.home] || { name: r.home };
+    const aClub = canon.clubs[r.away] || { name: r.away };
+    const meta  = LEAGUE_META[r.lgId] || { color:'#C9A84C' };
+    const hWin  = r.score.home > r.score.away;
+    const aWin  = r.score.away > r.score.home;
+    const _rKey = 'sm_' + r.round + '_' + r.home + '_' + r.away;
+    window._matchDetailCache = window._matchDetailCache || {};
+    window._matchDetailCache[_rKey] = r;
+    html += `
+    <div class="result-card" onclick="showMatchDetail('${_rKey}')"
+      style="cursor:pointer;transition:border-color .18s"
+      onmouseover="this.style.borderColor='rgba(201,168,76,.4)'" onmouseout="this.style.borderColor=''">
+      <div style="font-size:10px;color:${meta.color};font-family:var(--font-mono);margin-bottom:6px;letter-spacing:1px">
+        ${r.lgName} · J${r.round}
+      </div>
+      <div class="result-teams">
+        <div class="result-team" style="display:flex;align-items:center;gap:5px;${hWin?'color:var(--white)':'color:var(--muted)'}">
+          ${clubLogo(r.home, 20)}${hClub.name.slice(0,14)}</div>
+        <div class="result-score">${r.score.home} – ${r.score.away}</div>
+        <div class="result-team away" style="display:flex;align-items:center;justify-content:flex-end;gap:5px;${aWin?'color:var(--white)':'color:var(--muted)'}">
+          ${aClub.name.slice(0,14)}${clubLogo(r.away, 20)}</div>
+      </div>
+      <div class="result-meta">
+        <span>${r.events?.length||0} but(s) · détail</span>
+        ${r.motm ? `<span class="result-motm">★ ${r.motm.name||r.motm}</span>` : ''}
+      </div>
+    </div>`;
+  }
+  html += '</div>';
+  el.innerHTML = tabsHtml + roundSelectorHtml + html;
+}
+
+window.setResultsFilter = function(lgId, round) {
+  STATE.resultsLeague = lgId  || null;
+  STATE.resultsRound  = round || null;
+  saveState();
+  const el = document.getElementById('season-tab-content');
+  if (el) renderResultsTab(el);
+};
+
+// ═══════════════════════════════════════════════════════════
+// MATCH DETAIL MODAL — Championnat · CLE (single leg) · Euro
+// ═══════════════════════════════════════════════════════════
+window._matchDetailCache = {};
+
+window.showMatchDetail = function(matchDataOrKey) {
+  const matchData = typeof matchDataOrKey === 'string'
+    ? window._matchDetailCache[matchDataOrKey]
+    : matchDataOrKey;
+  if (!matchData) return;
+
+  const canon = getCanon();
+  const h = matchData.home?.id || matchData.home;
+  const a = matchData.away?.id || matchData.away;
+  const hName = (matchData.home?.name) || canon?.clubs?.[h]?.name || h || '?';
+  const aName = (matchData.away?.name) || canon?.clubs?.[a]?.name || a || '?';
+
+  const posColor = {
+    GK:'#f59e0b',CB:'#3b82f6',LB:'#3b82f6',RB:'#3b82f6',
+    CDM:'#10b981',CM:'#10b981',CAM:'#10b981',
+    LW:'#ef4444',RW:'#ef4444',ST:'#ef4444',
+  };
+  const posOrder = {GK:0,CB:1,LB:2,RB:3,CDM:4,CM:5,CAM:6,LW:7,RW:8,ST:9};
+
+  function buildXIHtml(players) {
+    if (!players || !players.length)
+      return '<div style="color:var(--muted);font-size:12px;padding:8px 0">Compo non disponible</div>';
+    const ratings = matchData.ratings || {};
+    const motmId  = matchData.motm?.id || matchData.motm?.name;
+    return [...players]
+      .sort((a,b) => (posOrder[a.slotPosition||a.position]??5) - (posOrder[b.slotPosition||b.position]??5))
+      .map(p => {
+        const pos   = p.slotPosition || p.position || '?';
+        const bg    = posColor[pos] || '#555';
+        const pid   = p.id || p.name;
+        const isMotm = motmId && (motmId === pid);
+        const rating = ratings[pid];
+        const rColor = rating >= 8 ? 'var(--green)' : rating >= 7 ? '#60A5FA' : rating >= 6 ? 'var(--muted)' : 'var(--red)';
+        return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="background:${bg};color:#000;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700;min-width:34px;text-align:center">${pos}</span>
+          <span style="flex:1;font-size:12px;${isMotm?'color:var(--gold);font-weight:700':'color:var(--white)'}">${p.name}${isMotm?' ⭐':''}</span>
+          ${rating ? `<span style="font-family:var(--font-mono);font-size:11px;color:${rColor}">${rating}</span>` : ''}
+        </div>`;
+      }).join('');
+  }
+
+  const events = matchData.events || [];
+  let evHtml = '';
+  if (!events.length) {
+    evHtml = '<div style="color:var(--muted);font-size:13px;padding:6px 0">Aucun but</div>';
+  } else {
+    evHtml = events.filter(ev=>ev.type==='goal').sort((a,b)=>a.minute-b.minute).map(ev => {
+      const isHome  = ev.home;
+      const side    = isHome ? hName : aName;
+      const sideCol = isHome ? '#C9A84C' : '#3B82F6';
+      const assist  = ev.assistant ? `<span style="color:var(--muted);font-size:11px"> (🎯 ${ev.assistant.name})</span>` : '';
+      return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+        <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);min-width:32px;text-align:right">${ev.minute}'</span>
+        <span style="font-size:15px">⚽</span>
+        <div style="flex:1">
+          <span style="font-weight:700;color:${sideCol}">${ev.scorer?.name||'?'}</span>${assist}
+          <div style="font-size:11px;color:var(--muted);margin-top:1px">${side}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  const motm = matchData.motm;
+  const motmHtml = motm ? `
+    <div style="background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:10px 16px;text-align:center;margin-top:12px">
+      <div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;margin-bottom:4px">HOMME DU MATCH</div>
+      <div style="font-size:18px;font-weight:700;color:var(--gold)">⭐ ${motm.name||motm}</div>
+      <div style="font-family:var(--font-mono);font-size:14px;color:var(--white);margin-top:3px">${motm.rating||''}</div>
+    </div>` : '';
+
+  const score   = matchData.score || {home:0,away:0};
+  const aggHtml = matchData.agg ? `<div style="font-size:12px;color:var(--muted);margin-top:4px">Cumul : ${matchData.agg.home}–${matchData.agg.away}</div>` : '';
+
+  const modal = document.createElement('div');
+  modal.id = 'match-detail-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto';
+  modal.innerHTML = `
+    <div translate="no" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:860px">
+      <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div style="text-align:center;flex:1">
+          <div style="display:flex;justify-content:center;align-items:center;gap:16px;margin-bottom:4px">
+            <div style="display:flex;align-items:center;gap:8px">${clubLogo(h,36)}<span style="font-size:14px;font-weight:600;color:var(--white)">${hName}</span></div>
+            <span style="font-family:var(--font-display);font-size:44px;letter-spacing:6px;color:var(--white)">${score.home} – ${score.away}</span>
+            <div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;font-weight:600;color:var(--white)">${aName}</span>${clubLogo(a,36)}</div>
+          </div>
+          ${aggHtml}
+        </div>
+        <button onclick="document.getElementById('match-detail-modal').remove()"
+          style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;flex-shrink:0">✕</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)">
+        <div style="padding:14px 18px;border-right:1px solid var(--border)">
+          <div style="font-size:10px;color:#C9A84C;letter-spacing:1.5px;margin-bottom:8px;font-weight:700">${hName}</div>
+          ${buildXIHtml(matchData.xi?.home)}
+        </div>
+        <div style="padding:14px 18px">
+          <div style="font-size:10px;color:#3B82F6;letter-spacing:1.5px;margin-bottom:8px;font-weight:700">${aName}</div>
+          ${buildXIHtml(matchData.xi?.away)}
+        </div>
+      </div>
+      <div style="padding:14px 24px">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;margin-bottom:8px;font-weight:600">BUTS</div>
+        ${evHtml}
+        ${motmHtml}
+      </div>
+    </div>`;
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+  document.getElementById('match-detail-modal')?.remove();
+  document.body.appendChild(modal);
+};
+
+// ═══════════════════════════════════════════════════════════
+// MODAL DEUX MANCHES CLE
+// ═══════════════════════════════════════════════════════════
+window._cleMatchCache = {};
+
+window.showCLETwoLegDetail = function(key) {
+  const data = window._cleMatchCache[key];
+  if (!data) return;
+  const canon = getCanon();
+  const hName = canon?.clubs?.[data.home]?.name || data.home;
+  const aName = canon?.clubs?.[data.away]?.name || data.away;
+
+  const posColor = {
+    GK:'#f59e0b',CB:'#3b82f6',LB:'#3b82f6',RB:'#3b82f6',
+    CDM:'#10b981',CM:'#10b981',CAM:'#10b981',
+    LW:'#ef4444',RW:'#ef4444',ST:'#ef4444',
+  };
+  const posOrder = {GK:0,CB:1,LB:2,RB:3,CDM:4,CM:5,CAM:6,LW:7,RW:8,ST:9};
+
+  function buildXI(players, ratings, motmId) {
+    if (!players?.length) return '<div style="color:var(--muted);font-size:12px;padding:6px">Compo non disponible</div>';
+    return [...players]
+      .sort((a,b)=>(posOrder[a.slotPosition||a.position]??5)-(posOrder[b.slotPosition||b.position]??5))
+      .map(p => {
+        const pos = p.slotPosition||p.position||'?';
+        const pid = p.id||p.name;
+        const r   = ratings?.[pid];
+        const motm= motmId&&(motmId===pid);
+        const rCol= r>=8?'var(--green)':r>=7?'#60A5FA':r>=6?'var(--muted)':'var(--red)';
+        return `<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="background:${posColor[pos]||'#555'};color:#000;padding:1px 4px;border-radius:3px;font-size:10px;font-weight:700;min-width:32px;text-align:center">${pos}</span>
+          <span style="flex:1;font-size:12px;${motm?'color:var(--gold);font-weight:700':'color:var(--white)'}">${p.name}${motm?' ⭐':''}</span>
+          ${r?`<span style="font-family:var(--font-mono);font-size:11px;color:${rCol}">${r}</span>`:''}
+        </div>`;
+      }).join('');
+  }
+
+  function buildEvents(events, hN, aN) {
+    const goals=(events||[]).filter(e=>e.type==='goal').sort((a,b)=>a.minute-b.minute);
+    if (!goals.length) return '<div style="color:var(--muted);font-size:12px;padding:4px 0">Aucun but</div>';
+    return goals.map(ev => {
+      const isH=ev.home; const side=isH?hN:aN; const col=isH?'#C9A84C':'#3B82F6';
+      const asst=ev.assistant?` <span style="color:var(--muted);font-size:11px">(🎯 ${ev.assistant.name})</span>`:'';
+      return `<div style="display:flex;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);min-width:28px">${ev.minute}'</span>
+        <span>⚽</span>
+        <div><span style="font-weight:700;color:${col}">${ev.scorer?.name||'?'}</span>${asst}
+        <div style="font-size:10px;color:var(--muted)">${side}</div></div>
+      </div>`;
+    }).join('');
+  }
+
+  function legPanel(leg, legNum, hN, aN) {
+    if (!leg) return '<div style="color:var(--muted);padding:16px;font-size:12px">Données non disponibles</div>';
+    const sc=leg.score||{home:0,away:0};
+    // Leg 1 : hN à domicile, score.home = buts de hN
+    // Leg 2 : aN à domicile (raw), score.home = buts de aN, score.away = buts de hN
+    const leftTeam  = legNum===1 ? hN : aN;
+    const rightTeam = legNum===1 ? aN : hN;
+    const motmId=leg.motm?.id||leg.motm?.name;
+    return `
+      <div style="padding:14px 20px;border-bottom:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;margin-bottom:8px">LEG ${legNum} ${legNum===2?'<span style="color:var(--muted);font-size:9px">(match retour — '+aN+' à domicile)</span>':''}</div>
+        <div style="display:flex;justify-content:center;align-items:center;gap:16px;margin-bottom:12px">
+          <span style="font-weight:700;font-size:14px">${leftTeam}</span>
+          <span style="font-family:var(--font-display);font-size:32px;letter-spacing:4px">${sc.home} – ${sc.away}</span>
+          <span style="font-weight:700;font-size:14px">${rightTeam}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px">
+          <div>
+            <div style="font-size:10px;color:#C9A84C;letter-spacing:1px;margin-bottom:6px">${leftTeam}</div>
+            ${buildXI(leg.xi?.home, leg.ratings, motmId)}
+          </div>
+          <div>
+            <div style="font-size:10px;color:#3B82F6;letter-spacing:1px;margin-bottom:6px">${rightTeam}</div>
+            ${buildXI(leg.xi?.away, leg.ratings, motmId)}
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:6px">BUTS</div>
+        ${buildEvents(leg.events, leftTeam, rightTeam)}
+        ${leg.motm?`<div style="background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:8px 12px;text-align:center;margin-top:8px">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:1px">HOMME DU MATCH</div>
+          <div style="font-size:16px;font-weight:700;color:var(--gold)">⭐ ${leg.motm.name||leg.motm}</div>
+        </div>`:''}
+      </div>`;
+  }
+
+  const agg = data.agg || {home:0,away:0};
+  const winnerName = canon?.clubs?.[data.winner]?.name || data.winner || '?';
+
+  const modal = document.createElement('div');
+  modal.id = 'cle-match-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:20px 16px;overflow-y:auto';
+  modal.innerHTML = `
+    <div translate="no" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:920px">
+      <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div style="text-align:center;flex:1">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:4px">RÉSULTAT AGRÉGAT</div>
+          <div style="display:flex;justify-content:center;align-items:center;gap:20px">
+            <span style="font-weight:700;font-size:16px">${hName}</span>
+            <span style="font-family:var(--font-display);font-size:40px;letter-spacing:6px">${agg.home} – ${agg.away}</span>
+            <span style="font-weight:700;font-size:16px">${aName}</span>
+          </div>
+          <div style="font-size:12px;color:var(--gold);margin-top:4px">✓ Qualifié : ${winnerName}</div>
+        </div>
+        <button onclick="document.getElementById('cle-match-modal').remove()"
+          style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;flex-shrink:0">✕</button>
+      </div>
+      ${legPanel(data.leg1, 1, hName, aName)}
+      ${legPanel(data.leg2, 2, hName, aName)}
+    </div>`;
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+  document.getElementById('cle-match-modal')?.remove();
+  document.body.appendChild(modal);
+};
+
+// ── SCORERS TAB ──────────────────────────────────────────
+function renderScorersTab(el) {
+  const s = getOrInitSeason();
+  const canon = getCanon();
+  if (!s || !canon) { el.innerHTML = ''; return; }
+
+  // Ligue active sélectionnée (state)
+  const selLg = STATE.scorersLeague || null;
+  const leagueIds = Object.keys(s.leagues);
+
+  // Tabs de ligues
+  let tabsHtml = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+    <button onclick="setScorersLeague(null)"
+      style="background:${!selLg?'var(--gold)':'var(--surface)'};color:${!selLg?'#000':'var(--muted)'};border:1px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-family:var(--font-body)">Tous</button>`;
+  for (const lgId of leagueIds) {
+    const meta = LEAGUE_META[lgId] || {};
+    const active = selLg === lgId;
+    tabsHtml += `<button onclick="setScorersLeague('${lgId}')"
+      style="background:${active?meta.color||'var(--gold)':'var(--surface)'};color:${active?'#000':'var(--muted)'};border:1px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-family:var(--font-body)">${meta.emoji||''} ${s.leagues[lgId].name}</button>`;
+  }
+  tabsHtml += '</div>';
+
+  const scorers = SeasonEngine.getTopScorers(s, canon, 25, selLg);
+  if (!scorers.length) {
+    el.innerHTML = tabsHtml + '<p style="color:var(--muted);padding:32px 0;text-align:center">Aucun buteur — simule des matchs !</p>';
+    return;
+  }
+
+  let rows = '';
+  scorers.forEach((sc, i) => {
+    const p = sc.player;
+    const name = p ? p.name : sc.id;
+    const pos  = p ? p.position : '?';
+    const club = p ? (canon.clubs[p.club]?.name||'?').slice(0,16) : '?';
+    const lgMeta = sc.league ? LEAGUE_META[sc.league] : null;
+    const lgLabel = lgMeta ? lgMeta.emoji + ' ' + (canon.leagues[sc.league]?.name||sc.league).slice(0,12) : '?';
+    rows += `<tr>
+      <td style="color:var(--muted);font-family:var(--font-mono)">${i+1}</td>
+      <td><b>${name}</b></td>
+      <td><span class="pos-badge">${pos}</span></td>
+      <td style="color:var(--muted);font-size:12px">${club}</td>
+      <td style="color:var(--muted);font-size:11px">${lgLabel}</td>
+      <td><span class="stat-num">${sc.goals}</span></td>
+      <td style="color:var(--muted)">${sc.assists}</td>
+      <td style="font-family:var(--font-mono)">${sc.avgRating}</td>
+      <td style="color:var(--muted)">${sc.matches}</td>
+    </tr>`;
+  });
+  el.innerHTML = tabsHtml + `<table class="stats-table">
+    <thead><tr><th>#</th><th>Joueur</th><th>Poste</th><th>Club</th><th>Ligue</th>
+    <th>⚽ Buts</th><th>🎯 Passes</th><th>★ Note moy.</th><th>Matchs</th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
+
+window.setScorersLeague = function(lgId) {
+  STATE.scorersLeague = lgId;
+  saveState();
+  const el = document.getElementById('season-tab-content');
+  if (el) renderScorersTab(el);
+};
+
+// ── ASSISTS TAB ──────────────────────────────────────────
+function renderAssistsTab(el) {
+  const s = getOrInitSeason();
+  const canon = getCanon();
+  if (!s || !canon) { el.innerHTML = ''; return; }
+
+  const selLg = STATE.assistsLeague || null;
+  const leagueIds = Object.keys(s.leagues);
+
+  let tabsHtml = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+    <button onclick="setAssistsLeague(null)"
+      style="background:${!selLg?'var(--gold)':'var(--surface)'};color:${!selLg?'#000':'var(--muted)'};border:1px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-family:var(--font-body)">Tous</button>`;
+  for (const lgId of leagueIds) {
+    const meta = LEAGUE_META[lgId] || {};
+    const active = selLg === lgId;
+    tabsHtml += `<button onclick="setAssistsLeague('${lgId}')"
+      style="background:${active?meta.color||'var(--gold)':'var(--surface)'};color:${active?'#000':'var(--muted)'};border:1px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-family:var(--font-body)">${meta.emoji||''} ${s.leagues[lgId].name}</button>`;
+  }
+  tabsHtml += '</div>';
+
+  const assisters = SeasonEngine.getTopAssists(s, canon, 25, selLg);
+  if (!assisters.length) {
+    el.innerHTML = tabsHtml + '<p style="color:var(--muted);padding:32px 0;text-align:center">Aucune passe décisive encore.</p>';
+    return;
+  }
+
+  let rows = '';
+  assisters.forEach((sc, i) => {
+    const p = sc.player;
+    const name = p ? p.name : sc.id;
+    const pos  = p ? p.position : '?';
+    const club = p ? (canon.clubs[p.club]?.name||'?').slice(0,16) : '?';
+    const lgMeta = sc.league ? LEAGUE_META[sc.league] : null;
+    const lgLabel = lgMeta ? lgMeta.emoji + ' ' + (canon.leagues[sc.league]?.name||sc.league).slice(0,12) : '?';
+    rows += `<tr>
+      <td style="color:var(--muted);font-family:var(--font-mono)">${i+1}</td>
+      <td><b>${name}</b></td>
+      <td><span class="pos-badge">${pos}</span></td>
+      <td style="color:var(--muted);font-size:12px">${club}</td>
+      <td style="color:var(--muted);font-size:11px">${lgLabel}</td>
+      <td><span class="stat-num">${sc.assists}</span></td>
+      <td style="color:var(--muted)">${sc.goals}</td>
+      <td style="font-family:var(--font-mono)">${sc.avgRating}</td>
+    </tr>`;
+  });
+  el.innerHTML = tabsHtml + `<table class="stats-table">
+    <thead><tr><th>#</th><th>Joueur</th><th>Poste</th><th>Club</th><th>Ligue</th>
+    <th>🎯 Passes</th><th>⚽ Buts</th><th>★ Note moy.</th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
+
+window.setAssistsLeague = function(lgId) {
+  STATE.assistsLeague = lgId;
+  saveState();
+  const el = document.getElementById('season-tab-content');
+  if (el) renderAssistsTab(el);
+};
+
+// ── STANDINGS DETAIL ─────────────────────────────────────
+window.openStandings = function(lgId) {
+  STATE.currentStandingsLeague = lgId;
+  navigate('standings');
+};
+
+function renderStandingsDetail(lgId) {
+  const s = getOrInitSeason();
+  const canon = getCanon();
+  if (!s || !canon || !lgId) return;
+
+  const league = s.leagues[lgId];
+  const meta   = LEAGUE_META[lgId] || { color:'#C9A84C', country: '' };
+  if (!league) return;
+
+  const nameEl = document.getElementById('std-league-name');
+  if (nameEl) { nameEl.textContent = league.name; nameEl.style.color = meta.color; }
+  const roundEl = document.getElementById('std-league-round');
+  if (roundEl) roundEl.textContent = meta.country + ' · J' + league.currentRound + '/' + league.totalRounds;
+
+  const table = SeasonEngine.getSortedStandings(league);
+  const tbody = document.getElementById('std-full-body');
+  if (!tbody) return;
+
+  const n = table.length;
+  tbody.innerHTML = table.map((row, i) => {
+    const club = canon.clubs[row.id];
+    const name = club ? club.name : row.id;
+    const pos  = i + 1;
+    const posClass = pos <= 3 ? 'top' : pos > n-3 ? 'rel' : '';
+    const gd  = (row.gd>=0?'+':'')+row.gd;
+    const formDots = (row.form||[]).map(r =>
+      `<div class="form-dot ${r}">${r}</div>`).join('');
+    const logo = clubLogo(row.id, 22);
+
+    return `<tr>
+      <td><span class="pos-num ${posClass}">${pos}</span></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${logo}
+          <span class="club-row-name">${name}</span>
+          <span class="tier-badge tier-${club?.tier||'moyen'}">${club?.tier||''}</span>
+        </div>
+      </td>
+      <td>${row.played}</td>
+      <td>${row.won}</td>
+      <td>${row.drawn}</td>
+      <td>${row.lost}</td>
+      <td>${row.gf}</td>
+      <td>${row.ga}</td>
+      <td style="font-family:var(--font-mono);color:${row.gd>=0?'var(--green)':'var(--red)'}">${gd}</td>
+      <td><b style="color:var(--gold);font-family:var(--font-mono)">${row.pts}</b></td>
+      <td><div class="form-dots">${formDots}</div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── ROUTER ────────────────────────────────────────────────
+function navigate(view, param) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+  STATE.currentView = view;
+  STATE.currentLeague = param || STATE.currentLeague;
+  saveState();
+
+  const viewEl = document.getElementById('view-' + view);
+  if (viewEl) viewEl.classList.add('active');
+
+  const navMap = {
+    hub:'Hub', leagues:'Ligues', clubs:'Clubs', cle:'CLE',
+    euro:'Euro', awards:'Awards', season:'Saison',
+    'league-detail':'Ligues', standings:'Saison',
+  };
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if (b.textContent.trim() === navMap[view]) b.classList.add('active');
+  });
+
+  if (view === 'hub')            renderHub();
+  if (view === 'leagues')        renderLeagues();
+  if (view === 'league-detail')  renderLeagueDetail(param || STATE.currentLeague);
+  if (view === 'clubs')          renderClubs();
+  if (view === 'cle')            renderCLE();
+  if (view === 'euro')           renderEuroFull();
+  if (view === 'season')         renderSeason();
+  if (view === 'awards')         renderAwards();
+  if (view === 'finance')        renderFinance();
+  if (view === 'standings')      renderStandingsDetail(STATE.currentStandingsLeague);
+
+  window.scrollTo(0, 0);
+}
+
+// ─── RENDER: SEASON ────────────────────────────────────────
+function renderSeason() {
+  getOrInitSeason();
+  updateSeasonUI();
+  renderSeasonTab(STATE.currentSeasonTab || 'standings');
+}
+
+// ─── RENDER: HUB ───────────────────────────────────────────
+function renderHub() {
+  const canon = getCanon(); if (!canon) return;
+  const clubs   = Object.values(canon.clubs);
+  const players = Object.values(canon.players);
+  const leagues = Object.values(canon.leagues);
+
+  const statsEl = document.getElementById('hub-stats');
+  statsEl.innerHTML = [
+    { val: leagues.length, lbl: 'Ligues' },
+    { val: clubs.length,   lbl: 'Clubs'  },
+    { val: players.length.toLocaleString(), lbl: 'Joueurs' },
+    { val: STATE.season,   lbl: 'Saison' },
+    { val: canon.rivalries.length, lbl: 'Derbys' },
+  ].map(s => `<div class="hub-stat">
+    <span class="val">${s.val}</span><span class="lbl">${s.lbl}</span>
+  </div>`).join('');
+
+  const leagueGrid = document.getElementById('league-grid');
+  leagueGrid.innerHTML = Object.entries(canon.leagues).map(([id, lg]) => {
+    const meta = LEAGUE_META[id] || { emoji:'🏆', color:'#C9A84C', country:lg.nation };
+    const c = getLeagueClubs(id);
+    const lLogo = leagueLogo(id, 40);
+    return `
+    <div class="league-card" onclick="navigate('season')">
+      <div class="league-accent-bar" style="background:${meta.color}"></div>
+      <div class="league-card-header">
+        <div class="league-emblem" style="background:${meta.color}22;overflow:hidden">
+          ${lLogo || `<span style="font-size:22px">${meta.emoji}</span>`}
+        </div>
+        <div class="league-info">
+          <div class="league-name">${lg.name}</div>
+          <div class="league-nation">${meta.country}</div>
+          <div class="league-fed">${lg.federation}</div>
+        </div>
+      </div>
+      <div class="league-card-footer">
+        <div class="lstat"><div class="v">${c.length}</div><div class="l">Clubs</div></div>
+        <div class="lstat"><div class="v">${c.filter(x=>x.tier==='top').length}</div><div class="l">Top tier</div></div>
+        <div class="lstat"><div class="v">${canon.rivalries.filter(r=>r.league===id).length}</div><div class="l">Derbys</div></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const topGrid = document.getElementById('top-clubs-grid');
+  topGrid.innerHTML = TOP_CLUBS.map((cid, i) => {
+    const club = canon.clubs[cid]; if (!club) return '';
+    const meta = LEAGUE_META[club.league] || { color:'#C9A84C' };
+    const avg  = getClubAvgOVR(cid);
+    const logo = typeof getLogo === 'function' ? getLogo(cid) : null;
+    return `
+    <div class="club-card" onclick="navigate('season')">
+      <div class="club-icon">${logo
+        ? `<img src="${logo}" width="36" height="36" style="object-fit:contain;border-radius:4px">`
+        : CLUB_EMOJIS[i%CLUB_EMOJIS.length]}</div>
+      <div class="club-card-info">
+        <div class="club-card-name">${club.name}</div>
+        <div class="club-card-meta">${club.stadium} · OVR ${avg}</div>
+      </div>
+      <div class="club-tier-dot" style="background:${meta.color}"></div>
+    </div>`;
+  }).join('');
+
+  renderCLECard('cle-preview', true);
+}
+
+// ─── RENDER: LEAGUES ───────────────────────────────────────
+function renderLeagues() {
+  const canon = getCanon(); if (!canon) return;
+  const grid = document.getElementById('leagues-all-grid');
+  grid.innerHTML = Object.entries(canon.leagues).map(([id, lg]) => {
+    const meta = LEAGUE_META[id] || { emoji:'🏆', color:'#C9A84C', country:lg.nation };
+    const c = getLeagueClubs(id);
+    return `
+    <div class="league-card" onclick="navigate('season')">
+      <div class="league-accent-bar" style="background:${meta.color}"></div>
+      <div class="league-card-header">
+        <div class="league-emblem" style="background:${meta.color}22">${meta.emoji}</div>
+        <div class="league-info">
+          <div class="league-name">${lg.name}</div>
+          <div class="league-nation">${meta.country}</div>
+          <div class="league-fed">${lg.federation}</div>
+        </div>
+      </div>
+      <div class="league-card-footer">
+        <div class="lstat"><div class="v">${c.length}</div><div class="l">Clubs</div></div>
+        <div class="lstat"><div class="v">${c.filter(x=>x.tier==='top').length}</div><div class="l">Elite</div></div>
+        <div class="lstat"><div class="v">${canon.rivalries.filter(r=>r.league===id).length}</div><div class="l">Derbys</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── RENDER: LEAGUE DETAIL ─────────────────────────────────
+function renderLeagueDetail(leagueId) {
+  const canon = getCanon(); if (!canon || !leagueId) return;
+  const league = canon.leagues[leagueId];
+  if (!league) { navigate('leagues'); return; }
+  const meta = LEAGUE_META[leagueId] || { color:'#C9A84C', country:league.nation };
+  const nameEl = document.getElementById('detail-league-name');
+  if (nameEl) { nameEl.textContent = league.name; nameEl.style.color = meta.color; }
+  const natEl = document.getElementById('detail-league-nation');
+  if (natEl) natEl.textContent = meta.country;
+  const fedEl = document.getElementById('detail-league-fed');
+  if (fedEl) fedEl.textContent = league.federation;
+
+  const clubs = getLeagueClubs(leagueId);
+  const tbody = document.getElementById('detail-standings-body');
+  if (!tbody) return;
+  tbody.innerHTML = clubs.map((club, i) => {
+    const pos = i+1;
+    const posClass = pos<=3?'top':(pos>clubs.length-3?'rel':'');
+    const avg = getClubAvgOVR(club.id);
+    return `<tr>
+      <td><span class="pos-num ${posClass}">${pos}</span></td>
+      <td><span class="club-row-name">${club.name}</span></td>
+      <td><span class="tier-badge tier-${club.tier}">${club.tier}</span></td>
+      <td style="color:var(--muted);font-size:12px">${club.stadium||'—'}</td>
+      <td style="color:var(--muted);font-family:var(--font-mono);font-size:12px">${club.capacity?.toLocaleString()||'—'}</td>
+      <td style="font-family:var(--font-mono);color:${avg>=85?'var(--gold)':'var(--white)'}">${avg||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── RENDER: CLUBS ─────────────────────────────────────────
+function renderClubs() {
+  const canon = getCanon(); if (!canon) return;
+  const all = Object.values(canon.clubs);
+  const countEl = document.getElementById('clubs-count-tag');
+  if (countEl) countEl.textContent = all.length + ' CLUBS';
+  const filterBar = document.getElementById('clubs-filter-bar');
+  if (filterBar) filterBar.innerHTML = ['Tous','top','fort','moyen','faible'].map(f => `
+    <button onclick="filterClubs('${f}')" id="filter-btn-${f}"
+      style="background:var(--surface);border:1px solid var(--border);color:var(--muted);
+             border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;
+             font-family:var(--font-body);transition:all .18s"
+    >${f==='Tous'?'Tous':f.charAt(0).toUpperCase()+f.slice(1)}</button>`).join('');
+  window.filterClubs = function(tier) {
+    const filtered = tier==='Tous' ? all : all.filter(c=>c.tier===tier);
+    renderClubsGrid(filtered);
+    document.querySelectorAll('[id^=filter-btn-]').forEach(b=>{b.style.color='var(--muted)';b.style.borderColor='var(--border)';});
+    const ab = document.getElementById('filter-btn-'+tier);
+    if (ab) { ab.style.color='var(--gold)'; ab.style.borderColor='rgba(201,168,76,.4)'; }
+  };
+  renderClubsGrid(all);
+}
+
+function renderClubsGrid(clubs) {
+  const grid = document.getElementById('clubs-all-grid');
+  if (!grid) return;
+  grid.innerHTML = clubs.map((club, i) => {
+    const meta = LEAGUE_META[club.league] || { color:'#C9A84C' };
+    const avg  = getClubAvgOVR(club.id);
+    const logo = typeof getLogo === 'function' ? getLogo(club.id) : null;
+    return `
+    <div class="club-card" onclick="showClubDetail('${club.id}')" style="cursor:pointer">
+      <div class="club-icon">${logo
+        ? `<img src="${logo}" width="36" height="36" style="object-fit:contain;border-radius:4px">`
+        : CLUB_EMOJIS[i%CLUB_EMOJIS.length]}</div>
+      <div class="club-card-info">
+        <div class="club-card-name">${club.name}</div>
+        <div class="club-card-meta">${club.nation} · OVR ${avg}</div>
+      </div>
+      <div class="club-tier-dot" style="background:${meta.color}"></div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// TACTIQUES — stockage et accès
+// CLUB_TACTICS[clubId] = { formation: '4-3-3', customXI: [...playerIds] }
+// ═══════════════════════════════════════════════════════════
+const CLUB_TACTICS = {};
+
+function getTactics(clubId) {
+  return CLUB_TACTICS[clubId] || { formation: MatchEngine.DEFAULT_FORMATION, customXI: null };
+}
+function setTactics(clubId, formation, customXI) {
+  CLUB_TACTICS[clubId] = { formation, customXI: customXI || null };
+  EQ_DB.set('eq_tactics', CLUB_TACTICS).catch(() => {});
+}
+async function loadTactics() {
+  const saved = await EQ_DB.get('eq_tactics').catch(() => null);
+  if (saved) Object.assign(CLUB_TACTICS, saved);
+}
+
+window.showClubDetail = function(clubId) {
+  const canon = getCanon(); if (!canon) return;
+  const club  = canon.clubs[clubId]; if (!club) return;
+  const meta  = LEAGUE_META[club.league] || { color:'#C9A84C' };
+  const tactics = getTactics(clubId);
+  const logo  = clubLogo(clubId, 48);
+
+  _renderClubModal(clubId, club, meta, tactics, canon, logo);
+};
+
+function _renderClubModal(clubId, club, meta, tactics, canon, logo) {
+  const posOrder = { GK:0,CB:1,LB:2,RB:3,CDM:4,CM:5,CAM:6,LW:7,RW:8,ST:9 };
+  const posColor = { GK:'#f59e0b',CB:'#3b82f6',LB:'#3b82f6',RB:'#3b82f6',
+    CDM:'#10b981',CM:'#10b981',CAM:'#10b981',LW:'#ef4444',RW:'#ef4444',ST:'#ef4444' };
+
+  const allPlayers = getClubPlayers(clubId)
+    .sort((a,b) => (posOrder[a.position]??9)-(posOrder[b.position]??9) || (b.ovr||0)-(a.ovr||0));
+
+  const currentFormation = tactics.formation || MatchEngine.DEFAULT_FORMATION;
+  const formations = Object.keys(MatchEngine.FORMATIONS);
+
+  // Calcule le XI actuel selon la formation (ou custom)
+  const currentXI = MatchEngine._selectStartingXI(allPlayers, currentFormation);
+  const xiIds = new Set(currentXI.map(p => p.id||p.name));
+
+  // Rendu des joueurs en deux colonnes : titulaires | remplaçants
+  const startRows = currentXI.map(p => `
+    <tr style="background:rgba(201,168,76,.04)">
+      <td><span style="background:${posColor[p.slotPosition]||'#555'};color:#000;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700">${p.slotPosition}</span></td>
+      <td style="font-weight:600;color:var(--white)">${p.name}</td>
+      <td style="color:var(--muted);font-size:11px">${p.nationality||'—'}</td>
+      <td style="color:var(--muted)">${p.age||'—'}</td>
+      <td><b style="color:var(--gold);font-family:var(--font-mono)">${p.ovr||'—'}</b></td>
+    </tr>`).join('');
+
+  const benchRows = allPlayers.filter(p => !xiIds.has(p.id||p.name)).map(p => `
+    <tr>
+      <td><span style="background:${posColor[p.position]||'#555'};color:#000;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700">${p.position}</span></td>
+      <td style="color:var(--muted)">${p.name}</td>
+      <td style="color:var(--muted);font-size:11px">${p.nationality||'—'}</td>
+      <td style="color:var(--muted)">${p.age||'—'}</td>
+      <td><span style="font-family:var(--font-mono);color:var(--muted)">${p.ovr||'—'}</span></td>
+    </tr>`).join('');
+
+  // Formations buttons
+  const formBtns = formations.map(f => `
+    <button onclick="changeFormation('${clubId}','${f}')"
+      style="background:${f===currentFormation?'var(--gold)':'var(--surface)'};color:${f===currentFormation?'#000':'var(--muted)'};border:1px solid ${f===currentFormation?'var(--gold)':'var(--border)'};border-radius:6px;padding:5px 10px;cursor:pointer;font-size:11px;font-family:var(--font-mono);font-weight:${f===currentFormation?'700':'400'}">
+      ${f}
+    </button>`).join('');
+
+  // Visualisation formation sur terrain
+  const pitchSvg = _buildFormationPitch(currentXI, currentFormation, meta.color);
+
+  const modal = document.createElement('div');
+  modal.id = 'club-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:20px 16px;overflow-y:auto';
+  modal.innerHTML = `
+    <div translate="no" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:900px;width:100%">
+      <!-- Header -->
+      <div style="padding:18px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;align-items:center;gap:14px">
+          ${logo}
+          <div>
+            <div style="font-family:var(--font-title);font-size:20px;color:${meta.color}">${club.name}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">${club.stadium||''} · ${allPlayers.length} joueurs · Formation : <b style="color:var(--gold)">${currentFormation}</b></div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('club-modal').remove()"
+          style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px">✕</button>
+      </div>
+
+      <!-- Sélecteur de formation -->
+      <div style="padding:16px 24px;border-bottom:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:10px">CHOISIR UNE FORMATION</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">${formBtns}</div>
+      </div>
+
+      <!-- Contenu : terrain + tableaux -->
+      <div style="display:grid;grid-template-columns:280px 1fr;gap:0">
+        <!-- Terrain -->
+        <div style="padding:16px;border-right:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px">DISPOSITION SUR LE TERRAIN</div>
+          ${pitchSvg}
+        </div>
+
+        <!-- Tableaux joueurs -->
+        <div style="padding:16px;overflow-y:auto;max-height:500px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:8px">TITULAIRES (${currentXI.length})</div>
+          <table class="standings-table" style="width:100%;margin-bottom:20px">
+            <thead><tr><th>Slot</th><th>Joueur</th><th>Nat.</th><th>Âge</th><th>OVR</th></tr></thead>
+            <tbody>${startRows}</tbody>
+          </table>
+
+          <div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px">REMPLAÇANTS / EFFECTIF (${allPlayers.length - currentXI.length})</div>
+          <table class="standings-table" style="width:100%">
+            <thead><tr><th>Pos.</th><th>Joueur</th><th>Nat.</th><th>Âge</th><th>OVR</th></tr></thead>
+            <tbody>${benchRows}</tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer info -->
+      <div style="padding:12px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="font-size:11px;color:var(--muted)">
+          ℹ️ Le moteur place d'abord chaque joueur à son <b>poste naturel</b>, puis comble les slots restants. La formation choisie est utilisée en simulation.
+        </div>
+        <button onclick="showCustomXIEditor('${clubId}')"
+          style="background:var(--panel);border:1px solid var(--border);color:var(--gold);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:12px;white-space:nowrap;font-family:var(--font-body)">
+          ✏️ Personnaliser le XI
+        </button>
+      </div>
+    </div>`;
+
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+  document.getElementById('club-modal')?.remove();
+  document.body.appendChild(modal);
+}
+
+// ─── CHANGER FORMATION ─────────────────────────────────────
+window.changeFormation = function(clubId, formation) {
+  setTactics(clubId, formation, null); // reset customXI quand la formation change
+  const canon = getCanon(); if (!canon) return;
+  const club  = canon.clubs[clubId]; if (!club) return;
+  const meta  = LEAGUE_META[club.league] || { color:'#C9A84C' };
+  const logo  = clubLogo(clubId, 48);
+  _renderClubModal(clubId, club, meta, getTactics(clubId), canon, logo);
+};
+
+// ─── ÉDITEUR XI PERSONNALISÉ ────────────────────────────────
+// Permet de choisir manuellement qui joue à chaque slot.
+// Sauvegarde dans CLUB_TACTICS[clubId].customXI = [{slot, playerId}]
+window.showCustomXIEditor = function(clubId) {
+  const canon   = getCanon(); if (!canon) return;
+  const club    = canon.clubs[clubId]; if (!club) return;
+  const tactics = getTactics(clubId);
+  const formation = tactics.formation || MatchEngine.DEFAULT_FORMATION;
+  const slots   = MatchEngine.FORMATIONS[formation] || [];
+  const players = getClubPlayers(clubId)
+    .sort((a,b) => (b.ovr||0)-(a.ovr||0));
+
+  // Reconstruit le XI actuel (custom ou auto) pour pré-remplir les dropdowns
+  const currentXI = MatchEngine._selectStartingXI(players, formation, tactics.customXI);
+  const currentBySlotIdx = {}; // slot+idx → playerId
+  const slotCount = {};
+  for (const p of currentXI) {
+    slotCount[p.slotPosition] = (slotCount[p.slotPosition]||0)+1;
+  }
+  const slotIdx = {};
+  for (const p of currentXI) {
+    slotIdx[p.slotPosition] = (slotIdx[p.slotPosition]||0)+1;
+    currentBySlotIdx[p.slotPosition + '_' + slotIdx[p.slotPosition]] = p.id||p.name;
+  }
+
+  // Options pour chaque slot
+  const playerOpts = players.map(p =>
+    `<option value="${p.id||p.name}">[${p.position}] ${p.name} (${p.ovr||'?'})</option>`
+  ).join('');
+
+  // Build rows per slot
+  const slotRowIdx = {};
+  const slotRows = slots.map((slot, i) => {
+    slotRowIdx[slot] = (slotRowIdx[slot]||0)+1;
+    const key = slot + '_' + slotRowIdx[slot];
+    const curId = currentBySlotIdx[key] || '';
+    const posColor = {GK:'#f59e0b',CB:'#3b82f6',LB:'#3b82f6',RB:'#3b82f6',
+      CDM:'#10b981',CM:'#10b981',CAM:'#10b981',LW:'#ef4444',RW:'#ef4444',ST:'#ef4444'};
+    return `
+    <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+      <span style="background:${posColor[slot]||'#555'};color:#000;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;min-width:36px;text-align:center">${slot}</span>
+      <select data-slot="${slot}" data-idx="${i}"
+        style="flex:1;background:var(--panel);color:var(--white);border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:var(--font-body);cursor:pointer">
+        ${players.map(p => `<option value="${p.id||p.name}" ${(p.id||p.name)===curId?'selected':''}>[${p.position}] ${p.name} (${p.ovr||'?'})</option>`).join('')}
+      </select>
+    </div>`;
+  }).join('');
+
+  const modal = document.createElement('div');
+  modal.id = 'xi-editor-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:10000;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto';
+  modal.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:520px">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-family:var(--font-display);font-size:18px;color:var(--gold)">✏️ XI PERSONNALISÉ</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">${club.name} · Formation ${formation}</div>
+        </div>
+        <button onclick="document.getElementById('xi-editor-modal').remove()"
+          style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px">✕</button>
+      </div>
+      <div style="padding:16px 20px;max-height:480px;overflow-y:auto">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px">
+          Sélectionne un joueur par slot. Le XI est utilisé en simulation tant qu'il est actif.
+        </div>
+        ${slotRows}
+      </div>
+      <div style="padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end">
+        <button onclick="resetCustomXI('${clubId}')"
+          style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:8px 18px;cursor:pointer;font-size:13px">
+          ↺ Réinitialiser (Auto)
+        </button>
+        <button onclick="saveCustomXI('${clubId}')"
+          style="background:var(--gold);color:#000;border:none;border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;font-weight:700">
+          ✓ Sauvegarder
+        </button>
+      </div>
+    </div>`;
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+  document.getElementById('xi-editor-modal')?.remove();
+  document.body.appendChild(modal);
+};
+
+window.saveCustomXI = function(clubId) {
+  const modal = document.getElementById('xi-editor-modal'); if (!modal) return;
+  const selects = modal.querySelectorAll('select[data-slot]');
+  const customXI = [];
+  const usedIds  = new Set();
+  let duplicate  = false;
+
+  for (const sel of selects) {
+    const slot     = sel.dataset.slot;
+    const playerId = sel.value;
+    if (usedIds.has(playerId)) { duplicate = true; }
+    usedIds.add(playerId);
+    customXI.push({ slot, playerId });
+  }
+
+  if (duplicate) {
+    const warn = modal.querySelector('.xi-warn') || (() => {
+      const d = document.createElement('div');
+      d.className = 'xi-warn';
+      d.style.cssText = 'color:var(--red);font-size:12px;padding:6px 20px';
+      modal.querySelector('[style*="border-top"]').prepend(d);
+      return d;
+    })();
+    warn.textContent = '⚠️ Un joueur est sélectionné plusieurs fois.';
+    return;
+  }
+
+  const tactics = getTactics(clubId);
+  setTactics(clubId, tactics.formation, customXI);
+  modal.remove();
+  showClubDetail(clubId); // réouvre le modal avec le XI mis à jour
+};
+
+window.resetCustomXI = function(clubId) {
+  const tactics = getTactics(clubId);
+  setTactics(clubId, tactics.formation, null);
+  document.getElementById('xi-editor-modal')?.remove();
+  showClubDetail(clubId);
+};
+
+// ─── VISUALISATION TERRAIN ─────────────────────────────────
+// Génère un SVG d'un terrain 4:5 avec les joueurs positionnés
+function _buildFormationPitch(xi, formation, accentColor) {
+  const W = 280, H = 370;
+
+  const posColor = { GK:'#f59e0b',CB:'#3b82f6',LB:'#3b82f6',RB:'#3b82f6',
+    CDM:'#10b981',CM:'#10b981',CAM:'#10b981',LW:'#ef4444',RW:'#ef4444',ST:'#ef4444' };
+
+  // Index d'un slot pour savoir lequel c'est (1er CB, 2ème CB...)
+  const slotCounts = {};
+  xi.forEach(p => { slotCounts[p.slotPosition] = (slotCounts[p.slotPosition]||0)+1; });
+  const slotIdx = {};
+
+  const playerPositions = xi.map(p => {
+    const slot = p.slotPosition;
+    slotIdx[slot] = (slotIdx[slot]||0)+1;
+    const count = slotCounts[slot];
+    const idx   = slotIdx[slot];
+    const [bx, by] = _slotXY(slot, count, idx);
+    return { p, x: bx * W / 100, y: by * H / 100 };
+  });
+
+  const dots = playerPositions.map(({ p, x, y }) => {
+    const col  = posColor[p.slotPosition] || '#888';
+    // Nom tronqué : dernier mot, max 8 chars
+    const name = p.name.split(' ').slice(-1)[0].slice(0, 8);
+    const nameW = Math.max(name.length * 5.2 + 6, 30);
+    return `
+      <circle cx="${x}" cy="${y}" r="14" fill="${col}" opacity="0.92"/>
+      <text x="${x}" y="${y+1}" text-anchor="middle" dominant-baseline="middle"
+        font-size="7.5" font-weight="700" fill="#000" font-family="monospace">${p.slotPosition}</text>
+      <rect x="${x - nameW/2}" y="${y+17}" width="${nameW}" height="12" rx="3"
+        fill="rgba(0,0,0,0.55)"/>
+      <text x="${x}" y="${y+25}" text-anchor="middle"
+        font-size="7" fill="white" font-weight="500">${name}</text>`;
+  }).join('');
+
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px">
+    <rect width="${W}" height="${H}" fill="#1a3a1a" rx="6"/>
+    <rect x="18" y="10" width="${W-36}" height="${H-20}" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.5" rx="3"/>
+    <line x1="18" y1="${H/2}" x2="${W-18}" y2="${H/2}" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+    <circle cx="${W/2}" cy="${H/2}" r="32" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+    <rect x="${W/2-44}" y="10" width="88" height="50" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+    <rect x="${W/2-44}" y="${H-60}" width="88" height="50" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+    ${dots}
+  </svg>`;
+}
+
+function _slotXY(slot, count, idx) {
+  const cx = 50;
+  // Spread adaptatif : plus de joueurs → plus espacés, max 84% de largeur
+  const totalSpread = Math.min(84, count * 22);
+  const startX = cx - totalSpread / 2 + totalSpread / (2 * Math.max(count, 1));
+  const step   = count > 1 ? totalSpread / count : 0;
+  const x      = count > 1 ? startX + (idx - 1) * step : cx;
+
+  const yMap = {
+    GK: 7, LB: 24, CB: 24, RB: 24,
+    CDM: 43, CM: 53, CAM: 63,
+    LW: 76, RW: 76, ST: 87,
+  };
+  return [x, yMap[slot] ?? 50];
+}
+
+// ─── CLE / AWARDS DATA STORAGE (IndexedDB) ─────────────────
+const CLE_KEY    = 'eq_cle';
+const AWARDS_KEY = 'eq_awards';
+let CLE_DATA    = null;
+let AWARDS_DATA = null;
+
+function saveCLEData(d) {
+  EQ_DB.set(CLE_KEY, d).catch(e => console.error('[CLE] IDB save:', e));
+}
+async function loadCLEData() {
+  return EQ_DB.get(CLE_KEY).catch(() => null);
+}
+function saveAwardsData(d) {
+  EQ_DB.set(AWARDS_KEY, d).catch(e => console.error('[Awards] IDB save:', e));
+}
+async function loadAwardsData() {
+  return EQ_DB.get(AWARDS_KEY).catch(() => null);
+}
+
+// ─── RENDER: CLE ───────────────────────────────────────────
+function renderCLE() {
+  const canon   = getCanon(); if (!canon) return;
+  const season  = getOrInitSeason();
+  const panelEl = document.getElementById('cle-run-panel');
+  const fullEl  = document.getElementById('cle-full');
+
+  // CLE_DATA est pré-chargé par boot() — pas de loadCLEData() ici
+  // (loadCLEData est async, l'appeler sans await = assigner une Promise → DataCloneError)
+  const cleReady = CLE_DATA && CLE_DATA.phase === 'complete';
+  const seasonDone = season && season.finished;
+
+  // Control panel
+  if (panelEl) {
+    if (!cleReady) {
+const clePhase = CLE_DATA ? CLE_DATA.phase : 'idle';
+    const nextLabel = CLE_DATA ? CLEEngine.getNextPhaseLabel(clePhase) : 'Tour de qual. 1';
+    const curLabel  = CLE_DATA ? CLEEngine.getPhaseLabel(clePhase) : '—';
+    const inProgress = CLE_DATA && clePhase !== 'idle' && clePhase !== 'complete';
+    panelEl.innerHTML = `
+      <div class="season-panel" style="margin-bottom:24px;flex-wrap:wrap;gap:10px">
+        <div class="season-info">
+          <div class="round-label">${seasonDone ? (inProgress ? '🏆 CLE en cours : ' + curLabel : 'Saison terminée — CLE prête') : 'Saison en cours'}</div>
+          <div class="round-sub">${inProgress ? 'Prochaine phase : ' + (nextLabel||'—') : (seasonDone ? '144 clubs s&#39;affrontent' : 'Termine la saison pour lancer la CLE')}</div>
+        </div>
+        <button class="ctrl-btn ctrl-btn-primary" ${(seasonDone && clePhase!=='complete')?'':'disabled'} onclick="runCLE()">
+          ▶ ${nextLabel||'Phase suivante'}
+        </button>
+        <button class="ctrl-btn ctrl-btn-ghost" ${seasonDone?'':'disabled'} onclick="runCLEFull()" style="font-size:12px">
+          ⏩ Tout simuler
+        </button>
+      </div>`;
+    } else {
+      panelEl.innerHTML = `
+      <div class="season-panel" style="margin-bottom:24px">
+        <div class="season-info">
+          <div class="round-label" style="color:var(--gold)">🏆 CLE Saison ${CLE_DATA.year||season?.year||2025} — Terminée</div>
+          <div class="round-sub">Vainqueur : <b>${_clubName(CLE_DATA.winner, canon)}</b></div>
+        </div>
+        <button class="ctrl-btn ctrl-btn-ghost" onclick="resetCLE()">↺ Relancer</button>
+      </div>`;
+    }
+  }
+
+  if (!fullEl) return;
+
+  if (!cleReady) {
+    if (CLE_DATA && CLE_DATA.phase !== 'idle') {
+      // CLE en cours — affiche les résultats des phases jouées
+      renderCLEInProgress(fullEl, CLE_DATA, canon);
+    } else {
+      renderCLEStructure(fullEl, canon);
+    }
+    return;
+  }
+
+  // CLE terminée
+  renderCLEResults(fullEl, CLE_DATA, canon);
+}
+
+window.runCLE = function() {
+  const canon  = getCanon(); if (!canon) return;
+  const season = getOrInitSeason(); if (!season?.finished) return;
+  if (!CLE_DATA || CLE_DATA.phase === 'complete') {
+    CLE_DATA = CLEEngine.initCLE(canon, season);
+    CLE_DATA.year = season.year;
+  }
+  if (CLE_DATA.phase === 'complete') return;
+  const btn = document.querySelector('#cle-run-panel .ctrl-btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Simulation...'; }
+  setTimeout(() => {
+    CLE_DATA = CLEEngine.tickCLE(CLE_DATA, canon);
+    saveCLEData(CLE_DATA);
+    if (CLE_DATA.phase === 'complete') {
+      AWARDS_DATA = null;
+      EQ_DB.del(AWARDS_KEY);
+    }
+    renderCLE();
+  }, 50);
+};
+
+window.runCLEFull = async function() {
+  const canon  = getCanon(); if (!canon) return;
+  const season = getOrInitSeason(); if (!season?.finished) return;
+  if (!confirm('Simuler toute la CLE en une fois ?')) return;
+  // Sécurité ghost nations
+  if (typeof mergeGhostNations === 'function' && !canon._ghostMerged) mergeGhostNations(canon);
+  // Initialise si besoin
+  if (!CLE_DATA || CLE_DATA.phase === 'complete') {
+    CLE_DATA = CLEEngine.initCLE(canon, season);
+    CLE_DATA.year = season.year;
+  }
+  // Async pour éviter freeze — yield entre chaque phase
+  const btn = document.querySelector('[onclick="runCLEFull()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Simulation...'; }
+  CLE_DATA = await CLEEngine.runFullCLEAsync(CLE_DATA, canon, updated => {
+    renderCLE(); // re-render après chaque phase pour voir la progression
+  });
+  CLE_DATA.year = season.year;
+  saveCLEData(CLE_DATA);
+  AWARDS_DATA = null;
+  EQ_DB.del(AWARDS_KEY);
+  renderCLE();
+};
+
+window.resetCLE = function() {
+  if (!confirm('Relancer la CLE ? Les résultats seront perdus.')) return;
+  CLE_DATA = null;
+  EQ_DB.del(CLE_KEY);
+  renderCLE();
+};
+
+function renderCLEStructure(el, canon) {
+  el.innerHTML = `
+  <div class="cle-card">
+    <div class="cle-header">
+      <span style="font-size:24px">🏆</span>
+      <span class="cle-title">STRUCTURE DE LA COMPÉTITION</span>
+    </div>
+    <div class="cle-body">
+      <div class="cle-phases">
+        <div class="cle-phase">
+          <div class="phase-name">Qualification R1</div>
+          <div class="phase-row"><span>Clubs</span><span class="val">80</span></div>
+          <div class="phase-row"><span>Byes R2</span><span class="val">24</span></div>
+          <div class="phase-row"><span>Byes R3</span><span class="val">16</span></div>
+          <div class="phase-row"><span>Format</span><span class="val">Aller-Retour</span></div>
+        </div>
+        <div class="cle-phase" style="border-color:var(--gold)">
+          <div class="phase-name" style="color:var(--gold)">Phase de ligue</div>
+          <div class="phase-row"><span>Clubs directs</span><span class="val">24</span></div>
+          <div class="phase-row"><span>Qualifiés</span><span class="val">12</span></div>
+          <div class="phase-row"><span>Total</span><span class="val">36</span></div>
+          <div class="phase-row"><span>Matchs/club</span><span class="val">8</span></div>
+        </div>
+        <div class="cle-phase">
+          <div class="phase-name">Knockout</div>
+          <div class="phase-row"><span>Playoff</span><span class="val">16→8</span></div>
+          <div class="phase-row"><span>Huitièmes</span><span class="val">16→8</span></div>
+          <div class="phase-row"><span>Quarts</span><span class="val">8→4</span></div>
+          <div class="phase-row"><span>Demies + Finale</span><span class="val">4→1</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="color:var(--muted);text-align:center;padding:32px;font-size:14px">
+    Lance la saison complète pour débloquer la CLE.
+  </div>`;
+}
+
+function renderCLEResults(el, cle, canon) {
+  const winner = _clubName(cle.winner, canon);
+
+  // Standings phase de ligue
+  const leagueRows = cle.leaguePhase.standings.slice(0,12).map((row,i) => {
+    const name = _clubName(row.id, canon);
+    const zone = i<8?'color:var(--gold)':i<16?'color:var(--blue)':'color:var(--red)';
+    return `<tr>
+      <td style="color:var(--muted);font-family:var(--font-mono)">${i+1}</td>
+      <td style="${zone};font-weight:600">${name}</td>
+      <td>${row.played}</td>
+      <td><b style="color:var(--gold);font-family:var(--font-mono)">${row.pts}</b></td>
+      <td style="font-family:var(--font-mono);color:${row.gd>=0?'var(--green)':'var(--red)'}">${row.gd>=0?'+':''}${row.gd}</td>
+    </tr>`;
+  }).join('');
+
+  // Knockout results
+  const koRound = (title, round, twoLegs=true) => {
+    if (!round?.results?.length) return '';
+    const rows = round.results.map(r => {
+      const h = _clubName(r.home, canon);
+      const a = _clubName(r.away, canon);
+      const w = _clubName(r.winner, canon);
+      // Leg2 : score.home = buts de l'équipe away (qui joue à domicile au retour)
+      const score = twoLegs
+        ? `${r.leg1?.score?.home??'?'}-${r.leg1?.score?.away??'?'} / ${r.leg2?.score?.home??'?'}-${r.leg2?.score?.away??'?'} (${r.agg?.home??'?'}-${r.agg?.away??'?'})`
+        : `${r.score?.home??'?'}-${r.score?.away??'?'}`;
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px">
+        <span style="${w===h?'color:var(--white);font-weight:600':'color:var(--muted)'}">${h}</span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:center;flex-shrink:0;padding:0 12px">${score}</span>
+        <span style="${w===a?'color:var(--white);font-weight:600':'color:var(--muted)'};text-align:right">${a}</span>
+      </div>`;
+    }).join('');
+    return `<div class="cle-card" style="margin-bottom:16px">
+      <div class="cle-header"><span class="cle-title" style="font-size:15px">${title}</span></div>
+      <div style="padding:4px 24px 16px">${rows}</div>
+    </div>`;
+  };
+
+  // ── Stats CLE ──────────────────────────────────────────────
+  const cleStats = CLEEngine.computeCLEStats(cle, canon);
+  const statTable = (title, emoji, players, statKey, label2, key2) => {
+    if (!players?.length) return '';
+    const rows = players.slice(0,10).map((s, i) => {
+      const name = s.player?.name || s.id;
+      const club = s.clubName || '?';
+      return `<tr>
+        <td style="color:var(--muted);font-family:var(--font-mono)">${i+1}</td>
+        <td><b>${name}</b></td>
+        <td style="color:var(--muted);font-size:12px">${club}</td>
+        <td><span class="stat-num">${s[statKey]}</span></td>
+        ${key2 !== undefined ? `<td style="color:var(--muted)">${s[key2]}</td>` : ''}
+      </tr>`;
+    }).join('');
+    return `<div class="cle-card" style="margin-bottom:16px">
+      <div class="cle-header"><span style="font-size:18px">${emoji}</span><span class="cle-title" style="font-size:15px">${title}</span></div>
+      <div style="padding:4px 24px 16px">
+        <table class="stats-table">
+          <thead><tr><th>#</th><th>Joueur</th><th>Club</th><th>${label2}</th>${key2!==undefined?'<th>Bonus</th>':''}</tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  };
+
+  el.innerHTML = `
+  <!-- WINNER BANNER -->
+  <div style="background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));
+    border:1px solid var(--gold);border-radius:16px;padding:32px;text-align:center;margin-bottom:28px">
+    <div style="font-size:48px;margin-bottom:12px">🏆</div>
+    <div style="font-family:var(--font-display);font-size:36px;color:var(--gold);letter-spacing:3px">${winner.toUpperCase()}</div>
+    <div style="color:var(--muted);margin-top:6px;font-size:14px">Champion de la CLE • Saison ${cle.year||2025}</div>
+  </div>
+
+  <!-- LEAGUE PHASE -->
+  <div class="section-header"><div class="section-title" style="font-size:18px">PHASE DE LIGUE</div><div class="section-line"></div><span style="font-size:11px;color:var(--muted)">Top 12 affiché</span></div>
+  <table class="standings-table" style="margin-bottom:28px">
+    <thead><tr><th>#</th><th>Club</th><th>J</th><th>Pts</th><th>GD</th></tr></thead>
+    <tbody>${leagueRows}</tbody>
+  </table>
+  <div style="display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;font-size:12px">
+    <span style="color:var(--gold)">■ Top 8 = Huitièmes directs</span>
+    <span style="color:var(--blue)">■ 9-24 = Playoff</span>
+    <span style="color:var(--red)">■ 25-36 = Éliminés</span>
+  </div>
+
+  <!-- KNOCKOUT -->
+  <div class="section-header"><div class="section-title" style="font-size:18px">PHASES KNOCKOUT</div><div class="section-line"></div></div>
+  ${koRound('PLAYOFF ROUND (A/R)', cle.knockout.playoff)}
+  ${koRound('HUITIÈMES DE FINALE (A/R)', cle.knockout.r16)}
+  ${koRound('QUARTS DE FINALE (A/R)', cle.knockout.qf)}
+  ${koRound('DEMI-FINALES (A/R)', cle.knockout.sf)}
+  ${koRound('⚽ FINALE', cle.knockout.final, false)}
+
+  <!-- CLE STATS -->
+  <div class="section-header" style="margin-top:12px">
+    <div class="section-title" style="font-size:18px">STATISTIQUES CLE</div>
+    <div class="section-line"></div>
+  </div>
+  ${statTable('MEILLEURS BUTEURS CLE', '⚽', cleStats.scorers, 'goals', '⚽ Buts', 'assists')}
+  ${statTable('MEILLEURS PASSEURS CLE', '🎯', cleStats.assists, 'assists', '🎯 Passes', 'goals')}
+  ${statTable('HOMME DU MATCH CLE', '⭐', cleStats.motm.filter(s=>s.motm>0), 'motm', '⭐ MOTM')}
+  `;
+}
+
+// ─── RENDER: AWARDS ────────────────────────────────────────
+function renderAwards() {
+  const canon  = getCanon(); if (!canon) return;
+  const season = getOrInitSeason();
+  const panelEl= document.getElementById('awards-run-panel');
+  const contEl = document.getElementById('awards-content');
+
+  AWARDS_DATA = AWARDS_DATA || null; // pré-chargé dans boot()
+  CLE_DATA    = CLE_DATA    || null;
+
+  const seasonDone = season?.finished;
+  const hasAwards  = AWARDS_DATA && AWARDS_DATA.season === season?.year;
+
+  if (panelEl) {
+    if (!hasAwards) {
+      panelEl.innerHTML = `
+      <div class="season-panel" style="margin-bottom:24px">
+        <div class="season-info">
+          <div class="round-label">${seasonDone?'Saison terminée — Awards disponibles':'Saison en cours'}</div>
+          <div class="round-sub">Les awards incluent le Ballon d'Or, Meilleur XI, Soulier d'Or</div>
+        </div>
+        <button class="ctrl-btn ctrl-btn-primary" ${seasonDone?'':'disabled'} onclick="computeAwards()">
+          🏆 Calculer les Awards
+        </button>
+      </div>`;
+    } else {
+      panelEl.innerHTML = `
+      <div class="season-panel" style="margin-bottom:24px">
+        <div class="season-info">
+          <div class="round-label" style="color:var(--gold)">🏆 Awards Saison ${AWARDS_DATA.season}</div>
+          <div class="round-sub">Ballon d'Or : <b>${AWARDS_DATA.ballonDor?.name||'—'}</b></div>
+        </div>
+        <button class="ctrl-btn ctrl-btn-ghost" onclick="resetAwards()">↺ Recalculer</button>
+      </div>`;
+    }
+  }
+
+  if (!contEl) return;
+  if (!hasAwards) { contEl.innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px;font-size:14px">Lance la saison et calcule les awards pour voir les résultats.</div>'; return; }
+
+  renderAwardsContent(contEl, AWARDS_DATA, canon);
+}
+
+window.computeAwards = function() {
+  const canon  = getCanon(); if (!canon) return;
+  const season = getOrInitSeason(); if (!season?.finished) return;
+  AWARDS_DATA  = AwardsEngine.computeAwards(season, canon, CLE_DATA, EURO_DATA);
+  saveAwardsData(AWARDS_DATA);
+  renderAwards();
+};
+
+window.resetAwards = function() {
+  AWARDS_DATA = null;
+  EQ_DB.del(AWARDS_KEY);
+  renderAwards();
+};
+
+function renderAwardsContent(el, awards, canon) {
+  const card = (emoji, title, award, extraStats='') => {
+    if (!award) return `<div class="cle-card"><div class="cle-header"><span>${emoji}</span><span class="cle-title" style="font-size:15px">${title}</span></div><div style="padding:16px;color:var(--muted);font-size:13px">Aucune donnée</div></div>`;
+    return `
+    <div class="cle-card">
+      <div class="cle-header">
+        <span style="font-size:20px">${emoji}</span>
+        <span class="cle-title" style="font-size:15px">${title}</span>
+        ${award.trophies>0?`<span class="pill pill-gold" style="margin-left:auto">${award.trophies} titre${award.trophies>1?'s':''}</span>`:''}
+      </div>
+      <div style="padding:16px 24px">
+        <div style="font-size:20px;font-weight:700;color:var(--white)">${award.name}</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px">${award.club} · ${award.position} · ${award.nationality} · ${award.age} ans</div>
+        <div style="display:flex;gap:20px;margin-top:12px;flex-wrap:wrap">
+          ${award.goals!==undefined?`<div class="hub-stat"><span class="val" style="font-size:22px">${award.goals}</span><span class="lbl">Buts</span></div>`:''}
+          ${award.assists!==undefined?`<div class="hub-stat"><span class="val" style="font-size:22px">${award.assists}</span><span class="lbl">Passes D.</span></div>`:''}
+          ${award.matches!==undefined?`<div class="hub-stat"><span class="val" style="font-size:22px">${award.matches}</span><span class="lbl">Matchs</span></div>`:''}
+          ${award.avgRating?`<div class="hub-stat"><span class="val" style="font-size:22px">${award.avgRating}</span><span class="lbl">Note Moy.</span></div>`:''}
+          ${award.cleanSheets>0?`<div class="hub-stat"><span class="val" style="font-size:22px">${award.cleanSheets}</span><span class="lbl">Clean Sheets</span></div>`:''}
+          ${award.motm>0?`<div class="hub-stat"><span class="val" style="font-size:22px">${award.motm}</span><span class="lbl">MOTM</span></div>`:''}
+        </div>
+        ${extraStats}
+      </div>
+    </div>`;
+  };
+
+  // Ballon d'Or top 10
+  const bdTop10 = (awards.ballonDorTop10||[]).map((a,i) => `
+    <tr>
+      <td style="color:${i===0?'var(--gold)':'var(--muted)'};font-family:var(--font-mono);font-weight:700">${i===0?'🏆':i+1}</td>
+      <td><b style="color:${i===0?'var(--gold)':'var(--white)'}">${a.name}</b></td>
+      <td><span class="pos-badge">${a.position}</span></td>
+      <td style="color:var(--muted);font-size:12px">${a.club}</td>
+      <td style="font-family:var(--font-mono);color:var(--gold)">${a.bdScore}</td>
+      <td>${a.goals}</td><td>${a.assists}</td><td>${a.avgRating}</td>
+    </tr>`).join('');
+
+  // Meilleur XI
+  const xi = awards.bestXI || { GK:[], DEF:[], MID:[], ATK:[] };
+  const xiCard = (pos, players) => players.map(p => `
+    <div class="club-card" style="padding:10px 14px">
+      <div class="club-icon" style="background:var(--panel);font-size:14px">${{GK:'🥊',DEF:'🛡',MID:'⚙️',ATK:'⚡'}[pos]||'⚽'}</div>
+      <div class="club-card-info">
+        <div class="club-card-name">${p.name}</div>
+        <div class="club-card-meta">${p.position} · ⚽${p.goals} 🎯${p.assists} ★${p.rating}</div>
+      </div>
+    </div>`).join('');
+
+  // Champions
+  const champsRows = Object.values(awards.champions||{}).map(ch => {
+    const meta = LEAGUE_META[Object.keys(awards.champions).find(k=>awards.champions[k]===ch)||''] || {emoji:'🏆'};
+    return `<tr>
+      <td style="font-size:16px">${meta.emoji||'🏆'}</td>
+      <td style="color:var(--muted);font-size:13px">${ch.leagueName}</td>
+      <td><b>${ch.club?.name||'—'}</b></td>
+      <td style="font-family:var(--font-mono);color:var(--gold)">${ch.stats?.pts||0} pts</td>
+      <td style="color:var(--muted)">${ch.stats?.won||0}V ${ch.stats?.drawn||0}N ${ch.stats?.lost||0}D</td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `
+  <!-- Ballon d'Or -->
+  <div style="margin-bottom:28px">
+    <div class="section-header"><div class="section-title">BALLON D'OR</div><div class="section-line"></div></div>
+    ${card('🏆','BALLON D\'OR', awards.ballonDor)}
+    ${bdTop10?`
+    <div style="margin-top:16px">
+      <table class="stats-table">
+        <thead><tr><th>#</th><th>Joueur</th><th>Poste</th><th>Club</th><th>Score</th><th>⚽</th><th>🎯</th><th>★</th></tr></thead>
+        <tbody>${bdTop10}</tbody>
+      </table>
+    </div>`:''}
+  </div>
+
+  <!-- Awards par poste -->
+  <div class="section-header"><div class="section-title">AWARDS PAR POSTE</div><div class="section-line"></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:28px">
+    ${card('🥊','MEILLEUR GARDIEN',    awards.bestGK)}
+    ${card('🛡','MEILLEUR DÉFENSEUR', awards.bestDEF)}
+    ${card('⚙️','MEILLEUR MILIEU',    awards.bestMID)}
+    ${card('⚡','MEILLEUR ATTAQUANT', awards.bestATK)}
+    ${card('🌟','MEILLEUR JEUNE',     awards.bestYoung)}
+    ${card('👟','SOULIER D\'OR',      awards.goldenBoot)}
+    ${card('🎯','MEILLEUR PASSEUR',   awards.goldenAssist)}
+    ${awards.cleMVP?card('🏆','MVP CLE',awards.cleMVP):''}
+  </div>
+
+  <!-- Meilleur XI -->
+  <div class="section-header"><div class="section-title">MEILLEUR XI (4-3-3)</div><div class="section-line"></div></div>
+  <div style="margin-bottom:28px">
+    <div style="margin-bottom:8px;font-size:11px;color:var(--muted);letter-spacing:1px">GARDIEN</div>
+    <div class="top-clubs-grid" style="margin-bottom:16px">${xiCard('GK',xi.GK)}</div>
+    <div style="margin-bottom:8px;font-size:11px;color:var(--muted);letter-spacing:1px">DÉFENSEURS</div>
+    <div class="top-clubs-grid" style="margin-bottom:16px">${xiCard('DEF',xi.DEF)}</div>
+    <div style="margin-bottom:8px;font-size:11px;color:var(--muted);letter-spacing:1px">MILIEUX</div>
+    <div class="top-clubs-grid" style="margin-bottom:16px">${xiCard('MID',xi.MID)}</div>
+    <div style="margin-bottom:8px;font-size:11px;color:var(--muted);letter-spacing:1px">ATTAQUANTS</div>
+    <div class="top-clubs-grid" style="margin-bottom:16px">${xiCard('ATK',xi.ATK)}</div>
+  </div>
+
+  <!-- Champions -->
+  <div class="section-header"><div class="section-title">CHAMPIONS PAR LIGUE</div><div class="section-line"></div></div>
+  `;
+  // ── Statistiques CLE ────────────────────────────────────
+  // Calcule les stats depuis les matchs stockés (phase de ligue + KO)
+  const cleStats = {};
+  function _trackMatch(m) {
+    if (!m) return;
+    for (const ev of (m.events||[])) {
+      if (ev.type!=='goal') continue;
+      const sid=ev.scorer?.name||ev.scorer?.id;
+      const aid=ev.assistant?.name||ev.assistant?.id;
+      if (sid) { if(!cleStats[sid])cleStats[sid]={name:sid,goals:0,assists:0,matches:0,motm:0}; cleStats[sid].goals++; }
+      if (aid) { if(!cleStats[aid])cleStats[aid]={name:aid,goals:0,assists:0,matches:0,motm:0}; cleStats[aid].assists++; }
+    }
+    for (const pid of Object.keys(m.ratings||{})) {
+      if(!cleStats[pid])cleStats[pid]={name:pid,goals:0,assists:0,matches:0,motm:0};
+      cleStats[pid].matches++;
+    }
+    const motm=m.motm?.name||m.motm?.id;
+    if(motm){if(!cleStats[motm])cleStats[motm]={name:motm,goals:0,assists:0,matches:0,motm:0};cleStats[motm].motm++;}
+  }
+  for (const r of (cle.leaguePhase?.results||[])) _trackMatch(r);
+  for (const round of Object.values(cle.knockout||{})) {
+    for (const r of (round?.results||[])) {
+      if (r.leg1) _trackMatch({events:r.leg1.events,ratings:r.leg1.ratings,motm:r.leg1.motm});
+      if (r.leg2) _trackMatch({events:r.leg2.events,ratings:r.leg2.ratings,motm:r.leg2.motm});
+      if (r.events) _trackMatch(r);
+    }
+  }
+
+  const cleList = Object.values(cleStats);
+  if (cleList.length > 0) {
+    const topSc = [...cleList].sort((a,b)=>(b.goals-a.goals)||(b.assists-a.assists)).slice(0,8);
+    const topAs = [...cleList].sort((a,b)=>(b.assists-a.assists)||(b.goals-a.goals)).slice(0,8);
+    const mvpCLE = [...cleList].sort((a,b)=>((b.goals*6+b.assists*4+b.motm*3+b.matches*.5)-(a.goals*6+a.assists*4+a.motm*3+a.matches*.5)))[0];
+    const sRow = (s,i,g=true) => `<tr>
+      <td style="color:var(--muted);font-family:var(--font-mono)">${i+1}</td>
+      <td style="color:var(--white)">${s.name}</td>
+      <td style="text-align:center"><b style="color:var(--gold);font-family:var(--font-mono)">${g?s.goals:s.assists}</b></td>
+      <td style="text-align:center;color:var(--muted)">${g?s.assists:s.goals}</td>
+    </tr>`;
+    el.innerHTML += `
+    <div class="section-header" style="margin-bottom:16px;margin-top:8px">
+      <div class="section-title" style="font-size:18px">STATISTIQUES CLE</div>
+      <div class="section-line"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+      <div>
+        <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:8px">⚽ MEILLEURS BUTEURS</div>
+        <table class="stats-table"><thead><tr><th>#</th><th>Joueur</th><th>Buts</th><th>Passes</th></tr></thead>
+        <tbody>${topSc.map((s,i)=>sRow(s,i,true)).join('')}</tbody></table>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:8px">🎯 MEILLEURS PASSEURS</div>
+        <table class="stats-table"><thead><tr><th>#</th><th>Joueur</th><th>Passes</th><th>Buts</th></tr></thead>
+        <tbody>${topAs.map((s,i)=>sRow(s,i,false)).join('')}</tbody></table>
+      </div>
+    </div>
+    ${mvpCLE ? `<div style="background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));border:1px solid var(--gold);border-radius:12px;padding:18px 24px;text-align:center;margin-bottom:20px">
+      <div style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:8px">🏅 MVP DE LA CLE</div>
+      <div style="font-size:22px;font-weight:700;color:var(--white)">${mvpCLE.name}</div>
+      <div style="color:var(--muted);font-size:13px;margin-top:4px">${mvpCLE.goals} buts · ${mvpCLE.assists} passes · ${mvpCLE.matches} matchs · ${mvpCLE.motm} MOTM</div>
+    </div>` : ''}`;
+  }
+}
+
+// ─── CLE helper ────────────────────────────────────────────
+function _clubName(id, canon) {
+  return canon?.clubs?.[id]?.name || id || '?';
+}
+
+// ─── RENDER: CLE PREVIEW CARD (utilisée dans renderHub) ────
+function renderCLECard(containerId, compact = false) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const cle   = CLE_DATA;
+  const canon = getCanon();
+  if (!cle) {
+    el.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:12px 0">
+      CLE non lancée — simule la saison complète pour débloquer.
+    </div>`;
+    return;
+  }
+  const phaseName = CLEEngine.getPhaseLabel(cle.phase);
+  const winner    = cle.winner ? (_clubName(cle.winner, canon)) : null;
+  const nextLabel = CLEEngine.getNextPhaseLabel(cle.phase, cle.mode);
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div>
+        <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:4px">
+          CLE ${cle.year || ''}
+        </div>
+        <div style="font-size:15px;font-weight:700;color:var(--white)">${phaseName}</div>
+        ${winner
+          ? `<div style="font-size:13px;color:var(--gold);margin-top:4px">🏆 ${winner}</div>`
+          : nextLabel
+          ? `<div style="font-size:12px;color:var(--muted);margin-top:4px">Prochaine : ${nextLabel}</div>`
+          : ''}
+      </div>
+      ${compact ? '' : `<button class="ctrl-btn ctrl-btn-ghost" style="font-size:12px" onclick="navigate('cle')">Voir →</button>`}
+    </div>`;
+}
+
+// ─── RENDER: EURO ──────────────────────────────────────────
+
+// ═══════════════════════════════════════════════════════════════
+// EURO — Render functions
+// ═══════════════════════════════════════════════════════════════
+
+function getOrInitEuro() {
+  return EURO_DATA || null; // boot() pré-charge depuis IndexedDB
+}
+
+function renderEuroFull() {
+  const canon   = getCanon(); if (!canon) return;
+  const season  = getOrInitSeason();
+  const euro    = getOrInitEuro();
+  const panelEl = document.getElementById('euro-full');
+  if (!panelEl) return;
+
+  const seasonDone = season?.finished;
+  const phase      = euro?.phase || 'idle';
+  const inProgress = euro && phase !== 'idle' && phase !== 'complete';
+  const complete   = phase === 'complete';
+  const isGroupPhase = ['group_j1','group_j2','group_j3'].includes(phase);
+  const nextLabel  = EuroEngine.getNextPhaseLabel(phase);
+  const curLabel   = EuroEngine.getPhaseLabel(phase);
+
+  const freq    = canon.euro?.frequency_seasons || 4;
+  const curYear = season?.year || 2025;
+  const euroYear = Math.ceil(curYear / freq) * freq;
+  const isEuroSeason = (curYear % freq === 0) || inProgress || complete;
+
+  const controlHtml = `<div class="season-panel" style="margin-bottom:24px;flex-wrap:wrap;gap:10px">
+    <div class="season-info">
+      <div class="round-label">${complete
+        ? '\u{1F30D} Euro ' + (euro?.year||curYear) + ' \u2014 Termin\u00e9 \u00b7 Vainqueur : ' + EuroEngine.getNationFlag(euro.winner) + ' ' + EuroEngine.getNationName(euro.winner)
+        : inProgress
+          ? '\u{1F30D} Euro ' + (euro?.year||curYear) + ' en cours : ' + curLabel
+          : isEuroSeason
+            ? '\u{1F30D} Euro ' + euroYear + ' \u2014 Disponible cette saison'
+            : '\u{1F30D} Euro ' + euroYear + ' \u2014 Dans ' + (euroYear - curYear) + ' saison(s)'}</div>
+      <div class="round-sub">${inProgress
+        ? 'Prochaine phase : ' + (nextLabel||'\u2014')
+        : complete
+          ? '24 nations \u00b7 6 groupes \u00b7 Knockout simple match'
+          : 'Tournoi des nations toutes les ' + freq + ' saisons'}</div>
+    </div>
+    <button class="ctrl-btn ctrl-btn-primary" onclick="tickEuroUI()"
+      ${(isEuroSeason && !complete && seasonDone) ? '' : 'disabled'}>
+      \u25b6 ${nextLabel||'Phase suivante'}
+    </button>
+    <button class="ctrl-btn ctrl-btn-ghost" onclick="runEuroFull()"
+      ${(isEuroSeason && !complete && seasonDone) ? '' : 'disabled'} style="font-size:12px">
+      \u23e9 Tout simuler
+    </button>
+    ${(complete || inProgress) ? '<button class="ctrl-btn ctrl-btn-ghost" onclick="resetEuro()" style="font-size:12px">\u21ba Relancer</button>' : ''}
+  </div>`;
+
+  if (!inProgress && !complete) {
+    panelEl.innerHTML = controlHtml + '<div id="euro-content">' + renderEuroStructure(canon, curYear, freq) + '</div>';
+    return;
+  }
+
+  if (!STATE.euroGroupJourney) {
+    STATE.euroGroupJourney = isGroupPhase
+      ? parseInt(phase.replace('group_j','')) || 1
+      : 3;
+  }
+
+  panelEl.innerHTML = controlHtml + '<div id="euro-content">' + renderEuroState(euro, canon) + '</div>';
+}
+
+
+window.tickEuroUI = function() {
+  const canon  = getCanon(); if (!canon) return;
+  const season = getOrInitSeason(); if (!season?.finished) return;
+  if (!EURO_DATA) {
+    EURO_DATA = EuroEngine.initEuro(canon, season);
+  }
+  if (EURO_DATA.phase === 'complete') return;
+  EURO_DATA = EuroEngine.tickEuro(EURO_DATA, canon);
+  EuroEngine.saveEuro(EURO_DATA);
+  renderEuroFull();
+};
+
+window.runEuroFull = function() {
+  const canon  = getCanon(); if (!canon) return;
+  const season = getOrInitSeason(); if (!season?.finished) return;
+  if (!confirm('Simuler tout l\'Euro en une fois ?')) return;
+  EURO_DATA = EuroEngine.runFullEuro(canon, season);
+  EuroEngine.saveEuro(EURO_DATA);
+  renderEuroFull();
+};
+
+window.resetEuro = function() {
+  if (!confirm('Relancer l\'Euro ? Les résultats seront perdus.')) return;
+  EURO_DATA = null;
+  EuroEngine.clearEuro();
+  renderEuroFull();
+};
+
+window.showNationSquad = function(natId) {
+  const canon  = getCanon(); if (!canon) return;
+  const flag   = EuroEngine.getNationFlag(natId);
+  const name   = EuroEngine.getNationName(natId);
+  const color  = EuroEngine.getNationColor(natId);
+  const squad  = EuroEngine.buildNationalSquad(natId, canon, 26);
+  if (!squad.length) return;
+
+  const tacKey  = 'nat_' + natId;
+  const curForm = CLUB_TACTICS[tacKey]?.formation || MatchEngine.DEFAULT_FORMATION;
+  const formations = Object.keys(MatchEngine.FORMATIONS);
+  const xi      = MatchEngine._selectStartingXI(squad, curForm);
+  const xiIds   = new Set(xi.map(p=>p.id||p.name));
+
+  const posColor = { GK:'#f59e0b',CB:'#3b82f6',LB:'#3b82f6',RB:'#3b82f6',
+    CDM:'#10b981',CM:'#10b981',CAM:'#10b981',LW:'#ef4444',RW:'#ef4444',ST:'#ef4444' };
+
+  const startRows = xi.map(p=>`<tr style="background:rgba(201,168,76,.04)">
+    <td><span style="background:${posColor[p.slotPosition]||'#555'};color:#000;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700">${p.slotPosition}</span></td>
+    <td style="font-weight:600;color:var(--white)">${p.name}</td>
+    <td style="color:var(--muted)">${p.age||'—'}</td>
+    <td><b style="color:var(--gold);font-family:var(--font-mono)">${p.ovr||'—'}</b></td>
+    <td style="color:var(--muted);font-size:11px">${canon.clubs[p.club]?.name||'—'}</td>
+  </tr>`).join('');
+
+  const benchRows = squad.filter(p=>!xiIds.has(p.id||p.name)).map(p=>`<tr>
+    <td><span style="background:${posColor[p.position]||'#555'};color:#000;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700">${p.position}</span></td>
+    <td style="color:var(--muted)">${p.name}</td>
+    <td style="color:var(--muted)">${p.age||'—'}</td>
+    <td style="color:var(--muted)">${p.ovr||'—'}</td>
+    <td style="color:var(--muted);font-size:11px">${canon.clubs[p.club]?.name||'—'}</td>
+  </tr>`).join('');
+
+  const formBtns = formations.map(f=>`<button onclick="changeNatFormation('${natId}','${f}')"
+    style="background:${f===curForm?'var(--gold)':'var(--surface)'};color:${f===curForm?'#000':'var(--muted)'};border:1px solid ${f===curForm?'var(--gold)':'var(--border)'};border-radius:6px;padding:4px 9px;cursor:pointer;font-size:11px;font-family:var(--font-mono)">${f}</button>`).join('');
+
+  const pitch = _buildFormationPitch(xi, curForm, color);
+  const natFlag = natFlag ? '' : ''; // already a var name — use inline
+
+  const modal = document.createElement('div');
+  modal.id = 'nation-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:20px 16px;overflow-y:auto';
+  modal.innerHTML = `
+    <div translate="no" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:900px;width:100%">
+      <div style="padding:18px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;align-items:center;gap:12px">
+          ${EuroEngine.getNationFlag(natId) ? `<span style="font-size:36px">${EuroEngine.getNationFlag(natId)}</span>` : ''}
+          <div>
+            <div style="font-family:var(--font-title);font-size:20px;color:${color}">${name} — Sélection nationale</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">${squad.length} joueurs sélectionnés · Formation : <b style="color:var(--gold)">${curForm}</b></div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('nation-modal').remove()"
+          style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px">✕</button>
+      </div>
+      <div style="padding:14px 24px;border-bottom:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px">FORMATION</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">${formBtns}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:260px 1fr">
+        <div style="padding:14px;border-right:1px solid var(--border)">${pitch}</div>
+        <div style="padding:14px;overflow-y:auto;max-height:480px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:6px">TITULAIRES</div>
+          <table class="standings-table" style="width:100%;margin-bottom:16px">
+            <thead><tr><th>Slot</th><th>Joueur</th><th>Âge</th><th>OVR</th><th>Club</th></tr></thead>
+            <tbody>${startRows}</tbody>
+          </table>
+          <div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:6px">REMPLAÇANTS</div>
+          <table class="standings-table" style="width:100%">
+            <thead><tr><th>Pos.</th><th>Joueur</th><th>Âge</th><th>OVR</th><th>Club</th></tr></thead>
+            <tbody>${benchRows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+  document.getElementById('nation-modal')?.remove();
+  document.body.appendChild(modal);
+};
+
+window.changeNatFormation = function(natId, formation) {
+  const tacKey = 'nat_' + natId;
+  CLUB_TACTICS[tacKey] = { formation, customXI: null };
+  EQ_DB.set('eq_tactics', CLUB_TACTICS).catch(()=>{});
+  showNationSquad(natId);
+};
+
+function renderEuroStructure(canon, curYear, freq) {
+  const euroYear = Math.ceil(curYear / freq) * freq;
+  const nations  = Object.entries(EuroEngine.NATION_META);
+  const realNationIds = nations.filter(([id]) =>
+    Object.values(canon.players).some(p => p.nationality === id)
+  ).map(([id]) => id);
+
+  const nationCards = nations.map(([id, meta]) => {
+    const strength = EuroEngine.nationStrength(id, canon);
+    const isReal   = realNationIds.includes(id);
+    return `<div style="background:var(--bg);border:1px solid ${isReal?meta.color:'var(--border)'};border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;opacity:${isReal?1:0.5}">
+      <div>
+        <div style="font-size:18px;margin-bottom:2px">${meta.flag}</div>
+        <div style="font-weight:600;font-size:14px;color:${isReal?meta.color:'var(--muted)'}">${meta.name}</div>
+        <div style="font-size:11px;color:var(--muted)">${meta.abbr}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-mono);font-size:18px;color:var(--gold)">${isReal?strength:'~73'}</div>
+        <div style="font-size:10px;color:var(--muted)">OVR moy.</div>
+        ${isReal ? '<button onclick="showNationSquad(\'' + id + '\')" style="margin-top:6px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:3px 8px;cursor:pointer;font-size:10px">Effectif →</button>' : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  return `<div style="margin-bottom:20px">
+    <div class="section-header" style="margin-bottom:12px">
+      <div class="section-title" style="font-size:15px">24 NATIONS PARTICIPANTES</div>
+      <div class="section-line"></div>
+      <span style="font-size:11px;color:var(--muted)">Euro ${euroYear}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px">
+      ${nationCards}
+    </div>
+  </div>`;
+}
+
+function renderEuroState(euro, canon) {
+  const cn    = id => EuroEngine.getNationFlag(id) + ' ' + EuroEngine.getNationName(id);
+  const col   = id => EuroEngine.getNationColor(id);
+  const posColor = {
+    GK:'#f59e0b',CB:'#3b82f6',LB:'#3b82f6',RB:'#3b82f6',
+    CDM:'#10b981',CM:'#10b981',CAM:'#10b981',
+    LW:'#ef4444',RW:'#ef4444',ST:'#ef4444',
+  };
+  const posOrder = {GK:0,CB:1,LB:2,RB:3,CDM:4,CM:5,CAM:6,LW:7,RW:8,ST:9};
+
+  // ── MODAL MATCH EURO ────────────────────────────────────
+  window._euroMatchCache = window._euroMatchCache || {};
+
+  window.showEuroMatch = function(key) {
+    const data = window._euroMatchCache[key];
+    if (!data) return;
+    const hName = EuroEngine.getNationFlag(data.home)+' '+EuroEngine.getNationName(data.home);
+    const aName = EuroEngine.getNationFlag(data.away)+' '+EuroEngine.getNationName(data.away);
+
+    function buildXI(players, ratings, motmId) {
+      if (!players?.length) return '<div style="color:var(--muted);font-size:12px;padding:6px">Compo non disponible</div>';
+      return [...players]
+        .sort((a,b)=>(posOrder[a.slotPosition||a.position]??5)-(posOrder[b.slotPosition||b.position]??5))
+        .map(p=>{
+          const pos=p.slotPosition||p.position||'?';
+          const pid=p.id||p.name;
+          const r=ratings?.[pid];
+          const motm=motmId&&(motmId===pid);
+          const rCol=r>=8?'var(--green)':r>=7?'#60A5FA':r>=6?'var(--muted)':'var(--red)';
+          return `<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+            <span style="background:${posColor[pos]||'#555'};color:#000;padding:1px 4px;border-radius:3px;font-size:10px;font-weight:700;min-width:32px;text-align:center">${pos}</span>
+            <span style="flex:1;font-size:12px;${motm?'color:var(--gold);font-weight:700':'color:var(--white)'}">${p.name}${motm?' ⭐':''}</span>
+            ${r?`<span style="font-family:var(--font-mono);font-size:11px;color:${rCol}">${r}</span>`:''}
+          </div>`;
+        }).join('');
+    }
+
+    function buildEvents(events, hN, aN) {
+      const goals=(events||[]).filter(e=>e.type==='goal').sort((a,b)=>a.minute-b.minute);
+      if (!goals.length) return '<div style="color:var(--muted);font-size:12px;padding:4px 0">Aucun but</div>';
+      return goals.map(ev=>{
+        const isH=ev.home;
+        const side=isH?hN:aN;
+        const sideCol=isH?col(data.home):'#3B82F6';
+        const asst=ev.assistant?` <span style="color:var(--muted);font-size:11px">(🎯 ${ev.assistant.name})</span>`:'';
+        return `<div style="display:flex;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);min-width:28px">${ev.minute}'</span>
+          <span>⚽</span>
+          <div><span style="font-weight:700;color:${sideCol}">${ev.scorer?.name||'?'}</span>${asst}
+          <div style="font-size:10px;color:var(--muted)">${side}</div></div>
+        </div>`;
+      }).join('');
+    }
+
+    const motmId = data.motm?.id||data.motm?.name;
+    const modal = document.createElement('div');
+    modal.id = 'euro-match-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:20px 16px;overflow-y:auto';
+    modal.innerHTML = `
+      <div translate="no" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:860px">
+        <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+          <div style="text-align:center;flex:1">
+            <div style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:6px">EURO EQUESTRIA ${euro.year}</div>
+            <div style="display:flex;justify-content:center;align-items:center;gap:20px">
+              <span style="font-weight:700;font-size:15px">${hName}</span>
+              <span style="font-family:var(--font-display);font-size:40px;letter-spacing:6px">${data.score.home} – ${data.score.away}</span>
+              <span style="font-weight:700;font-size:15px">${aName}</span>
+            </div>
+          </div>
+          <button onclick="document.getElementById('euro-match-modal').remove()"
+            style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;flex-shrink:0">✕</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)">
+          <div style="padding:14px 18px;border-right:1px solid var(--border)">
+            <div style="font-size:10px;color:${col(data.home)};letter-spacing:1.5px;margin-bottom:8px;font-weight:700">${hName}</div>
+            ${buildXI(data.xi?.home, data.ratings, motmId)}
+          </div>
+          <div style="padding:14px 18px">
+            <div style="font-size:10px;color:var(--blue);letter-spacing:1.5px;margin-bottom:8px;font-weight:700">${aName}</div>
+            ${buildXI(data.xi?.away, data.ratings, motmId)}
+          </div>
+        </div>
+        <div style="padding:14px 24px">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;margin-bottom:8px;font-weight:600">BUTS</div>
+          ${buildEvents(data.events, hName, aName)}
+          ${data.motm?`<div style="background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:8px 12px;text-align:center;margin-top:10px">
+            <div style="font-size:10px;color:var(--muted);letter-spacing:1px">HOMME DU MATCH</div>
+            <div style="font-size:16px;font-weight:700;color:var(--gold)">⭐ ${data.motm.name||data.motm}</div>
+            ${data.motm.rating?`<div style="font-family:var(--font-mono);font-size:13px">${data.motm.rating}</div>`:''}
+          </div>`:''}
+        </div>
+      </div>`;
+    modal.addEventListener('click',e=>{if(e.target===modal)modal.remove();});
+    document.getElementById('euro-match-modal')?.remove();
+    document.body.appendChild(modal);
+  };
+
+  let html = '';
+
+  // ── PHASE DE GROUPES — par journée ───────────────────────
+  const groupData = euro.groupResults && Object.keys(euro.groupResults).length;
+  if (groupData) {
+    const journeys = [1, 2, 3];
+    const currentJourney = euro.phase === 'group_j1' ? 1
+                         : euro.phase === 'group_j2' ? 2
+                         : 3;
+
+    // Sélecteur journée
+    html += `<div style="margin-bottom:20px">
+      <div class="section-header" style="margin-bottom:12px">
+        <div class="section-title" style="font-size:15px">PHASE DE GROUPES</div>
+        <div class="section-line"></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">`;
+    const activeJourney = STATE.euroGroupJourney || currentJourney;
+    for (const j of journeys) {
+      const done = j <= currentJourney;
+      const active = j === activeJourney;
+      html += `<button onclick="setEuroGroupJourney(${j})"
+        style="background:${active?'var(--gold)':done?'var(--surface)':'rgba(255,255,255,.05)'};color:${active?'#000':done?'var(--white)':'var(--muted)'};border:1px solid ${active?'var(--gold)':done?'var(--border)':'rgba(255,255,255,.1)'};border-radius:6px;padding:6px 16px;cursor:${done?'pointer':'default'};font-size:13px;font-weight:${active?'700':'400'}">
+        Journée ${j}${!done?' (à venir)':''}</button>`;
+    }
+    html += '</div>';
+
+    // Résultats de la journée active
+    html += `<div style="margin-bottom:16px">
+      <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:10px">RÉSULTATS — JOURNÉE ${activeJourney}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px">`;
+
+    let hasResults = false;
+    for (const [letter, grp] of Object.entries(euro.groupResults)) {
+      const journeyMatches = (grp.results || []).filter(r => r.round === activeJourney);
+      for (const r of journeyMatches) {
+        hasResults = true;
+        const isHomeWin = r.score.home > r.score.away;
+        const isAwayWin = r.score.away > r.score.home;
+        const _eKey = `euro_${letter}_j${activeJourney}_${r.home}_${r.away}`;
+        window._euroMatchCache[_eKey] = r;
+        html += `<div onclick="showEuroMatch('${_eKey}')"
+          style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;transition:border-color .15s"
+          onmouseover="this.style.borderColor='rgba(201,168,76,.4)'" onmouseout="this.style.borderColor=''">
+          <div style="font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:8px">GROUPE ${letter}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <div style="flex:1">
+              <div style="font-weight:${isHomeWin?700:400};color:${isHomeWin?col(r.home):'var(--muted)'};font-size:13px">${cn(r.home)}</div>
+              <div style="font-weight:${isAwayWin?700:400};color:${isAwayWin?col(r.away):'var(--muted)'};font-size:13px;margin-top:4px">${cn(r.away)}</div>
+            </div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--white)">
+              ${r.score.home}–${r.score.away}</div>
+          </div>
+          ${r.motm?`<div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:right">★ ${r.motm.name||r.motm}</div>`:''}
+        </div>`;
+      }
+    }
+    if (!hasResults) {
+      html += `<div style="color:var(--muted);font-size:13px;padding:12px">Journée ${activeJourney} pas encore jouée.</div>`;
+    }
+    html += '</div></div>';
+
+    // Classements groupes
+    html += `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:28px">`;
+    for (const [letter, grp] of Object.entries(euro.groupResults)) {
+      const table = Object.values(grp.standings).sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+      const advanceCol = i => i<2?'var(--green)':i===2?'#f59e0b':'var(--muted)';
+      html += `<div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+        <div style="background:rgba(201,168,76,.1);padding:8px 14px;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px;color:var(--gold);font-weight:700">GROUPE ${letter}</span>
+        </div>
+        <table style="width:100%;font-size:12px">
+          <thead><tr style="color:var(--muted);font-size:10px">
+            <th style="padding:5px 14px;text-align:left">#</th>
+            <th style="text-align:left">Nation</th>
+            <th>J</th><th>V</th><th>N</th><th>D</th>
+            <th style="font-family:var(--font-mono)">Diff</th>
+            <th style="padding-right:14px"><b>Pts</b></th>
+          </tr></thead>
+          <tbody>`;
+      table.forEach((row,i)=>{
+        html+=`<tr style="border-top:1px solid var(--border)">
+          <td style="padding:7px 14px;color:${advanceCol(i)};font-weight:700">${i+1}</td>
+          <td style="color:${col(row.id)};font-weight:600">${cn(row.id)}</td>
+          <td style="text-align:center;color:var(--muted)">${row.played}</td>
+          <td style="text-align:center">${row.won}</td>
+          <td style="text-align:center;color:var(--muted)">${row.drawn}</td>
+          <td style="text-align:center;color:var(--muted)">${row.lost}</td>
+          <td style="text-align:center;font-family:var(--font-mono);color:${row.gd>=0?'var(--green)':'var(--red)'}">${row.gd>=0?'+':''}${row.gd}</td>
+          <td style="padding-right:14px;text-align:right"><b style="color:var(--gold);font-family:var(--font-mono)">${row.pts}</b></td>
+        </tr>`;
+      });
+      html+=`</tbody></table></div>`;
+    }
+    html += '</div>';
+
+    // Légende qualification
+    html += `<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px;font-size:12px">
+      <span style="color:var(--green)">■ Top 2 qualifiés</span>
+      <span style="color:#f59e0b">■ Meilleurs 3es (4)</span>
+      <span style="color:var(--muted)">■ Éliminés</span>
+    </div>`;
+    html += '</div>';
+  }
+
+  // ── KNOCKOUT ──────────────────────────────────────────────
+  const koPhases = [
+    { key:'r16',   label:'HUITIÈMES DE FINALE' },
+    { key:'qf',    label:'QUARTS DE FINALE'    },
+    { key:'sf',    label:'DEMI-FINALES'        },
+    { key:'final', label:'⚽ FINALE'            },
+  ];
+
+  for (const {key, label} of koPhases) {
+    const round = euro.knockout?.[key];
+    if (!round?.results?.length) continue;
+    const isFinal = key === 'final';
+
+    html += `<div style="margin-bottom:24px">
+      <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:10px">${label}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(${isFinal?'100%':'280px'},1fr));gap:10px">`;
+
+    for (const r of round.results) {
+      const isHomeWin = r.winner === r.home;
+      const _eKey = `euro_ko_${key}_${r.home}_${r.away}`;
+      window._euroMatchCache[_eKey] = r;
+
+      if (isFinal) {
+        html += `<div onclick="showEuroMatch('${_eKey}')"
+          style="background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));border:2px solid var(--gold);border-radius:16px;padding:28px;text-align:center;cursor:pointer"
+          onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:20px">FINALE EURO EQUESTRIA ${euro.year}</div>
+          <div style="display:flex;justify-content:center;align-items:center;gap:28px">
+            <div style="text-align:center">
+              <div style="font-size:32px;margin-bottom:6px">${EuroEngine.getNationFlag(r.home)}</div>
+              <div style="font-family:var(--font-title);font-size:18px;color:${isHomeWin?'var(--gold)':'var(--muted)'}">${EuroEngine.getNationName(r.home)}</div>
+              ${isHomeWin?'<div style="font-size:12px;color:var(--gold);margin-top:6px">🏆 CHAMPION</div>':''}
+            </div>
+            <div style="font-family:var(--font-mono);font-size:44px;font-weight:900;color:var(--white)">${r.score.home}–${r.score.away}</div>
+            <div style="text-align:center">
+              <div style="font-size:32px;margin-bottom:6px">${EuroEngine.getNationFlag(r.away)}</div>
+              <div style="font-family:var(--font-title);font-size:18px;color:${!isHomeWin?'var(--gold)':'var(--muted)'}">${EuroEngine.getNationName(r.away)}</div>
+              ${!isHomeWin?'<div style="font-size:12px;color:var(--gold);margin-top:6px">🏆 CHAMPION</div>':''}
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-top:12px">cliquer pour le détail de la finale ›</div>
+        </div>`;
+      } else {
+        html += `<div onclick="showEuroMatch('${_eKey}')"
+          style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;cursor:pointer;transition:border-color .15s"
+          onmouseover="this.style.borderColor='rgba(201,168,76,.4)'" onmouseout="this.style.borderColor=''">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="flex:1">
+              <div style="font-weight:${isHomeWin?700:400};color:${isHomeWin?col(r.home):'var(--muted)'};font-size:13px">${cn(r.home)}</div>
+              <div style="font-weight:${!isHomeWin?700:400};color:${!isHomeWin?col(r.away):'var(--muted)'};font-size:13px;margin-top:4px">${cn(r.away)}</div>
+            </div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--white)">${r.score.home}–${r.score.away}</div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:right">
+            ${r.motm?'★ '+r.motm.name+' · ':''} détail ›</div>
+        </div>`;
+      }
+    }
+    html += '</div></div>';
+  }
+
+  // ── STATS JOUEURS ──────────────────────────────────────────
+  const pStats = euro.playerStats;
+  if (pStats && Object.keys(pStats).length > 0) {
+    const statsList = Object.entries(pStats).map(([pid, s]) => ({ pid, ...s }));
+
+    const topScorers  = [...statsList].sort((a,b)=>((b.goals||0)-(a.goals||0))||((b.assists||0)-(a.assists||0))).slice(0,10);
+    const topAssists  = [...statsList].sort((a,b)=>((b.assists||0)-(a.assists||0))||((b.goals||0)-(a.goals||0))).slice(0,10);
+
+    const statRow = (s, i, showGoals=true) => `<tr>
+      <td style="color:var(--muted);font-family:var(--font-mono)">${i+1}</td>
+      <td><b style="color:var(--white)">${s.name||s.pid}</b></td>
+      <td style="text-align:center"><span style="color:var(--gold);font-weight:700;font-family:var(--font-mono)">${showGoals?s.goals||0:s.assists||0}</span></td>
+      <td style="text-align:center;color:var(--muted)">${showGoals?s.assists||0:s.goals||0}</td>
+      <td style="text-align:center;color:var(--muted)">${s.matches||0}</td>
+    </tr>`;
+
+    html += `<div style="margin-bottom:28px">
+      <div class="section-header" style="margin-bottom:16px">
+        <div class="section-title" style="font-size:15px">STATISTIQUES DU TOURNOI</div>
+        <div class="section-line"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:8px">⚽ MEILLEURS BUTEURS</div>
+          <table class="stats-table">
+            <thead><tr><th>#</th><th>Joueur</th><th>Buts</th><th>Passes</th><th>Matchs</th></tr></thead>
+            <tbody>${topScorers.map((s,i)=>statRow(s,i,true)).join('')}</tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:8px">🎯 MEILLEURS PASSEURS</div>
+          <table class="stats-table">
+            <thead><tr><th>#</th><th>Joueur</th><th>Passes</th><th>Buts</th><th>Matchs</th></tr></thead>
+            <tbody>${topAssists.map((s,i)=>statRow(s,i,false)).join('')}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+
+    if (euro.mvp) {
+      html += `<div style="background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));border:1px solid var(--gold);border-radius:12px;padding:20px 24px;text-align:center;margin-bottom:28px">
+        <div style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:10px">🏅 MVP DU TOURNOI</div>
+        <div style="font-size:24px;font-weight:700;color:var(--white)">${euro.mvp.name||euro.mvp.pid}</div>
+        <div style="color:var(--muted);font-size:13px;margin-top:6px">
+          ${euro.mvp.goals||0} buts · ${euro.mvp.assists||0} passes · ${euro.mvp.matches||0} matchs · ${euro.mvp.motm||0} MOTM
+        </div>
+      </div>`;
+    }
+  }
+
+  return html || '<div style="color:var(--muted);text-align:center;padding:40px">Simule la prochaine phase !</div>';
+}
+
+window.setEuroGroupJourney = function(j) {
+  STATE.euroGroupJourney = j;
+  saveState();
+  const el = document.getElementById('euro-content');
+  if (el && EURO_DATA) el.innerHTML = renderEuroState(EURO_DATA, getCanon());
+};
+
+
+
+// ═══════════════════════════════════════════════════════════════
+// FINANCE — Render functions
+// ═══════════════════════════════════════════════════════════════
+
+function getOrInitFinance() {
+  if (FINANCE_DATA) return FINANCE_DATA;
+  // Pas de sauvegarde existante — initialise depuis le canon
+  const canon = getCanon(); if (!canon) return null;
+  if (typeof mergeGhostNations === 'function' && !canon._ghostMerged) mergeGhostNations(canon);
+  FINANCE_DATA = FinanceEngine.initFinances(canon);
+  FinanceEngine.saveFinances(FINANCE_DATA);
+  return FINANCE_DATA;
+}
+
+function renderFinance() {
+  const canon   = getCanon(); if (!canon) return;
+  const finance = getOrInitFinance(); if (!finance) return;
+  const season  = getOrInitSeason();
+  const panelEl = document.getElementById('finance-panel');
+  const contEl  = document.getElementById('finance-content');
+
+  // Panel control
+  if (panelEl) {
+    const seasonDone = season?.finished;
+    panelEl.innerHTML = `
+    <div class="season-panel" style="flex-wrap:wrap;gap:10px;margin-bottom:24px">
+      <div class="season-info">
+        <div class="round-label">💰 Bilan Financier — Saison ${finance.season||season?.year||2025}</div>
+        <div class="round-sub">Valeur totale du marché : ${_totalMarketValue(finance)}M€</div>
+      </div>
+      <button class="ctrl-btn ctrl-btn-ghost" onclick="openTransferWindow()" ${seasonDone?'':'disabled'}>
+        🔄 Fenêtre de transferts
+      </button>
+      <button class="ctrl-btn ctrl-btn-ghost" onclick="endSeasonFinance()" ${seasonDone?'':'disabled'} style="font-size:12px">
+        📊 Clôturer saison
+      </button>
+    </div>`;
+  }
+
+  if (!contEl) return;
+
+  // Sélecteur de club (pour le rapport détaillé)
+  const selClub = STATE.userClub || null;
+  const clubs   = Object.values(canon.clubs).sort((a,b)=>a.name.localeCompare(b.name));
+
+  let clubSelect = `<div style="margin-bottom:20px;display:flex;align-items:center;gap:12px">
+    <span style="color:var(--muted);font-size:13px">Club sélectionné :</span>
+    <select onchange="setUserClub(this.value)"
+      style="background:var(--surface);border:1px solid var(--border);color:var(--white);border-radius:8px;padding:7px 12px;font-family:var(--font-body);cursor:pointer">
+      <option value="">— Vue globale —</option>`;
+  for (const c of clubs) {
+    clubSelect += `<option value="${c.id}" ${selClub===c.id?'selected':''}>${c.name}</option>`;
+  }
+  clubSelect += `</select></div>`;
+
+  if (selClub) {
+    contEl.innerHTML = clubSelect + renderClubFinanceReport(selClub, finance, canon);
+  } else {
+    contEl.innerHTML = clubSelect + renderGlobalFinanceTable(finance, canon);
+  }
+}
+
+window.setUserClub = function(id) {
+  STATE.userClub = id || null;
+  saveState();
+  renderFinance();
+};
+
+function _totalMarketValue(finance) {
+  return Math.round(Object.values(finance.clubs).reduce((s,c)=>s+(c.squad_value||0),0));
+}
+
+function renderGlobalFinanceTable(finance, canon) {
+  const rows = Object.values(canon.clubs)
+    .map(c => ({ club:c, fin: finance.clubs[c.id] }))
+    .filter(x => x.fin)
+    .sort((a,b) => (b.fin.balance||0)-(a.fin.balance||0));
+
+  const ffpIcon = s => s==='ok'?'<span style="color:var(--green)">✓</span>'
+    :s==='warning'?'<span style="color:#f59e0b">⚠</span>'
+    :'<span style="color:var(--red)">✕</span>';
+
+  const tierColor = t => t==='top'?'var(--gold)':t==='fort'?'var(--blue)':t==='moyen'?'var(--green)':'var(--muted)';
+
+  let html = `<table class="standings-table" style="width:100%">
+    <thead><tr>
+      <th>Club</th><th>Tier</th><th>Budget (M€)</th>
+      <th>Salaires (M€/an)</th><th>Revenus N-1</th>
+      <th>Valeur effectif</th><th>FFP</th><th>Détail</th>
+    </tr></thead><tbody>`;
+
+  for (const { club, fin } of rows) {
+    html += `<tr>
+      <td style="font-weight:600">${club.name}</td>
+      <td><span style="color:${tierColor(fin.tier)};font-size:11px;text-transform:uppercase">${fin.tier}</span></td>
+      <td><b style="color:var(--gold);font-family:var(--font-mono)">${fin.balance?.toFixed(1)||'—'}</b></td>
+      <td style="color:var(--muted);font-family:var(--font-mono)">${fin.wages_used?.toFixed(1)||'—'}</td>
+      <td style="color:var(--muted);font-family:var(--font-mono)">${fin.revenue_last?.toFixed(1)||'—'}</td>
+      <td style="font-family:var(--font-mono)">${fin.squad_value?.toFixed(1)||'—'}M</td>
+      <td>${ffpIcon(fin.ffp_status)}</td>
+      <td><button onclick="setUserClub('${club.id}')"
+        style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px">
+        Voir →</button></td>
+    </tr>`;
+  }
+  html += `</tbody></table>`;
+  return html;
+}
+
+function renderClubFinanceReport(clubId, finance, canon) {
+  const report = FinanceEngine.getClubReport(clubId, finance, canon);
+  if (!report) return '<p style="color:var(--muted)">Club introuvable</p>';
+  const { club, fin, players, totalValue, totalWage, ffpHeadroom } = report;
+  const meta = LEAGUE_META[club.league] || { color:'#C9A84C' };
+  const ffpColor = fin.ffp_status==='ok'?'var(--green)':fin.ffp_status==='warning'?'#f59e0b':'var(--red)';
+  const ffpLabel = fin.ffp_status==='ok'?'Conforme':fin.ffp_status==='warning'?'Avertissement':'Violation';
+
+  const kpi = (label, val, unit='') => `
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;min-width:120px;flex:1">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">${label}</div>
+      <div style="font-size:22px;font-family:var(--font-mono);color:var(--gold)">${val}<span style="font-size:13px;color:var(--muted)"> ${unit}</span></div>
+    </div>`;
+
+  const playerRows = players.slice(0,20).map((p,i) => `<tr>
+    <td style="color:var(--muted);font-family:var(--font-mono)">${i+1}</td>
+    <td style="font-weight:600">${p.name}</td>
+    <td><span class="pos-badge">${p.position}</span></td>
+    <td style="color:var(--muted)">${p.age||'—'}</td>
+    <td><b style="color:var(--gold);font-family:var(--font-mono)">${p.ovr||'—'}</b></td>
+    <td style="font-family:var(--font-mono)">${p.value.toFixed(1)}M</td>
+    <td style="color:var(--muted);font-family:var(--font-mono)">${p.wage}k/s</td>
+  </tr>`).join('');
+
+  return `
+  <div style="margin-bottom:24px">
+    <div style="font-family:var(--font-title);font-size:22px;color:${meta.color};margin-bottom:4px">${club.name}</div>
+    <div style="font-size:12px;color:var(--muted)">${club.city||''} · ${club.nation||''} · Capacité ${(club.capacity||0).toLocaleString()}</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+    ${kpi('Budget transferts', fin.balance?.toFixed(1)||'—', 'M€')}
+    ${kpi('Salaires / an', fin.wages_used?.toFixed(1)||'—', 'M€')}
+    ${kpi('Revenus N-1', fin.revenue_last?.toFixed(1)||'—', 'M€')}
+    ${kpi('Valeur effectif', totalValue.toFixed(1), 'M€')}
+    <div style="background:var(--bg);border:1px solid ${ffpColor};border-radius:12px;padding:16px 20px;min-width:120px;flex:1">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">FFP</div>
+      <div style="font-size:20px;color:${ffpColor}">${ffpLabel}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">Marge : ${ffpHeadroom}M€</div>
+    </div>
+  </div>
+  <div style="font-family:var(--font-title);font-size:15px;color:var(--muted);margin-bottom:12px;letter-spacing:1px">EFFECTIF — TOP 20 PAR VALEUR MARCHANDE</div>
+  <table class="standings-table" style="width:100%">
+    <thead><tr><th>#</th><th>Joueur</th><th>Poste</th><th>Âge</th><th>OVR</th><th>Valeur</th><th>Salaire</th></tr></thead>
+    <tbody>${playerRows}</tbody>
+  </table>`;
+}
+
+// ─── TRANSFER WINDOW MODAL ───────────────────────────────────────────
+window.openTransferWindow = function() {
+  const canon   = getCanon(); if (!canon) return;
+  const finance = getOrInitFinance(); if (!finance) return;
+  const season  = getOrInitSeason();
+  const userClub = STATE.userClub;
+
+  const proposals = FinanceEngine.generateTransferWindow(finance, canon, season, userClub);
+  const userDeals  = proposals.filter(p => p.isUserInvolved);
+  const aiDeals    = proposals.filter(p => !p.isUserInvolved);
+
+  const modal = document.createElement('div');
+  modal.id = 'transfer-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
+
+  const dealHtml = (d) => {
+    const buyer  = canon.clubs[d.buyerId]?.name  || d.buyerId;
+    const seller = canon.clubs[d.sellerId]?.name || d.sellerId;
+    const isIn   = d.status === 'incoming';
+    const isOut  = d.status === 'outgoing';
+    const accent = isIn ? 'var(--red)' : isOut ? 'var(--green)' : 'var(--muted)';
+    const label  = isIn ? '📥 OFFRE REÇUE' : isOut ? '📤 TON OFFRE' : '';
+    return `<div style="background:var(--bg);border:1px solid ${accent};border-radius:10px;padding:14px 18px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="color:${accent};font-size:10px;letter-spacing:1px;margin-bottom:4px">${label}</div>
+          <div style="font-weight:700;font-size:15px">${d.playerName} <span style="color:var(--muted);font-size:12px">(${d.playerPos} · ${d.playerAge} ans · OVR ${d.playerOvr})</span></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">${seller} → ${buyer}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:var(--font-mono);font-size:18px;color:var(--gold)">${d.fee.toFixed(1)}M€</div>
+          <div style="font-size:11px;color:var(--muted)">val. marchande: ${d.marketVal.toFixed(1)}M€</div>
+          <div style="font-size:11px;color:var(--muted)">${d.wages}k€/sem.</div>
+        </div>
+      </div>
+      ${d.isUserInvolved ? `<div style="display:flex;gap:8px;margin-top:10px">
+        <button onclick="acceptTransfer('${d.id}')" data-deal='${JSON.stringify(d).replace(/'/g,"&apos;")}'
+          style="background:var(--green);color:#000;border:none;border-radius:6px;padding:7px 18px;cursor:pointer;font-weight:700;font-size:13px">✓ Accepter</button>
+        <button onclick="rejectTransfer('${d.id}')"
+          style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:7px 18px;cursor:pointer;font-size:13px">✕ Refuser</button>
+      </div>` : ''}
+    </div>`;
+  };
+
+  const userSection = userDeals.length
+    ? `<div style="margin-bottom:20px"><div style="font-size:12px;color:var(--gold);letter-spacing:1px;margin-bottom:12px">TON CLUB</div>
+        ${userDeals.map(dealHtml).join('')}</div>`
+    : (userClub ? `<div style="color:var(--muted);padding:16px;text-align:center;font-size:13px">Aucune offre impliquant ton club cette fenêtre.</div>` : '');
+
+  const aiSection = aiDeals.length > 0
+    ? `<div><div style="font-size:12px;color:var(--muted);letter-spacing:1px;margin-bottom:12px">TRANSFERTS IA (aperçu)</div>
+        ${aiDeals.slice(0,8).map(dealHtml).join('')}
+        ${aiDeals.length>8?'<div style="color:var(--muted);font-size:12px;text-align:center">+ '+(aiDeals.length-8)+' autres transferts IA</div>':''}</div>`
+    : '';
+
+  modal.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:680px;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-family:var(--font-title);font-size:20px">🔄 Fenêtre de Transferts</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">${proposals.length} propositions générées</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button onclick="processAllAITransfers()" style="background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px">Valider tout IA</button>
+          <button onclick="document.getElementById('transfer-modal').remove()" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:7px 14px;cursor:pointer">✕</button>
+        </div>
+      </div>
+      <div style="overflow-y:auto;padding:20px 24px" id="transfer-list">
+        ${userSection}${aiSection}
+      </div>
+    </div>`;
+
+  // Stocke les deals pour les boutons
+  modal._deals = proposals;
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+  document.getElementById('transfer-modal')?.remove();
+  document.body.appendChild(modal);
+  // Expose deals globalement pour les handlers
+  window._currentDeals = proposals;
+};
+
+window.acceptTransfer = function(dealId) {
+  const deal    = (window._currentDeals||[]).find(d=>d.id===dealId);
+  if (!deal) return;
+  const canon   = getCanon(); if (!canon) return;
+  const finance = getOrInitFinance(); if (!finance) return;
+  const result  = FinanceEngine.executeTransfer(finance, deal, canon);
+  if (result.error) { alert('Transfert refusé : ' + result.error); return; }
+  FINANCE_DATA = result.finances;
+  FinanceEngine.saveFinances(FINANCE_DATA);
+  // Retire le deal de la liste
+  window._currentDeals = (window._currentDeals||[]).filter(d=>d.id!==dealId);
+  document.getElementById('transfer-modal')?.remove();
+  openTransferWindow(); // reopen updated
+};
+
+window.rejectTransfer = function(dealId) {
+  window._currentDeals = (window._currentDeals||[]).filter(d=>d.id!==dealId);
+  document.getElementById('transfer-modal')?.remove();
+  openTransferWindow();
+};
+
+window.processAllAITransfers = function() {
+  const canon   = getCanon(); if (!canon) return;
+  const finance = getOrInitFinance(); if (!finance) return;
+  const aiDeals = (window._currentDeals||[]).filter(d=>d.status==='ai');
+  FINANCE_DATA  = FinanceEngine.processAITransfers(finance, aiDeals, canon);
+  FinanceEngine.saveFinances(FINANCE_DATA);
+  document.getElementById('transfer-modal')?.remove();
+  renderFinance();
+};
+
+window.endSeasonFinance = function() {
+  const canon   = getCanon(); if (!canon) return;
+  const season  = getOrInitSeason(); if (!season?.finished) return;
+  if (!confirm('Clôturer la saison financière ? Les revenus seront calculés.')) return;
+  FINANCE_DATA  = FinanceEngine.computeSeasonRevenue(getOrInitFinance(), season, canon, CLE_DATA);
+  FinanceEngine.saveFinances(FINANCE_DATA);
+  renderFinance();
+};
+
+// ─── CLE IN-PROGRESS : bracket phase par phase ────────────────────────
+function renderCLEInProgress(el, cle, canon) {
+  const cn = id => CLEEngine.getClubName(id, canon);
+  const PHASE_SEQ = CLEEngine.PHASE_SEQUENCE;
+  const currentIdx = PHASE_SEQ.indexOf(cle.phase);
+
+  let html = '';
+
+  // ─── QUALIFICATION ─────────────────────────────────────────────
+  const qualPhases = [
+    { key:'r1', label:'TOUR 1 (80 clubs)' },
+    { key:'r2', label:'TOUR 2 (+ 24 byes)' },
+    { key:'r3', label:'TOUR 3 (+ 16 byes)' },
+    { key:'r4', label:'BARRAGES QUALIFICATION' },
+  ];
+  const qualDone = ['qual_r1','qual_r2','qual_r3','qual_r4','league','playoff','r16','qf','sf','final','complete'];
+  const anyQualDone = qualDone.some(p => PHASE_SEQ.indexOf(p) <= currentIdx && PHASE_SEQ.indexOf(p) > 0);
+
+  if (anyQualDone) {
+    html += `<div style="margin-bottom:24px">
+      <div class="section-header" style="margin-bottom:12px">
+        <div class="section-title" style="font-size:15px">QUALIFICATION</div>
+        <div class="section-line"></div>
+      </div>`;
+
+    for (const { key, label } of qualPhases) {
+      const phaseKey = 'qual_' + key;
+      const phaseDone = PHASE_SEQ.indexOf(phaseKey) <= currentIdx;
+      if (!phaseDone) break;
+      const round = cle.qualRounds[key];
+      if (!round?.results?.length) continue;
+
+      html += `<div style="margin-bottom:16px">
+        <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:8px">${label}</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px">`;
+
+      // Montrer les byes
+      if (round.byes?.length) {
+        html += `<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--muted)">
+          ✦ ${round.byes.slice(0,4).map(id=>cn(id)).join(', ')}${round.byes.length>4?' + '+(round.byes.length-4)+' byes':''} — qualifiés directement
+        </div>`;
+      }
+
+      for (const r of round.results) {
+        const winner = r.winner;
+        const isHomeWin = winner === r.home;
+        const _cKey = 'cq_' + r.home + '_' + r.away;
+        window._matchDetailCache[_cKey] = {
+          home: r.home, away: r.away, agg: r.agg,
+          score: { home: r.agg.home, away: r.agg.away },
+          motm: null, events: [], xi: { home:[], away:[] }, ratings: {},
+          _leg1: r.leg1, _leg2: r.leg2, result: winner === r.home ? 'home' : 'away',
+        };
+        // Détail des manches si disponible (nouvelles données)
+        const _cKeyFull = 'cq_full_' + r.home + '_' + r.away;
+        if (r.leg1?.xi) {
+          window._cleMatchCache[_cKeyFull] = r;
+        }
+        const hasDetail = !!r.leg1?.xi;
+        const leg1Sc = r.leg1?.score || r.leg1 || {home:'?',away:'?'};
+        const leg2Sc = r.leg2?.score || r.leg2 || {home:'?',away:'?'};
+        html += `<div onclick="${hasDetail ? `showCLETwoLegDetail('${_cKeyFull}')` : `showMatchDetail('${_cKey}')`}" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='rgba(201,168,76,.4)'" onmouseout="this.style.borderColor=''">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span style="color:var(--muted);font-size:10px">ALLER</span>
+            <span style="color:var(--muted);font-size:10px">RETOUR</span>
+            <span style="color:var(--muted);font-size:10px">AGG</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:600;color:${isHomeWin?'var(--white)':'var(--muted)'};font-size:13px">${cn(r.home).slice(0,18)}</div>
+              <div style="font-weight:600;color:${!isHomeWin?'var(--white)':'var(--muted)'};font-size:13px">${cn(r.away).slice(0,18)}</div>
+            </div>
+            <div style="text-align:right;font-family:var(--font-mono)">
+              <div style="font-size:13px">${leg1Sc.home}-${leg1Sc.away}</div>
+              <div style="font-size:13px">${leg2Sc.home}-${leg2Sc.away}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-family:var(--font-mono);font-weight:700;color:var(--gold)">${r.agg.home}-${r.agg.away}</div>
+              <div style="font-size:10px;color:var(--green)">✓ ${cn(winner).slice(0,14)}</div>
+            </div>
+          </div>
+        </div>`;
+      }
+      html += `</div></div>`;
+    }
+    html += `</div>`;
+  }
+
+  // ─── PHASE DE LIGUE ────────────────────────────────────────────
+  const leagueDone = ['league','playoff','r16','qf','sf','final','complete'].some(p=>PHASE_SEQ.indexOf(p)<=currentIdx && PHASE_SEQ.indexOf(p)>0);
+  if (leagueDone && cle.leaguePhase) {
+    const lp = cle.leaguePhase;
+    html += `<div style="margin-bottom:24px">
+      <div class="section-header" style="margin-bottom:12px">
+        <div class="section-title" style="font-size:15px">PHASE DE LIGUE (36 clubs · 8 matchs chacun)</div>
+        <div class="section-line"></div>
+      </div>
+      <table class="standings-table" style="margin-bottom:16px">
+        <thead><tr><th>#</th><th>Club</th><th>J</th><th>V</th><th>N</th><th>D</th><th>Pts</th><th>Diff</th><th>Zone</th></tr></thead>
+        <tbody>`;
+
+    lp.standings.forEach((row,i) => {
+      const zone = i<8 ? '<span style="color:var(--green);font-size:11px">R16 direct</span>'
+                 : i<24? '<span style="color:var(--gold);font-size:11px">Playoff</span>'
+                 : '<span style="color:var(--red);font-size:11px">Éliminé</span>';
+      const logo = clubLogo(row.id, 20);
+      html += `<tr>
+        <td style="color:var(--muted);font-family:var(--font-mono)">${i+1}</td>
+        <td style="font-weight:${i<8?'700':'400'}">
+          <div style="display:flex;align-items:center;gap:6px">${logo}${cn(row.id)}</div>
+        </td>
+        <td>${row.played}</td><td>${row.won}</td><td>${row.drawn}</td><td>${row.lost}</td>
+        <td><b style="color:var(--gold);font-family:var(--font-mono)">${row.pts}</b></td>
+        <td style="font-family:var(--font-mono);color:${row.gd>=0?'var(--green)':'var(--red)'}">
+          ${row.gd>=0?'+':''}${row.gd}</td>
+        <td>${zone}</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  }
+
+  // ─── PHASES KNOCKOUT ───────────────────────────────────────────
+  const koPhases = [
+    { key:'playoff', label:'PLAYOFF (A/R)', twoLegs:true,  phaseId:'playoff' },
+    { key:'r16',     label:'HUITIÈMES (A/R)', twoLegs:true, phaseId:'r16' },
+    { key:'qf',      label:'QUARTS (A/R)',   twoLegs:true,  phaseId:'qf' },
+    { key:'sf',      label:'DEMIES (A/R)',   twoLegs:true,  phaseId:'sf' },
+    { key:'final',   label:'⚽ FINALE',       twoLegs:false, phaseId:'final' },
+  ];
+
+  let anyKO = false;
+  for (const { key, label, twoLegs, phaseId } of koPhases) {
+    const round = cle.knockout?.[key];
+    if (!round?.results?.length) continue;
+    anyKO = true;
+
+    html += `<div style="margin-bottom:20px">
+      <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:10px">${label}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px">`;
+
+    for (const r of round.results) {
+      const winner = r.winner;
+      const isHomeWin = winner === r.home;
+      if (twoLegs) {
+        // Stocke les données pour le modal deux-manches
+        const _kKey = 'ko_' + phaseId + '_' + r.home + '_' + r.away;
+        window._cleMatchCache[_kKey] = r;
+        html += `<div onclick="showCLETwoLegDetail('${_kKey}')" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='rgba(201,168,76,.4)'" onmouseout="this.style.borderColor=''">
+          <div style="display:flex;gap:8px;margin-bottom:8px;font-size:10px;color:var(--muted)">
+            <span>ALLER</span><span>RETOUR</span><span>AGG.</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <div style="flex:1">
+              <div style="font-weight:700;color:${isHomeWin?'var(--white)':'var(--muted)'};${isHomeWin?'font-size:14px':'font-size:13px'}">${cn(r.home).slice(0,20)}</div>
+              <div style="font-weight:700;color:${!isHomeWin?'var(--white)':'var(--muted)'};${!isHomeWin?'font-size:14px':'font-size:13px'}">${cn(r.away).slice(0,20)}</div>
+            </div>
+            <div style="font-family:var(--font-mono);text-align:center">
+              <div>${r.leg1?.score?.home??r.leg1?.home??'?'}-${r.leg1?.score?.away??r.leg1?.away??'?'}</div>
+              <div>${r.leg2?.score?.home??r.leg2?.home??'?'}-${r.leg2?.score?.away??r.leg2?.away??'?'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--gold)">${r.agg.home}-${r.agg.away}</div>
+              <div style="font-size:11px;color:var(--green)">✓ ${cn(winner).slice(0,16)}</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:right">cliquer pour détail ›</div>
+        </div>`;
+      } else {
+        // Finale — card spéciale (cliquable)
+        const _fKey = 'ko_final_' + r.home + '_' + r.away;
+        window._matchDetailCache[_fKey] = {
+          home: { id: r.home, name: cn(r.home) },
+          away: { id: r.away, name: cn(r.away) },
+          score: r.score, xi: r.xi||{home:[],away:[]},
+          events: r.events||[], ratings: r.ratings||{}, motm: r.motm,
+        };
+        html += `<div onclick="showMatchDetail('${_fKey}')" style="background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));border:2px solid var(--gold);border-radius:14px;padding:20px 24px;text-align:center;width:100%;cursor:pointer" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:16px">FINALE CLE ${cle.year||''}</div>
+          <div style="display:flex;justify-content:center;align-items:center;gap:24px">
+            <div style="text-align:center">
+              <div style="font-family:var(--font-title);font-size:18px;color:${isHomeWin?'var(--gold)':'var(--muted)'}">${cn(r.home)}</div>
+              ${isHomeWin?'<div style="font-size:11px;color:var(--gold);margin-top:4px">🏆 CHAMPION</div>':''}
+            </div>
+            <div style="font-family:var(--font-mono);font-size:32px;font-weight:900;color:var(--white)">${r.score?.home??'?'}-${r.score?.away??'?'}</div>
+            <div style="text-align:center">
+              <div style="font-family:var(--font-title);font-size:18px;color:${!isHomeWin?'var(--gold)':'var(--muted)'}">${cn(r.away)}</div>
+              ${!isHomeWin?'<div style="font-size:11px;color:var(--gold);margin-top:4px">🏆 CHAMPION</div>':''}
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-top:10px">cliquer pour détail de la finale ›</div>
+        </div>`;
+      }
+    }
+    html += `</div></div>`;;
+  }
+
+  el.innerHTML = html || '<div style="color:var(--muted);text-align:center;padding:32px">Simule la prochaine phase avec le bouton ci-dessus.</div>';
+}
+
+// ═══════════════════════════════════════════════════════════
+// RACCOURCIS CLAVIER
+// F9          = simuler une journée
+// Maj+F9      = simuler toute la saison
+// F1          = reset complet (avec confirm)
+// Échap       = ferme les modals ouverts
+// F2          = hub
+// F3          = saison
+// F4          = CLE
+// F5          = euro
+// ═══════════════════════════════════════════════════════════
+document.addEventListener('keydown', function(e) {
+  // Ignorer si on tape dans un champ de saisie
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+
+  if (e.key === 'F9' && !e.shiftKey) {
+    e.preventDefault();
+    const btn = document.getElementById('btn-sim-round');
+    if (btn && !btn.disabled) simRound();
+  }
+  if (e.key === 'F9' && e.shiftKey) {
+    e.preventDefault();
+    simAll();
+  }
+  if (e.key === 'F1') {
+    e.preventDefault();
+    resetSeason();
+  }
+  if (e.key === 'Escape') {
+    ['match-detail-modal','cle-match-modal','euro-match-modal','club-modal','nation-modal']
+      .forEach(id => document.getElementById(id)?.remove());
+  }
+  if (e.key === 'F2') { e.preventDefault(); navigate('hub'); }
+  if (e.key === 'F3') { e.preventDefault(); navigate('season'); }
+  if (e.key === 'F4') { e.preventDefault(); navigate('cle'); }
+  if (e.key === 'F5') { e.preventDefault(); navigate('euro'); }
+});
+
+// ═══════════════════════════════════════════════════════════
+// DÉTECTION DE MODIFICATION DU CANON
+// Si canon.js change (tu ajoutes/modifies des clubs/joueurs),
+// on détecte la différence au boot et on propose un reset propre
+// ═══════════════════════════════════════════════════════════
+function _canonHash(canon) {
+  // Hash léger : nb clubs + nb joueurs + somme des OVR des 50 premiers joueurs
+  const players = Object.values(canon.players || {});
+  const clubs   = Object.values(canon.clubs   || {});
+  const ovrSum  = players.slice(0, 50).reduce((s,p) => s + (p.ovr||0), 0);
+  return `${clubs.length}_${players.length}_${ovrSum}`;
+}
+
+async function _checkCanonChanged(canon) {
+  const savedHash = await EQ_DB.get('eq_canon_hash').catch(() => null);
+  const currentHash = _canonHash(canon);
+  if (savedHash && savedHash !== currentHash) {
+    console.warn('[Canon] Changement détecté:', savedHash, '→', currentHash);
+    return true;
+  }
+  await EQ_DB.set('eq_canon_hash', currentHash).catch(()=>{});
+  return false;
+}
+
+async function boot() {
+  const loaderText = document.getElementById('loader-text');
+  const setLoader  = t => { if (loaderText) loaderText.textContent = t; };
+
+  setLoader('CHARGEMENT DES NATIONS FANTÔMES...');
+
+  const canon = getCanon();
+  if (!canon) {
+    const ld = document.getElementById('loader'); if (ld) ld.style.display = 'none';
+    const es = document.getElementById('error-screen'); if (es) es.classList.add('visible');
+    return;
+  }
+
+  // ── Fusion ghost nations (idempotent) ───────────────────
+  if (typeof mergeGhostNations === 'function' && !canon._ghostMerged) {
+    mergeGhostNations(canon);
+  }
+
+  setLoader('VÉRIFICATION DU CANON...');
+
+  // ── Détection changement canon ──────────────────────────
+  const canonChanged = await _checkCanonChanged(canon);
+  if (canonChanged) {
+    const doReset = confirm(
+      '⚠️ Le canon a été modifié depuis la dernière session.\n\n' +
+      'Réinitialiser toutes les données (saison, CLE, finance, awards) ?\n\n' +
+      'Annuler = conserver les données (peut causer des incohérences).'
+    );
+    if (doReset) {
+      await EQ_DB.clear();
+      await EQ_DB.set('eq_canon_hash', _canonHash(canon));
+      SEASON_DATA = null; CLE_DATA    = null; AWARDS_DATA  = null;
+      EURO_DATA   = null; FINANCE_DATA = null;
+    }
+  }
+
+  setLoader('CHARGEMENT DES DONNÉES...');
+
+  // ── Préchargement IndexedDB (tout en parallèle) ─────────
+  try {
+    const [savedSeason, savedCLE, savedAwards, savedEuro, savedFinance, savedTactics] = await Promise.all([
+      EQ_DB.get('eq_season'),
+      EQ_DB.get(CLE_KEY),
+      EQ_DB.get(AWARDS_KEY),
+      EQ_DB.get('eq_euro'),
+      EQ_DB.get('eq_finance'),
+      EQ_DB.get('eq_tactics'),
+    ]);
+
+    if (savedTactics) Object.assign(CLUB_TACTICS, savedTactics);
+
+    // Saison — reconstruit les fixtures depuis le seed (jamais stockées)
+    if (savedSeason) {
+      for (const lg of Object.values(savedSeason.leagues || {})) {
+        if (!lg.fixtures && lg.clubs?.length) {
+          try { lg.fixtures = MatchEngine.generateFixtures(lg.clubs); }
+          catch(e) { lg.fixtures = []; }
+        }
+      }
+      SEASON_DATA = savedSeason;
+    }
+
+    CLE_DATA     = savedCLE     || null;
+    AWARDS_DATA  = savedAwards  || null;
+    EURO_DATA    = savedEuro    || null;
+    FINANCE_DATA = savedFinance || null;
+
+  } catch(e) {
+    console.warn('[boot] Erreur chargement IDB:', e);
+  }
+
+  setLoader('INITIALISATION...');
+
+  loadState();
+
+  // Fix définitif saison 2028 : STATE.season en localStorage peut être périmé.
+  // On écrase toujours avec la vraie valeur depuis IDB, ou 2025 si pas de saison.
+  STATE.season = SEASON_DATA ? SEASON_DATA.year : 2025;
+  saveState(); // Persiste la correction immédiatement
+
+  const sb = document.getElementById('season-badge');
+  if (sb) sb.textContent = 'SAISON ' + STATE.season;
+
+  const ld = document.getElementById('loader'); if (ld) ld.style.display = 'none';
+  const ap = document.getElementById('app');    if (ap) ap.style.display = 'flex';
+
+  navigate(STATE.currentView || 'hub', STATE.currentLeague);
+}
+
+window.addEventListener('DOMContentLoaded', boot);
+</script>
+</body>
+</html>
