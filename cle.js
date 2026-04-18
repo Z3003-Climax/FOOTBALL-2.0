@@ -755,6 +755,149 @@ const CLEEngine = (() => {
   }
   
   
+  // ─── PARTITION EN MATCHDAYS ──────────────────────────────────
+  // Répartit les fixtures en numDays journées sans conflit (1 club/jour max).
+  // Algorithme glouton — O(n²) acceptable pour 96–144 fixtures.
+  function _partitionMatchdays(fixtures, numDays) {
+    const days      = Array.from({ length: numDays }, () => []);
+    const remaining = [...fixtures];
+    for (let d = 0; d < numDays; d++) {
+      const busy = new Set();
+      const next  = [];
+      for (const f of remaining) {
+        if (!busy.has(f.home) && !busy.has(f.away)) {
+          days[d].push(f);
+          busy.add(f.home);
+          busy.add(f.away);
+        } else {
+          next.push(f);
+        }
+      }
+      remaining.length = 0;
+      remaining.push(...next);
+    }
+    if (remaining.length > 0) days[numDays - 1].push(...remaining);
+    return days;
+  }
+
+  // ─── BUILD LEAGUE PHASE DRAW ONLY ────────────────────────────
+  // Construit pots + fixtures + matchdays SANS simuler aucun match.
+  // Appelé par initLeaguePhaseMC (masterCalendar).
+  function _buildLeaguePhaseDraw(cle, qualifiedClubs, canon) {
+    const rng            = seededRNG(cle.baseSeed + 5555);
+    const allClubs       = [...cle.directClubs, ...qualifiedClubs].slice(0, 36);
+    const allClubsFiltered = allClubs.filter(id => !!canon.clubs[id]);
+
+    const sorted   = [...allClubsFiltered].sort(
+      (a, b) => _clubCoefficient(b, canon) - _clubCoefficient(a, canon)
+    );
+    const potSize  = Math.ceil(allClubsFiltered.length / 4);
+    const pot1     = sorted.slice(0,           potSize);
+    const pot2     = sorted.slice(potSize,      2 * potSize);
+    const pot3     = sorted.slice(2 * potSize,  3 * potSize);
+    const pot4     = sorted.slice(3 * potSize);
+    const pots     = [pot1, pot2, pot3, pot4].filter(p => p.length > 0);
+
+    const fixtures  = _buildPotFixtures(pots, rng);
+    const matchdays = _partitionMatchdays(fixtures, 8);
+
+    const standingsMap = {};
+    for (const c of allClubsFiltered) {
+      standingsMap[c] = {
+        id: c, played: 0, won: 0, drawn: 0, lost: 0,
+        gf: 0, ga: 0, gd: 0, pts: 0, pot: _potOf(c, pots),
+      };
+    }
+
+    return {
+      clubs:        allClubsFiltered,
+      pots:         { pot1, pot2, pot3, pot4 },
+      fixtures,
+      matchdays,      // 8 tableaux de fixtures — base du masterCalendar
+      currentMD: 0,   // prochain matchday à simuler (0-based)
+      results:   [],
+      standingsMap,
+      standings: [],
+      directR16:    [],
+      playoffTeams: [],
+      eliminated:   [],
+    };
+  }
+
+  // ─── RUN MATCHDAY IN PLACE ───────────────────────────────────
+  // Simule le matchday lp.currentMD et met à jour lp directement.
+  function _runMatchdayInPlace(lp, canon, baseSeed) {
+    const mdIdx      = lp.currentMD;
+    const mdFixtures = lp.matchdays[mdIdx] || [];
+    const rng        = seededRNG(baseSeed + 5555 + mdIdx * 137);
+    const pbc        = (typeof MatchEngine.buildPlayerCache === 'function')
+      ? MatchEngine.buildPlayerCache(canon) : null;
+
+    for (const fix of mdFixtures) {
+      const m = MatchEngine.simulateMatch(fix.home, fix.away, {
+        canon,
+        seed:          rng() * 1000000 | 0,
+        _playersByClub: pbc,
+        homeFormation: _tactics(fix.home),
+        awayFormation: _tactics(fix.away),
+      });
+      lp.results.push({
+        matchday: mdIdx + 1,
+        home: fix.home, away: fix.away,
+        score: m.score, result: m.result,
+        xi: m.xi, events: m.events, ratings: m.ratings, motm: m.motm,
+      });
+      const h = lp.standingsMap[fix.home];
+      const a = lp.standingsMap[fix.away];
+      if (!h || !a) continue;
+      h.played++; h.gf += m.score.home; h.ga += m.score.away; h.gd = h.gf - h.ga;
+      a.played++; a.gf += m.score.away; a.ga += m.score.home; a.gd = a.gf - a.ga;
+      if      (m.result === 'home') { h.won++; h.pts += 3; a.lost++; }
+      else if (m.result === 'away') { a.won++; a.pts += 3; h.lost++; }
+      else                          { h.drawn++; h.pts++; a.drawn++; a.pts++; }
+    }
+    lp.currentMD++;
+    // Reconstruit le classement trié après chaque MD
+    lp.standings = Object.values(lp.standingsMap)
+      .sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
+  }
+
+  // ─── INIT LEAGUE PHASE MC ────────────────────────────────────
+  // Initialise la CLE (phase de ligue) pour le masterCalendar.
+  // Construit pots + matchdays SANS simuler — prêt pour simulateLeagueMD × 8.
+  // À appeler juste avant le 1er event cle_md.
+  function initLeaguePhaseMC(canon, season) {
+    const cle        = initCLE(canon, season);
+    cle.year         = season.year;
+    const qualClubs  = []; // L0 : clubs directs seulement
+    cle.leaguePhase  = _buildLeaguePhaseDraw(cle, qualClubs, canon);
+    cle.phase        = 'league';
+    return cle;
+  }
+
+  // ─── SIMULATE LEAGUE MD ──────────────────────────────────────
+  // API publique — simule UN matchday de la phase de ligue.
+  // Retourne le nouvel état CLE (immutable).
+  // Après le 8e MD, calcule directR16 / playoffTeams / eliminated.
+  function simulateLeagueMD(cle, canon) {
+    if (!cle.leaguePhase) return cle;
+    const lp = cle.leaguePhase;
+    if (lp.currentMD >= 8) return cle;
+
+    const updated = JSON.parse(JSON.stringify(cle));
+    _runMatchdayInPlace(updated.leaguePhase, canon, updated.baseSeed);
+
+    // Finalise la table après le 8e MD
+    if (updated.leaguePhase.currentMD >= 8) {
+      const st = updated.leaguePhase.standings;
+      updated.leaguePhase.directR16    = st.slice(0,  8).map(r => r.id);
+      updated.leaguePhase.playoffTeams = st.slice(8, 24).map(r => r.id);
+      updated.leaguePhase.eliminated   = st.slice(24).map(r => r.id);
+    }
+    return updated;
+  }
+
+
   // ─── PUBLIC ───────────────────────────────────────────────
   return {
     initCLE,
@@ -768,6 +911,8 @@ const CLEEngine = (() => {
     formatQualResults,
       computeCLEStats,
     buildLeagueDrawCLE,
+    initLeaguePhaseMC,
+    simulateLeagueMD,
     DIRECT_CLUBS,
     PHASE_SEQUENCE,
     PHASE_SEQUENCE_L0,
