@@ -2184,6 +2184,9 @@ const clePhase = CLE_DATA ? CLE_DATA.phase : 'idle';
         <button class="ctrl-btn ctrl-btn-ghost" ${seasonDone?'':'disabled'} onclick="runCLEFull()" style="font-size:12px">
           ⏩ Tout simuler
         </button>
+        <button class="ctrl-btn ctrl-btn-ghost" ${seasonDone?'':'disabled'} onclick="showCLEDraw()" style="font-size:12px">
+          🎲 Tirage au sort
+        </button>
       </div>`;
     } else {
       panelEl.innerHTML = `
@@ -2263,6 +2266,107 @@ window.resetCLE = function() {
   CLE_DATA = null;
   EQ_DB.del(CLE_KEY);
   renderCLE();
+};
+
+// ─── TIRAGE AU SORT CLE ──────────────────────────────────────
+window.showCLEDraw = function() {
+  const canon  = getCanon(); if (!canon) return;
+  const season = getOrInitSeason(); if (!season?.finished) return;
+  if (typeof mergeGhostNations === 'function' && !canon._ghostMerged) mergeGhostNations(canon);
+
+  const draw = CLEEngine.buildLeagueDrawCLE(canon, season);
+  const POT_COLORS = ['', '#C9A84C', '#3B82F6', '#10B981', '#8B5CF6'];
+  const POT_LABELS = ['', 'Pot 1 — Têtes de série', 'Pot 2', 'Pot 3', 'Pot 4'];
+  const LG_EMOJI   = {
+    PRO_LIGA:'⚔️', LA_LIGA:'🏟️', ANDRO_LEAGUE:'🛡️',
+    JUBA_LIGA:'🦁', TECHNO_LEAGUE:'⚙️', LIGA_NOS:'🌴', LIGA_ONE:'🌸',
+  };
+
+  const potsHtml = draw.pots.map(pot => `
+    <div style="flex:1;min-width:160px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;
+        color:${POT_COLORS[pot.num]};margin-bottom:10px;
+        border-bottom:1px solid ${POT_COLORS[pot.num]}55;padding-bottom:6px">
+        ${POT_LABELS[pot.num]}
+      </div>
+      ${pot.clubs.map(c => `
+        <div onclick="showCLEClubDraw('${c.id}')"
+          style="padding:7px 10px;border-radius:6px;cursor:pointer;
+          border:1px solid transparent;transition:all .15s;margin-bottom:4px"
+          onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='rgba(255,255,255,.12)'"
+          onmouseout="this.style.background='';this.style.borderColor='transparent'">
+          <div style="font-weight:600;font-size:13px;color:var(--white)">${c.name}</div>
+          <div style="font-size:11px;color:var(--muted)">${LG_EMOJI[c.league]||'🏆'} OVR ${c.avgOvr}</div>
+        </div>`).join('')}
+    </div>`).join('');
+
+  document.getElementById('cle-draw-modal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = 'cle-draw-modal';
+  modal.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;
+    display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:24px 16px`;
+  modal.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);
+      border-radius:16px;width:100%;max-width:860px;margin:auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;
+        padding:20px 24px;border-bottom:1px solid var(--border)">
+        <div>
+          <div style="font-family:var(--font-display);font-size:20px;
+            color:var(--gold);letter-spacing:2px">🎲 TIRAGE — PHASE DE LIGUE CLE</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">
+            ${draw.totalClubs} clubs · ${draw.isLancement0 ? 'Lancement 0 (24 directs)' : 'Lancement 1 (36 clubs)'} ·
+            Clique sur un club pour voir ses adversaires
+          </div>
+        </div>
+        <button onclick="document.getElementById('cle-draw-modal').remove()"
+          style="background:none;border:1px solid var(--border);color:var(--muted);
+          border-radius:8px;padding:6px 14px;cursor:pointer;font-size:16px;
+          transition:all .15s" onmouseover="this.style.borderColor='var(--white)'"
+          onmouseout="this.style.borderColor='var(--border)'">✕</button>
+      </div>
+      <div style="padding:24px;display:flex;flex-wrap:wrap;gap:20px">${potsHtml}</div>
+      <div id="cle-draw-club-detail" style="padding:0 24px 24px"></div>
+    </div>`;
+  window._cleDraw = draw;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+};
+
+window.showCLEClubDraw = function(clubId) {
+  const draw  = window._cleDraw; if (!draw) return;
+  const canon = getCanon();
+  const detail = document.getElementById('cle-draw-club-detail');
+  if (!detail) return;
+  const opps     = draw.opponents[clubId] || [];
+  const clubName = canon.clubs[clubId]?.name || clubId;
+  const pot      = draw.potMap[clubId] || '?';
+  const POT_COLORS = ['','#C9A84C','#3B82F6','#10B981','#8B5CF6'];
+
+  const rows = opps.map(o => `
+    <div style="display:flex;justify-content:space-between;align-items:center;
+      padding:7px 0;border-bottom:1px solid var(--border);font-size:13px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="background:${POT_COLORS[o.pot]||'#555'};color:#000;
+          border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700">Pot ${o.pot}</span>
+        <span style="color:var(--white);font-weight:600">${o.name}</span>
+      </div>
+      <span style="font-size:11px;padding:3px 10px;border-radius:12px;
+        background:${o.isHome?'rgba(34,197,94,.15)':'rgba(201,168,76,.12)'};
+        color:${o.isHome?'var(--green)':'var(--gold)'}">
+        ${o.isHome ? '🏠 Domicile' : '✈️ Extérieur'}
+      </span>
+    </div>`).join('');
+
+  detail.innerHTML = `
+    <div style="border:1px solid var(--gold);border-radius:10px;padding:16px 20px;
+      background:rgba(201,168,76,.04)">
+      <div style="font-size:12px;color:var(--gold);font-weight:700;margin-bottom:12px;
+        letter-spacing:0.5px">
+        PROGRAMME DE ${clubName.toUpperCase()}
+        <span style="color:var(--muted);font-weight:400;font-size:11px"> · Pot ${pot}</span>
+      </div>
+      ${rows || '<div style="color:var(--muted);font-size:13px">Aucun adversaire trouvé.</div>'}
+    </div>`;
 };
 
 function renderCLEStructure(el, canon) {
@@ -2397,14 +2501,47 @@ function renderCLEResults(el, cle, canon) {
   ${koRound('DEMI-FINALES (A/R)', cle.knockout.sf)}
   ${koRound('⚽ FINALE', cle.knockout.final, false)}
 
-  <!-- CLE STATS -->
+  <!-- PALMARÈS CLE -->
   <div class="section-header" style="margin-top:12px">
-    <div class="section-title" style="font-size:18px">STATISTIQUES CLE</div>
+    <div class="section-title" style="font-size:18px">🏅 PALMARÈS CLE</div>
     <div class="section-line"></div>
   </div>
-  ${statTable('MEILLEURS BUTEURS CLE', '⚽', cleStats.scorers, 'goals', '⚽ Buts', 'assists')}
-  ${statTable('MEILLEURS PASSEURS CLE', '🎯', cleStats.assists, 'assists', '🎯 Passes', 'goals')}
-  ${statTable('HOMME DU MATCH CLE', '⭐', cleStats.motm.filter(s=>s.motm>0), 'motm', '⭐ MOTM')}
+  ${(() => {
+    // MVP CLE : score composite goals×3 + assists×2 + motm×1
+    const allPlayers = [...cleStats.scorers];
+    for (const a of cleStats.assists) {
+      if (!allPlayers.find(p => p.id === a.id)) allPlayers.push(a);
+    }
+    for (const m of cleStats.motm) {
+      if (!allPlayers.find(p => p.id === m.id)) allPlayers.push(m);
+    }
+    const mvp = allPlayers
+      .map(s => ({ ...s, _score: (s.goals||0)*3 + (s.assists||0)*2 + (s.motm||0) }))
+      .sort((a, b) => b._score - a._score)[0];
+    if (!mvp) return '';
+    return `
+      <div class="cle-card" style="margin-bottom:16px;border-color:rgba(201,168,76,.6)">
+        <div class="cle-header" style="background:rgba(201,168,76,.08)">
+          <span style="font-size:22px">🌟</span>
+          <span class="cle-title" style="font-size:15px;color:var(--gold)">MEILLEUR JOUEUR CLE</span>
+          <span class="pill pill-gold" style="margin-left:auto">MVP</span>
+        </div>
+        <div style="padding:16px 24px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:22px;font-weight:700;color:var(--white)">${mvp.player?.name || mvp.id}</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:2px">${mvp.clubName}</div>
+          </div>
+          <div style="display:flex;gap:20px;flex-wrap:wrap">
+            <div class="hub-stat"><span class="val" style="font-size:22px">${mvp.goals||0}</span><span class="lbl">⚽ Buts</span></div>
+            <div class="hub-stat"><span class="val" style="font-size:22px">${mvp.assists||0}</span><span class="lbl">🎯 Passes D.</span></div>
+            ${(mvp.motm||0)>0?`<div class="hub-stat"><span class="val" style="font-size:22px">${mvp.motm}</span><span class="lbl">⭐ MOTM</span></div>`:''}
+          </div>
+        </div>
+      </div>`;
+  })()}
+  ${statTable('🥇 SOULIER D\'OR CLE', '⚽', cleStats.scorers, 'goals', 'Buts', 'assists')}
+  ${statTable('🎯 MEILLEUR PASSEUR CLE', '🎯', cleStats.assists, 'assists', 'Passes D.', 'goals')}
+  ${statTable('⭐ HOMME DU MATCH CLE', '⭐', cleStats.motm.filter(s=>s.motm>0), 'motm', 'MOTM')}
   `;
 }
 
@@ -3687,6 +3824,48 @@ function renderCLEInProgress(el, cle, canon) {
       }
     }
     html += `</div></div>`;;
+  }
+
+  // ── Stats buteurs / passeurs CLE en direct ───────────────
+  const cleStats = CLEEngine.computeCLEStats(cle, canon);
+  const _miniStat = (emoji, players, key, label) => {
+    if (!players?.length) return '';
+    const rows = players.slice(0, 7).map((s, i) => `
+      <div style="display:flex;align-items:center;gap:8px;padding:5px 0;
+        border-bottom:1px solid var(--border);font-size:13px">
+        <span style="color:var(--muted);font-family:var(--font-mono);
+          width:18px;text-align:right;flex-shrink:0">${i + 1}</span>
+        <span style="flex:1;font-weight:${i === 0 ? '700' : '400'};
+          color:${i === 0 ? 'var(--white)' : 'var(--muted)'}">
+          ${s.player?.name || s.id}
+        </span>
+        <span style="color:var(--muted);font-size:11px;flex-shrink:0">${s.clubName}</span>
+        <span style="font-family:var(--font-mono);color:var(--gold);
+          font-weight:700;min-width:22px;text-align:right;flex-shrink:0">
+          ${s[key]}
+        </span>
+      </div>`).join('');
+    return `
+      <div style="flex:1;min-width:240px">
+        <div style="font-size:10px;color:var(--gold);letter-spacing:1.5px;
+          font-weight:700;margin-bottom:10px">${emoji} ${label}</div>
+        ${rows}
+      </div>`;
+  };
+  const scorersLive = cleStats.scorers.filter(s => s.goals   > 0);
+  const assistsLive = cleStats.assists.filter(s => s.assists  > 0);
+  if (scorersLive.length || assistsLive.length) {
+    html += `
+      <div style="margin-top:24px">
+        <div class="section-header" style="margin-bottom:14px">
+          <div class="section-title" style="font-size:15px">📊 STATISTIQUES EN DIRECT</div>
+          <div class="section-line"></div>
+        </div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap">
+          ${_miniStat('⚽', scorersLive, 'goals',   'MEILLEURS BUTEURS')}
+          ${_miniStat('🎯', assistsLive, 'assists', 'MEILLEURS PASSEURS')}
+        </div>
+      </div>`;
   }
 
   el.innerHTML = html || '<div style="color:var(--muted);text-align:center;padding:32px">Simule la prochaine phase avec le bouton ci-dessus.</div>';
