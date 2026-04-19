@@ -22,38 +22,34 @@ const EuroEngine = (() => {
 
   // ─── NATIONS EQUESTRIA ────────────────────────────────────
   // 15 nations avec des joueurs dans le canon + 9 fictives pour compléter à 24
-const NATION_META = {
-    // ── 15 nations réelles (joueurs dans canon.js) ────────────
-    ishgar:         { name: 'Ishgar',           flag: '⚔️',  color: '#e11d48', abbr: 'ISH' },
-    brislovia:      { name: 'Brislovia',        flag: '🏔️',  color: '#3b82f6', abbr: 'BRI' },
-    savanna:        { name: 'Savanna',          flag: '🦁',  color: '#f59e0b', abbr: 'SAV' },
-    bermudes:       { name: 'Bermudes',         flag: '🌊',  color: '#06b6d4', abbr: 'BER' },
-    javanie:        { name: 'Javanie',          flag: '🌴',  color: '#10b981', abbr: 'JAV' },
-    desertiqua:     { name: 'Desertiqua',       flag: '🏜️',  color: '#d97706', abbr: 'DES' },
-    paysTropMignon: { name: 'Pays Trop Mignon', flag: '🌸',  color: '#ec4899', abbr: 'PTM' },
-    wales:          { name: 'Walisia',          flag: '🐉',  color: '#dc2626', abbr: 'WAL' },
-    porespagne:     { name: 'Porespagne',       flag: '🌹',  color: '#c026d3', abbr: 'POR' },
-    crannbanie:     { name: 'Crannbanie',       flag: '🌙',  color: '#6366f1', abbr: 'CRA' },
-    wesfalie:       { name: 'Wesfalie',         flag: '⚡',  color: '#64748b', abbr: 'WES' },
-    vulgarie:       { name: 'Vulgarie',         flag: '🗡️',  color: '#7c3aed', abbr: 'VUL' },
-    paxifista:      { name: 'Paxifista',        flag: '☮️',  color: '#0ea5e9', abbr: 'PAX' },
-    canterlot:      { name: 'Canterlot',        flag: '✨',  color: '#a855f7', abbr: 'CAN' },
-    wakanda:        { name: 'Wakanda',          flag: '🌿',  color: '#16a34a', abbr: 'WAK' },
-    // ── 9 nations avec joueurs dans ghost_nations.js ──────────
-    // ATTENTION : les clés JS doivent correspondre EXACTEMENT
-    // aux valeurs `nationality` dans ghost_nations.js
-    romanie:        { name: 'Romania',          flag: '❄️',  color: '#bfdbfe', abbr: 'ROM' },
-    bulga:          { name: 'Bulga',            flag: '☀️',  color: '#fde68a', abbr: 'BUL' },
-    botlie:         { name: 'Botlie',           flag: '💧',  color: '#67e8f9', abbr: 'BOT' },
-    vietnam:        { name: 'Vietnam',          flag: '⚙️',  color: '#9ca3af', abbr: 'VIE' },
-    newbilamie:     { name: 'Yakistan',         flag: '🔮',  color: '#c4b5fd', abbr: 'YAK' },
-    balouthikistan: { name: 'Baloutchikistan',  flag: '🌲',  color: '#4ade80', abbr: 'BLT' },
-    nordheim:       { name: 'Nordheim',         flag: '🔥',  color: '#f97316', abbr: 'NDH' },
-    masalie:        { name: 'Masalie',          flag: '🌟',  color: '#fcd34d', abbr: 'MAS' },
-    abyssinie:      { name: 'Abyssinie',        flag: '🌑',  color: '#374151', abbr: 'ABY' },
+  const NATION_META = {
+    ishgar:        { name: 'Ishgar',         flag: '⚔️',  color: '#e11d48', abbr: 'ISH' },
+    brislovia:     { name: 'Brislovia',      flag: '🏔️',  color: '#3b82f6', abbr: 'BRI' },
+    savanna:       { name: 'Savanna',        flag: '🦁',  color: '#f59e0b', abbr: 'SAV' },
+    bermudes:      { name: 'Bermudes',       flag: '🌊',  color: '#06b6d4', abbr: 'BER' },
+    javanie:       { name: 'Javanie',        flag: '🌴',  color: '#10b981', abbr: 'JAV' },
+    desertiqua:    { name: 'Desertiqua',     flag: '🏜️',  color: '#d97706', abbr: 'DES' },
+    paysTropMignon:{ name: 'Pays Trop Mignon', flag: '🌸', color: '#ec4899', abbr: 'PTM' },
+    wales:         { name: 'Walisia',        flag: '🐉',  color: '#dc2626', abbr: 'WAL' },
+    porespagne:    { name: 'Porespagne',     flag: '🌹',  color: '#c026d3', abbr: 'POR' },
+    crannbanie:    { name: 'Crannbanie',     flag: '🌙',  color: '#6366f1', abbr: 'CRA' },
+    wesfalie:      { name: 'Wesfalie',       flag: '⚡',  color: '#64748b', abbr: 'WES' },
+    vulgarie:      { name: 'Vulgarie',       flag: '🗡️',  color: '#7c3aed', abbr: 'VUL' },
+    paxifista:     { name: 'Paxifista',      flag: '☮️',  color: '#0ea5e9', abbr: 'PAX' },
+    canterlot:     { name: 'Canterlot',      flag: '✨',  color: '#a855f7', abbr: 'CAN' },
+    wakanda:       { name: 'Wakanda',        flag: '🌿',  color: '#16a34a', abbr: 'WAK' },
+    // 9 nations fictives pour compléter le tableau à 24
+    nordheim:      { name: 'Nordheim',       flag: '❄️',  color: '#bfdbfe', abbr: 'NOR' },
+    solaris:       { name: 'Solaris',        flag: '☀️',  color: '#fde68a', abbr: 'SOL' },
+    aquateria:     { name: 'Aquateria',      flag: '💧',  color: '#67e8f9', abbr: 'AQU' },
+    ferria:        { name: 'Ferria',         flag: '⚙️',  color: '#9ca3af', abbr: 'FER' },
+    luminia:       { name: 'Luminia',        flag: '🔮',  color: '#c4b5fd', abbr: 'LUM' },
+    sylvara:       { name: 'Sylvara',        flag: '🌲',  color: '#4ade80', abbr: 'SYL' },
+    pyraxis:       { name: 'Pyraxis',        flag: '🔥',  color: '#f97316', abbr: 'PYR' },
+    celestia:      { name: 'Celestia',       flag: '🌟',  color: '#fcd34d', abbr: 'CEL' },
+    abyssia:       { name: 'Abyssia',        flag: '🌑',  color: '#374151', abbr: 'ABY' },
   };
-// NOTE : 'nordheim' n'a pas de joueurs dans ghost_nations → squad
-// auto-généré à ~73 OVR (même comportement que les anciennes nations fictives)
+
   const PHASE_SEQUENCE = ['idle','group_j1','group_j2','group_j3','r16','qf','sf','final','complete'];
 
   // ─── HELPER TACTIQUES NATIONALES ────────────────────────
@@ -459,7 +455,13 @@ const NATION_META = {
   function getNationName(id) {
     return NATION_META[id]?.name || id;
   }
-  function getNationFlag(id) {
+  function getNationFlag(id, size=24) {
+    // Priorité 1 : image base64 depuis logos.js (nat_ishgar, nat_bermudes, etc.)
+    if (typeof getLogo === 'function') {
+      const src = getLogo('nat_' + id) || getLogo(id);
+      if (src) return `<img src="${src}" width="${size}" height="${size}" style="object-fit:cover;border-radius:3px;vertical-align:middle;flex-shrink:0" onerror="this.style.display='none'" alt="">`;
+    }
+    // Fallback : emoji défini dans NATION_META
     return NATION_META[id]?.flag || '🏳️';
   }
   function getNationColor(id) {
