@@ -880,12 +880,16 @@ let   MC_DATA = null;
 function buildMasterCalendar(maxChampRound, isL0) {
   const events = [];
 
-  // L1 : tours de qualification pré-saison
+  // L1 : tours de qualification pré-saison PUIS tirage
   if (!isL0) {
     ['qual_r1','qual_r2','qual_r3','qual_r4'].forEach(phase => {
       events.push({ type:'cle_qual', phase });
     });
   }
+
+  // Tirage au sort — obligatoire avant tout match CLE
+  // L0 : en premier · L1 : après les quals
+  events.push({ type:'cle_draw' });
 
   let champUsed = 0;
   const insertChamp = n => {
@@ -904,19 +908,18 @@ function buildMasterCalendar(maxChampRound, isL0) {
     events.push({ type:'cle_md', md });
   }
 
-  // Phases knockout : interspersées dans les journées restantes
-  const koPhases   = ['playoff','r16','qf','sf','final'];
-  const remaining  = maxChampRound - champUsed;
-  const slotSize   = Math.max(1, Math.floor(remaining / (koPhases.length + 1)));
+  // Phases knockout
+  const koPhases  = ['playoff','r16','qf','sf','final'];
+  const remaining = maxChampRound - champUsed;
+  const slotSize  = Math.max(1, Math.floor(remaining / (koPhases.length + 1)));
   for (const phase of koPhases) {
     insertChamp(slotSize);
     events.push({ type:'cle_ko', phase });
   }
 
-  // Journées restantes après la finale CLE
   insertChamp(maxChampRound - champUsed);
 
-  return { events, pos: 0 };
+  return { events, pos: 0, drawPending: false };
 }
 
 // ─── STORAGE ───────────────────────────────────────────────
@@ -976,16 +979,19 @@ function _ensureMC(season) {
 
 function _mcNextLabel() {
   if (!MC_DATA || MC_DATA.pos >= MC_DATA.events.length) return 'Terminé';
+  if (MC_DATA.drawPending) return '🎲 Valider le tirage CLE';
   const evt = MC_DATA.events[MC_DATA.pos];
-  if (evt.type === 'champ')    return 'Journée de championnat';
-  if (evt.type === 'cle_md')   return 'CLE · Journée ' + (evt.md + 1) + '/8';
-  if (evt.type === 'cle_ko')   return 'CLE · ' + CLEEngine.getPhaseLabel(evt.phase);
-  if (evt.type === 'cle_qual') return 'CLE · ' + CLEEngine.getPhaseLabel(evt.phase);
+  if (evt.type === 'cle_draw')  return '🎲 Tirage au sort CLE';
+  if (evt.type === 'champ')     return 'Journée de championnat';
+  if (evt.type === 'cle_md')    return 'CLE · Journée ' + (evt.md + 1) + '/8';
+  if (evt.type === 'cle_ko')    return 'CLE · ' + CLEEngine.getPhaseLabel(evt.phase);
+  if (evt.type === 'cle_qual')  return 'CLE · ' + CLEEngine.getPhaseLabel(evt.phase);
   return '—';
 }
 
 function _mcDone() {
   if (!MC_DATA) return true;
+  if (MC_DATA.drawPending) return false; // bloqué sur le tirage
   return MC_DATA.pos >= MC_DATA.events.length;
 }
 
@@ -1003,6 +1009,25 @@ function _executeEvent(evt, canon) {
   // Toutes les opérations CLE nécessitent les ghost nations
   if (typeof mergeGhostNations === 'function' && !canon._ghostMerged) {
     mergeGhostNations(canon);
+  }
+
+  if (evt.type === 'cle_draw') {
+    // Construit la leaguePhase (draw seulement, sans simuler)
+    if (!CLE_DATA || CLE_DATA.phase === 'idle') {
+      // L0 : init from scratch (24 clubs directs)
+      CLE_DATA = CLEEngine.initLeaguePhaseMC(canon, season);
+      CLE_DATA.year = season.year;
+    } else if (!CLE_DATA.leaguePhase || CLE_DATA.phase === 'qual_r4') {
+      // L1 : greffe la leaguePhase sur le CLE existant avec les 12 qualifiés
+      const qualClubs = CLE_DATA.qualRounds?.r4?.qualified?.slice(0, 12) || [];
+      CLE_DATA = CLEEngine.buildLeaguePhaseMC(CLE_DATA, qualClubs, canon);
+    }
+    saveCLEData(CLE_DATA);
+    // Pose le verrou : l'utilisateur doit valider le tirage
+    MC_DATA.drawPending = true;
+    // Ouvre automatiquement le modal de tirage
+    setTimeout(() => showCLEDraw(), 100);
+    return;
   }
 
   if (evt.type === 'cle_md') {
@@ -1050,7 +1075,13 @@ window.simRound = function() {
   const s = getOrInitSeason(); if (!s) return;
 
   _ensureMC(s);
-  if (_mcDone()) return;
+  if (_mcDone() && !MC_DATA?.drawPending) return;
+
+  // Si le tirage est en attente : ouvrir le modal, ne pas simuler
+  if (MC_DATA?.drawPending) {
+    showCLEDraw();
+    return;
+  }
 
   const btn = document.getElementById('btn-sim-round');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ ' + _mcNextLabel(); }
@@ -1089,9 +1120,11 @@ window.simAll = function() {
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Simulation...'; }
 
   // Simule tous les événements restants en bloc
-  while (!_mcDone()) {
+  while (MC_DATA.pos < MC_DATA.events.length) {
     const evt = MC_DATA.events[MC_DATA.pos];
     _executeEvent(evt, canon);
+    // cle_draw : valide automatiquement (pas d'interaction en mode "tout simuler")
+    if (evt.type === 'cle_draw') MC_DATA.drawPending = false;
     MC_DATA.pos++;
   }
   EQ_DB.set(MC_KEY, MC_DATA).catch(() => {});
@@ -2494,10 +2527,19 @@ window.resetCLE = function() {
 // ─── TIRAGE AU SORT CLE ──────────────────────────────────────
 window.showCLEDraw = function() {
   const canon  = getCanon(); if (!canon) return;
-  const season = getOrInitSeason(); if (!season?.finished) return;
+  const season = getOrInitSeason(); if (!season) return;
   if (typeof mergeGhostNations === 'function' && !canon._ghostMerged) mergeGhostNations(canon);
 
-  const draw = CLEEngine.buildLeagueDrawCLE(canon, season);
+  // Source du draw : depuis CLE_DATA.leaguePhase si disponible (masterCalendar)
+  // sinon depuis buildLeagueDrawCLE (bouton manuel)
+  let draw = null;
+  if (CLE_DATA?.leaguePhase?.matchdays) {
+    draw = _buildDrawFromLeaguePhase(CLE_DATA, canon);
+  } else {
+    draw = CLEEngine.buildLeagueDrawCLE(canon, season);
+  }
+  if (!draw) return;
+
   const POT_COLORS = ['', '#C9A84C', '#3B82F6', '#10B981', '#8B5CF6'];
   const POT_LABELS = ['', 'Pot 1 — Têtes de série', 'Pot 2', 'Pot 3', 'Pot 4'];
   const LG_EMOJI   = {
@@ -2505,8 +2547,10 @@ window.showCLEDraw = function() {
     JUBA_LIGA:'🦁', TECHNO_LEAGUE:'⚙️', LIGA_NOS:'🌴', LIGA_ONE:'🌸',
   };
 
+  const isDrawPending = !!(MC_DATA?.drawPending);
+
   const potsHtml = draw.pots.map(pot => `
-    <div style="flex:1;min-width:160px">
+    <div style="flex:1;min-width:155px">
       <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;
         color:${POT_COLORS[pot.num]};margin-bottom:10px;
         border-bottom:1px solid ${POT_COLORS[pot.num]}55;padding-bottom:6px">
@@ -2526,59 +2570,193 @@ window.showCLEDraw = function() {
   document.getElementById('cle-draw-modal')?.remove();
   const modal = document.createElement('div');
   modal.id = 'cle-draw-modal';
-  modal.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;
+  modal.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2000;
     display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:24px 16px`;
   modal.innerHTML = `
-    <div style="background:var(--surface);border:1px solid var(--border);
-      border-radius:16px;width:100%;max-width:860px;margin:auto">
+    <div style="background:var(--surface);border:1px solid ${isDrawPending?'var(--gold)':'var(--border)'};
+      border-radius:16px;width:100%;max-width:880px;margin:auto">
+
+      <!-- Header -->
       <div style="display:flex;align-items:center;justify-content:space-between;
         padding:20px 24px;border-bottom:1px solid var(--border)">
         <div>
           <div style="font-family:var(--font-display);font-size:20px;
             color:var(--gold);letter-spacing:2px">🎲 TIRAGE — PHASE DE LIGUE CLE</div>
           <div style="font-size:12px;color:var(--muted);margin-top:4px">
-            ${draw.totalClubs} clubs · ${draw.isLancement0 ? 'Lancement 0 (24 directs)' : 'Lancement 1 (36 clubs)'} ·
-            Clique sur un club pour voir ses adversaires
+            ${draw.totalClubs} clubs · ${draw.isLancement0 ? 'Lancement 0 — 24 clubs directs' : 'Lancement 1 — 36 clubs'} ·
+            Clique sur un club pour voir son programme complet
           </div>
         </div>
+        ${!isDrawPending ? `
         <button onclick="document.getElementById('cle-draw-modal').remove()"
           style="background:none;border:1px solid var(--border);color:var(--muted);
-          border-radius:8px;padding:6px 14px;cursor:pointer;font-size:16px;
-          transition:all .15s" onmouseover="this.style.borderColor='var(--white)'"
-          onmouseout="this.style.borderColor='var(--border)'">✕</button>
+          border-radius:8px;padding:6px 14px;cursor:pointer;font-size:16px">✕</button>` : ''}
       </div>
+
+      ${isDrawPending ? `
+      <!-- Bandeau validation -->
+      <div style="background:rgba(201,168,76,.12);border-bottom:1px solid rgba(201,168,76,.3);
+        padding:12px 24px;display:flex;align-items:center;gap:12px">
+        <span style="font-size:18px">⚠️</span>
+        <span style="font-size:13px;color:var(--gold);flex:1">
+          Consulte le tirage, puis valide pour lancer le calendrier CLE.
+        </span>
+        <button onclick="validateCLEDraw()"
+          style="background:var(--gold);border:none;color:#000;
+          border-radius:8px;padding:8px 20px;cursor:pointer;
+          font-weight:700;font-size:13px;white-space:nowrap">
+          ✓ Valider le tirage
+        </button>
+      </div>` : ''}
+
+      <!-- Pots -->
       <div style="padding:24px;display:flex;flex-wrap:wrap;gap:20px">${potsHtml}</div>
+
+      <!-- Détail club sélectionné -->
       <div id="cle-draw-club-detail" style="padding:0 24px 24px"></div>
+
+      ${isDrawPending ? `
+      <!-- Bouton valider en bas aussi -->
+      <div style="padding:16px 24px;border-top:1px solid var(--border);text-align:right">
+        <button onclick="validateCLEDraw()"
+          style="background:var(--gold);border:none;color:#000;
+          border-radius:8px;padding:10px 28px;cursor:pointer;
+          font-weight:700;font-size:14px">
+          ✓ Valider le tirage — Lancer la CLE
+        </button>
+      </div>` : ''}
     </div>`;
+
   window._cleDraw = draw;
   document.body.appendChild(modal);
-  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+  // Si drawPending : empêche de fermer en cliquant l'overlay
+  if (!isDrawPending) {
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+  }
 };
 
+// ─── Valider le tirage et débloquer le masterCalendar ────────────────
+window.validateCLEDraw = function() {
+  if (!MC_DATA) return;
+  MC_DATA.drawPending = false;
+  MC_DATA.pos++; // avance l'event cle_draw
+  EQ_DB.set(MC_KEY, MC_DATA).catch(() => {});
+  document.getElementById('cle-draw-modal')?.remove();
+  updateSeasonUI();
+  if (STATE.currentView === 'cle') renderCLE();
+};
+
+// ─── Construit le draw depuis une leaguePhase existante ──────────────
+function _buildDrawFromLeaguePhase(cle, canon) {
+  const lp = cle.leaguePhase;
+  if (!lp) return null;
+
+  const potMap = {};
+  ['pot1','pot2','pot3','pot4'].forEach((pk, i) => {
+    (lp.pots?.[pk] || []).forEach(id => { potMap[id] = i + 1; });
+  });
+
+  const pots = ['pot1','pot2','pot3','pot4'].map((pk, i) => ({
+    num: i + 1,
+    clubs: (lp.pots?.[pk] || []).map(id => {
+      const club  = canon.clubs[id];
+      const top11 = Object.values(canon.players)
+        .filter(p => p.club === id)
+        .sort((a,b) => (b.ovr||0)-(a.ovr||0)).slice(0,11);
+      const avgOvr = top11.length
+        ? Math.round(top11.reduce((s,p)=>s+(p.ovr||70),0)/top11.length) : 70;
+      return { id, name: club?.name || id, league: club?.league || '', tier: club?.tier || '', avgOvr };
+    }),
+  })).filter(p => p.clubs.length > 0);
+
+  // Adversaires par club avec matchday
+  const opponents = {};
+  for (const clubId of (lp.clubs || [])) {
+    const myFixtures = (lp.fixtures || []).filter(f => f.home === clubId || f.away === clubId);
+    opponents[clubId] = myFixtures.map(f => {
+      const opp = f.home === clubId ? f.away : f.home;
+      const mdIdx = (lp.matchdays || []).findIndex(day =>
+        day.some(d => d.home === f.home && d.away === f.away)
+      );
+      return {
+        id:       opp,
+        name:     canon.clubs[opp]?.name || opp,
+        pot:      potMap[opp] || 0,
+        isHome:   f.home === clubId,
+        matchday: mdIdx + 1,
+      };
+    }).sort((a,b) => a.matchday - b.matchday);
+  }
+
+  return {
+    pots,
+    potMap,
+    opponents,
+    totalClubs:   lp.clubs?.length || 0,
+    isLancement0: cle.mode === 'lancement_0',
+  };
+}
+
 window.showCLEClubDraw = function(clubId) {
-  const draw  = window._cleDraw; if (!draw) return;
-  const canon = getCanon();
+  const draw   = window._cleDraw; if (!draw) return;
+  const canon  = getCanon();
   const detail = document.getElementById('cle-draw-club-detail');
   if (!detail) return;
+
   const opps     = draw.opponents[clubId] || [];
   const clubName = canon.clubs[clubId]?.name || clubId;
   const pot      = draw.potMap[clubId] || '?';
   const POT_COLORS = ['','#C9A84C','#3B82F6','#10B981','#8B5CF6'];
 
-  const rows = opps.map(o => `
-    <div style="display:flex;justify-content:space-between;align-items:center;
-      padding:7px 0;border-bottom:1px solid var(--border);font-size:13px">
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="background:${POT_COLORS[o.pot]||'#555'};color:#000;
-          border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700">Pot ${o.pot}</span>
-        <span style="color:var(--white);font-weight:600">${o.name}</span>
-      </div>
-      <span style="font-size:11px;padding:3px 10px;border-radius:12px;
-        background:${o.isHome?'rgba(34,197,94,.15)':'rgba(201,168,76,.12)'};
-        color:${o.isHome?'var(--green)':'var(--gold)'}">
-        ${o.isHome ? '🏠 Domicile' : '✈️ Extérieur'}
-      </span>
-    </div>`).join('');
+  // Résultats déjà joués pour ce club (depuis leaguePhase.results)
+  const playedResults = {};
+  if (CLE_DATA?.leaguePhase?.results) {
+    for (const r of CLE_DATA.leaguePhase.results) {
+      if (r.home === clubId || r.away === clubId) {
+        const opp     = r.home === clubId ? r.away : r.home;
+        const isHome  = r.home === clubId;
+        const myGoals = isHome ? r.score.home : r.score.away;
+        const opGoals = isHome ? r.score.away : r.score.home;
+        playedResults[r.matchday] = { opp, myGoals, opGoals, isHome, result: r.result };
+      }
+    }
+  }
+
+  const rows = opps.map(o => {
+    const played = playedResults[o.matchday];
+    let scoreHtml = '';
+    if (played) {
+      const w = played.myGoals > played.opGoals ? 'var(--green)'
+              : played.myGoals < played.opGoals ? 'var(--red)'
+              : 'var(--gold)';
+      scoreHtml = `<span style="font-family:var(--font-mono);font-weight:700;
+        color:${w};font-size:13px">${played.myGoals}–${played.opGoals}</span>`;
+    } else {
+      scoreHtml = `<span style="color:var(--muted);font-size:11px">à venir</span>`;
+    }
+
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;
+        padding:7px 0;border-bottom:1px solid var(--border);font-size:13px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="color:var(--muted);font-family:var(--font-mono);
+            font-size:10px;min-width:24px">J${o.matchday}</span>
+          <span style="background:${POT_COLORS[o.pot]||'#555'};color:#000;
+            border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700">
+            Pot ${o.pot}
+          </span>
+          <span style="color:var(--white);font-weight:600">${o.name}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          ${scoreHtml}
+          <span style="font-size:11px;padding:2px 8px;border-radius:10px;
+            background:${o.isHome?'rgba(34,197,94,.15)':'rgba(201,168,76,.12)'};
+            color:${o.isHome?'var(--green)':'var(--gold)'}">
+            ${o.isHome ? '🏠' : '✈️'}
+          </span>
+        </div>
+      </div>`;
+  }).join('');
 
   detail.innerHTML = `
     <div style="border:1px solid var(--gold);border-radius:10px;padding:16px 20px;
@@ -4337,6 +4515,98 @@ function renderCLEInProgress(el, cle, canon) {
       </tr>`;
     });
     html += `</tbody></table></div>`;
+
+    // ── Résultats par journée CLE ───────────────────────────────────
+    if (lp.results?.length) {
+      const byMD = {};
+      for (const r of lp.results) {
+        const md = r.matchday || 1;
+        if (!byMD[md]) byMD[md] = [];
+        byMD[md].push(r);
+      }
+
+      html += `<div style="margin-bottom:20px">
+        <div class="section-header" style="margin-bottom:12px">
+          <div class="section-title" style="font-size:14px">RÉSULTATS PAR JOURNÉE CLE</div>
+          <div class="section-line"></div>
+        </div>`;
+
+      for (const md of Object.keys(byMD).sort((a,b)=>+a-+b)) {
+        const matches = byMD[md];
+        html += `
+          <div style="margin-bottom:14px">
+            <div style="font-size:11px;color:var(--gold);letter-spacing:1.5px;
+              font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px">
+              🏆 JOURNÉE ${md}
+              <span style="color:var(--muted);font-weight:400;font-size:10px">
+                · ${matches.length} matchs
+              </span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px">`;
+
+        for (const r of matches) {
+          const isHomeWin = r.result === 'home';
+          const isAwayWin = r.result === 'away';
+
+          const goals = (r.events || []).filter(e => e.type === 'goal');
+          const homeGoals = goals.filter(e => e.home).map(e =>
+            `<span style="color:var(--muted);font-size:10px">⚽${e.scorer?.name?.split(' ').pop()||'?'}${e.assistant?.name?` (${e.assistant.name.split(' ').pop()})`:''}</span>`
+          ).join(' ');
+          const awayGoals = goals.filter(e => !e.home).map(e =>
+            `<span style="color:var(--muted);font-size:10px">⚽${e.scorer?.name?.split(' ').pop()||'?'}${e.assistant?.name?` (${e.assistant.name.split(' ').pop()})`:''}</span>`
+          ).join(' ');
+
+          const motmHtml = r.motm?.name
+            ? `<div style="font-size:10px;color:var(--gold);margin-top:5px">
+                ⭐ MOTM : ${r.motm.name.split(' ').pop()}${r.motm.rating?' ('+r.motm.rating+')':''}
+               </div>`
+            : '';
+
+          const mKey = `cle_lp_${r.home}_${r.away}_md${md}`;
+          window._matchDetailCache[mKey] = {
+            home: { id: r.home, name: cn(r.home) },
+            away: { id: r.away, name: cn(r.away) },
+            score: r.score, xi: r.xi||{home:[],away:[]},
+            events: r.events||[], ratings: r.ratings||{}, motm: r.motm,
+          };
+
+          html += `
+            <div onclick="showMatchDetail('${mKey}')"
+              style="background:var(--bg);border:1px solid var(--border);
+              border-radius:8px;padding:10px 12px;cursor:pointer;transition:border-color .15s"
+              onmouseover="this.style.borderColor='rgba(201,168,76,.35)'"
+              onmouseout="this.style.borderColor=''">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="flex:1">
+                  <div style="font-weight:${isHomeWin?'700':'400'};
+                    color:${isHomeWin?'var(--white)':'var(--muted)'};font-size:12px">
+                    ${cn(r.home).slice(0,22)}
+                  </div>
+                  <div style="font-weight:${isAwayWin?'700':'400'};
+                    color:${isAwayWin?'var(--white)':'var(--muted)'};font-size:12px">
+                    ${cn(r.away).slice(0,22)}
+                  </div>
+                </div>
+                <div style="font-family:var(--font-mono);font-weight:900;font-size:18px;
+                  padding:0 12px;color:var(--white)">
+                  ${r.score.home}–${r.score.away}
+                </div>
+              </div>
+              ${homeGoals || awayGoals ? `
+              <div style="margin-top:5px;border-top:1px solid var(--border);padding-top:5px">
+                <div>${homeGoals}</div>
+                <div>${awayGoals}</div>
+              </div>` : ''}
+              ${motmHtml}
+              <div style="font-size:9px;color:var(--muted);margin-top:4px;text-align:right">
+                cliquer pour détail ›
+              </div>
+            </div>`;
+        }
+        html += `</div></div>`;
+      }
+      html += `</div>`;
+    }
   }
 
   // ─── PHASES KNOCKOUT ───────────────────────────────────────────
