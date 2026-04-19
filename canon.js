@@ -6119,7 +6119,7 @@ const CANON = {
         "tir": 87,
         "tacle": 88
       },
-      "ovr": 89,
+      "ovr": 87,
       "canonical": false,
       "id": "P00221",
       "club": "YAN_TREIZ"
@@ -43887,7 +43887,7 @@ const CANON = {
         "tir": 82,
         "tacle": 54
       },
-      "ovr": 84,
+      "ovr": 85,
       "canonical": true,
       "club": "FAR_WEST",
       "id": "P02075"
@@ -43919,7 +43919,7 @@ const CANON = {
     },
     "P02077": {
       "name": "Canibal Joe",
-      "nationality": "ishgar",
+      "nationality": "desertiqua",
       "age": 30,
       "position": "CB",
       "positions": [
