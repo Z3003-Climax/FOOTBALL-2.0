@@ -1590,7 +1590,7 @@ const CANON = {
       "id": "P00005"
     },
     "P00006": {
-      "name": "Joseph Stalin",
+      "name": "Joseph Staline",
       "nationality": "brislovia",
       "age": 26,
       "position": "CDM",
@@ -1600,7 +1600,7 @@ const CANON = {
         "CAM"
       ],
       "stats": {
-        "rapidite": 87,
+        "rapidite": 88,
         "acceleration": 88,
         "endurance": 89,
         "puissance": 92,
@@ -1609,7 +1609,7 @@ const CANON = {
         "tir": 89,
         "tacle": 81
       },
-      "ovr": 89,
+      "ovr": 90,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00006"
@@ -1663,7 +1663,7 @@ const CANON = {
     "P00009": {
       "name": "Joshua Kimmich",
       "nationality": "ishgar",
-      "age": 24,
+      "age": 26,
       "position": "RB",
       "positions": [
         "RB"
@@ -1678,7 +1678,7 @@ const CANON = {
         "tir": 82,
         "tacle": 84
       },
-      "ovr": 87,
+      "ovr": 88,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00009"
@@ -1813,16 +1813,16 @@ const CANON = {
         "CAM"
       ],
       "stats": {
-        "rapidite": 79,
+        "rapidite": 81,
         "acceleration": 86,
         "endurance": 83,
         "puissance": 60,
         "controle": 79,
-        "passe": 79,
+        "passe": 81,
         "tir": 79,
         "tacle": 32
       },
-      "ovr": 79,
+      "ovr": 80,
       "canonical": true,
       "club": "BAYERN_ILUMYSS",
       "id": "P00015"
@@ -1954,7 +1954,7 @@ const CANON = {
     "P00022": {
       "name": "Nart",
       "nationality": "savanna",
-      "age": 26,
+      "age": 28,
       "position": "CDM",
       "stats": {
         "rapidite": 87,
@@ -10040,8 +10040,7 @@ const CANON = {
       "positions": [
         "ST",
         "LW",
-        "RW",
-        "CAM"
+        "RW"
       ],
       "stats": {
         "rapidite": 91,
@@ -10246,15 +10245,15 @@ const CANON = {
       ],
       "stats": {
         "rapidite": 89,
-        "acceleration": 82,
+        "acceleration": 85,
         "endurance": 89,
-        "puissance": 84,
+        "puissance": 89,
         "controle": 85,
-        "passe": 84,
+        "passe": 85,
         "tir": 79,
-        "tacle": 86
+        "tacle": 87
       },
-      "ovr": 85,
+      "ovr": 88,
       "canonical": true,
       "club": "JUVENTUS_EARTH",
       "id": "P00423"
@@ -10291,18 +10290,18 @@ const CANON = {
         "GK"
       ],
       "stats": {
-        "rapidite": 61,
+        "rapidite": 68,
         "acceleration": 57,
         "endurance": 72,
-        "puissance": 69,
+        "puissance": 75,
         "controle": 64,
-        "passe": 64,
+        "passe": 75,
         "tir": 30,
         "tacle": 50,
         "rg": 86,
         "mg": 86
       },
-      "ovr": 80,
+      "ovr": 84,
       "canonical": true,
       "club": "JUVENTUS_EARTH",
       "id": "P00425"
@@ -10354,19 +10353,19 @@ const CANON = {
     "P00428": {
       "name": "Dani Pérez",
       "nationality": "porespagne",
-      "age": 27,
+      "age": 30,
       "position": "CB",
       "stats": {
-        "rapidite": 97,
-        "acceleration": 93,
-        "endurance": 90,
+        "rapidite": 86,
+        "acceleration": 86,
+        "endurance": 86,
         "puissance": 97,
         "controle": 91,
-        "passe": 89,
+        "passe": 83,
         "tir": 65,
         "tacle": 92
       },
-      "ovr": 92,
+      "ovr": 85,
       "canonical": false,
       "id": "P00428",
       "club": "JUVENTUS_EARTH"
@@ -10432,27 +10431,27 @@ const CANON = {
       "club": "JUVENTUS_EARTH"
     },
     "P00432": {
-      "name": "Emeka Gueye",
+      "name": "Saenz",
       "nationality": "savanna",
-      "age": 26,
+      "age": 21,
       "position": "CDM",
       "stats": {
-        "rapidite": 91,
+        "rapidite": 86,
         "acceleration": 87,
         "endurance": 88,
         "puissance": 92,
         "controle": 89,
         "passe": 84,
-        "tir": 86,
-        "tacle": 94
+        "tir": 85,
+        "tacle": 84
       },
-      "ovr": 88,
+      "ovr": 83,
       "canonical": false,
       "id": "P00432",
       "club": "JUVENTUS_EARTH"
     },
     "P00433": {
-      "name": "Ronan Burke",
+      "name": "Ronan",
       "nationality": "crannbanie",
       "age": 27,
       "position": "CDM",
@@ -10624,7 +10623,7 @@ const CANON = {
       "id": "P00440"
     },
     "P00441": {
-      "name": "Vassily",
+      "name": "Otto Alberto",
       "nationality": "brislovia",
       "age": 24,
       "position": "CM",
@@ -10853,7 +10852,7 @@ const CANON = {
       "club": "BOURRUSIA_BOUVILLE"
     },
     "P00452": {
-      "name": "Ahmad Slimani",
+      "name": "Ruganni",
       "nationality": "wesfalie",
       "age": 26,
       "position": "RB",
@@ -10887,7 +10886,7 @@ const CANON = {
         "tir": 77,
         "tacle": 99
       },
-      "ovr": 91,
+      "ovr": 87,
       "canonical": false,
       "id": "P00453",
       "club": "BOURRUSIA_BOUVILLE"
@@ -10953,7 +10952,7 @@ const CANON = {
       "club": "BOURRUSIA_BOUVILLE"
     },
     "P00457": {
-      "name": "Javier Piqué",
+      "name": "Milos Semi",
       "nationality": "porespagne",
       "age": 19,
       "position": "RW",
@@ -11055,7 +11054,7 @@ const CANON = {
       "club": "GEARS_PONEYS"
     },
     "P00462": {
-      "name": "Nana Traoré",
+      "name": "Nana",
       "nationality": "savanna",
       "age": 25,
       "position": "GK",
@@ -11077,7 +11076,7 @@ const CANON = {
       "club": "GEARS_PONEYS"
     },
     "P00463": {
-      "name": "Pyotr Pavlov",
+      "name": "Pavlov",
       "nationality": "brislovia",
       "age": 33,
       "position": "GK",
@@ -44508,7 +44507,7 @@ const CANON = {
     },
     "P02105": {
       "name": "Jordan Taylor",
-      "nationality": "wakan*da",
+      "nationality": "wakanda",
       "age": 26,
       "position": "CDM",
       "stats": {
@@ -52074,7 +52073,7 @@ const CANON = {
     },
     "P02478": {
       "name": "Hugo",
-      "nationality": "paystropmignon",
+      "nationality": "paysTropMignon",
       "age": 24,
       "position": "CAM",
       "stats": {
