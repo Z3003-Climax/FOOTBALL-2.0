@@ -897,7 +897,16 @@ const CLEEngine = (() => {
     return updated;
   }
 
-
+ // ─── BUILD LEAGUE PHASE MC (L1) ──────────────────────────────
+  // Construit la phase de ligue sur un CLE existant (qual déjà jouées).
+  // Préserve les qualRounds et le mode — n'écrase pas le CLE.
+  function buildLeaguePhaseMC(existingCle, qualifiedClubs, canon) {
+    const updated        = JSON.parse(JSON.stringify(existingCle));
+    updated.leaguePhase  = _buildLeaguePhaseDraw(updated, qualifiedClubs, canon);
+    updated.phase        = 'league';
+    return updated;
+  }
+  
   // ─── PUBLIC ───────────────────────────────────────────────
   return {
     initCLE,
@@ -912,6 +921,7 @@ const CLEEngine = (() => {
       computeCLEStats,
     buildLeagueDrawCLE,
     initLeaguePhaseMC,
+    buildLeaguePhaseMC,
     simulateLeagueMD,
     DIRECT_CLUBS,
     PHASE_SEQUENCE,
