@@ -1005,16 +1005,10 @@ function _executeEvent(evt, canon) {
     mergeGhostNations(canon);
   }
 
- if (evt.type === 'cle_md') {
-    // L0 : CLE n'existe pas encore → init from scratch (24 directs)
+  if (evt.type === 'cle_md') {
+    // Initialise la CLE (draw seulement) si elle n'existe pas encore
     if (!CLE_DATA || CLE_DATA.phase === 'idle') {
       CLE_DATA = CLEEngine.initLeaguePhaseMC(canon, season);
-      saveCLEData(CLE_DATA);
-    }
-    // L1 : qual terminées (phase = 'qual_r4') mais leaguePhase pas encore construite
-    else if (!CLE_DATA.leaguePhase || CLE_DATA.phase === 'qual_r4') {
-      const qualClubs = CLE_DATA.qualRounds?.r4?.qualified?.slice(0, 12) || [];
-      CLE_DATA = CLEEngine.buildLeaguePhaseMC(CLE_DATA, qualClubs, canon);
       saveCLEData(CLE_DATA);
     }
     CLE_DATA = CLEEngine.simulateLeagueMD(CLE_DATA, canon);
@@ -3598,7 +3592,7 @@ function renderEuroStructure(canon, curYear, freq) {
     const isReal   = realNationIds.includes(id);
     return `<div style="background:var(--bg);border:1px solid ${isReal?meta.color:'var(--border)'};border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;opacity:${isReal?1:0.5}">
       <div>
-        <div style="font-size:18px;margin-bottom:2px">${meta.flag}</div>
+        <div style="font-size:18px;margin-bottom:2px">${EuroEngine.getNationFlag(id, 28)}</div>
         <div style="font-weight:600;font-size:14px;color:${isReal?meta.color:'var(--muted)'}">${meta.name}</div>
         <div style="font-size:11px;color:var(--muted)">${meta.abbr}</div>
       </div>
