@@ -2328,13 +2328,33 @@ function _buildFormationPitch(xi, formation, accentColor) {
 
 // Conservée pour compatibilité
 function _slotXY(slot, count, idx) {
-  const cx = 50;
-  const totalSpread = Math.min(84, count * 22);
-  const startX = cx - totalSpread/2 + totalSpread/(2*Math.max(count,1));
-  const step   = count > 1 ? totalSpread/count : 0;
-  const x      = count > 1 ? startX + (idx-1)*step : cx;
-  const yMap   = { GK:7, LB:21, CB:21, RB:21, CDM:38, CM:50, CAM:62, LW:76, RW:76, ST:88 };
-  return [x, yMap[slot] ?? 50];
+  const yMap = {
+    GK:7, LB:24, CB:24, RB:24,
+    CDM:43, CM:53, CAM:63,
+    LW:76, RW:76, ST:87,
+  };
+  const y = yMap[slot] ?? 50;
+ 
+  // LB toujours à gauche, RB toujours à droite
+  if (slot === 'LB') return [13, y];
+  if (slot === 'RB') return [87, y];
+  // LW/RW : unique → gauche/droite ; multiples → spread
+  if (slot === 'LW' && count === 1) return [13, y];
+  if (slot === 'RW' && count === 1) return [87, y];
+ 
+  // CB : spread centré dans la zone centrale (entre LB et RB)
+  if (slot === 'CB') {
+    const spread = Math.min(44, count * 18);
+    const start  = 50 - spread / 2 + spread / (2 * count);
+    const step   = count > 1 ? spread / count : 0;
+    return [start + (idx - 1) * step, y];
+  }
+ 
+  // Tous les autres slots : spread adaptatif centré
+  const spread = Math.min(70, count * 22);
+  const start  = 50 - spread / 2 + spread / (2 * Math.max(count, 1));
+  const step   = count > 1 ? spread / count : 0;
+  return [start + (idx - 1) * step, y];
 }
 
 // ─── CLE / AWARDS DATA STORAGE (IndexedDB) ─────────────────
@@ -2893,7 +2913,7 @@ function renderAwardsContent(el, awards, canon) {
   </div>
 
   <!-- Meilleur XI -->
-  <div class="section-header"><div class="section-title">MEILLEUR XI (4-3-3)</div><div class="section-line"></div></div>
+  <div class="section-header"><div class="section-title">MEILLEUR XI (4-2-3-1)</div><div class="section-line"></div></div>
   <div style="margin-bottom:28px">
     <div style="margin-bottom:8px;font-size:11px;color:var(--muted);letter-spacing:1px">GARDIEN</div>
     <div class="top-clubs-grid" style="margin-bottom:16px">${xiCard('GK',xi.GK)}</div>
@@ -3080,23 +3100,49 @@ function renderEuroFull() {
 }
 
 
+function _patchEuroCanonSquads(euro, canon) {
+  if (!euro?.euroCanon) return;
+  const ec = euro.euroCanon;
+  for (const natId of Object.keys(EuroEngine.NATION_META)) {
+    const customIds = CLUB_TACTICS['nat_squad_' + natId]?.playerIds;
+    if (!customIds?.length) continue;
+    // Supprime les joueurs auto-sélectionnés pour cette nation
+    for (const pid of Object.keys(ec.players)) {
+      if (ec.players[pid].club === natId && !customIds.includes(pid))
+        delete ec.players[pid];
+    }
+    // Injecte les joueurs custom
+    for (const pid of customIds) {
+      const p = canon.players[pid];
+      if (p) ec.players[pid] = { ...p, club: natId };
+    }
+  }
+}
+
+  
 window.tickEuroUI = function() {
   const canon  = getCanon(); if (!canon) return;
   const season = getOrInitSeason(); if (!season?.finished) return;
   if (!EURO_DATA) {
     EURO_DATA = EuroEngine.initEuro(canon, season);
+    _patchEuroCanonSquads(EURO_DATA, canon); // ← injecte les squads custom
   }
   if (EURO_DATA.phase === 'complete') return;
   EURO_DATA = EuroEngine.tickEuro(EURO_DATA, canon);
   EuroEngine.saveEuro(EURO_DATA);
   renderEuroFull();
 };
+ 
 
 window.runEuroFull = function() {
   const canon  = getCanon(); if (!canon) return;
   const season = getOrInitSeason(); if (!season?.finished) return;
   if (!confirm('Simuler tout l\'Euro en une fois ?')) return;
-  EURO_DATA = EuroEngine.runFullEuro(canon, season);
+  EURO_DATA = EuroEngine.initEuro(canon, season);
+  _patchEuroCanonSquads(EURO_DATA, canon); // ← injecte les squads custom
+  while (EURO_DATA.phase !== 'complete') {
+    EURO_DATA = EuroEngine.tickEuro(EURO_DATA, canon);
+  }
   EuroEngine.saveEuro(EURO_DATA);
   renderEuroFull();
 };
@@ -3113,68 +3159,136 @@ window.showNationSquad = function(natId) {
   const flag   = EuroEngine.getNationFlag(natId);
   const name   = EuroEngine.getNationName(natId);
   const color  = EuroEngine.getNationColor(natId);
-  const squad  = EuroEngine.buildNationalSquad(natId, canon, 26);
+ 
+  // ── Effectif : custom s'il existe, sinon auto top-26 ──────
+  const customSquadIds = CLUB_TACTICS['nat_squad_' + natId]?.playerIds;
+  const squad = customSquadIds?.length
+    ? customSquadIds.map(id => canon.players[id]).filter(Boolean)
+    : EuroEngine.buildNationalSquad(natId, canon, 26);
   if (!squad.length) return;
-
-  const tacKey  = 'nat_' + natId;
-  const curForm = CLUB_TACTICS[tacKey]?.formation || MatchEngine.DEFAULT_FORMATION;
+ 
+  const tacKey   = 'nat_' + natId;
+  const tactics  = CLUB_TACTICS[tacKey] || { formation: MatchEngine.DEFAULT_FORMATION, customXI: null };
+  const curForm  = tactics.formation || MatchEngine.DEFAULT_FORMATION;
   const formations = Object.keys(MatchEngine.FORMATIONS);
-  const xi      = MatchEngine._selectStartingXI(squad, curForm);
-  const xiIds   = new Set(xi.map(p=>p.id||p.name));
-
-  const posColor = { GK:'#f59e0b',CB:'#3b82f6',LB:'#3b82f6',RB:'#3b82f6',
-    CDM:'#10b981',CM:'#10b981',CAM:'#10b981',LW:'#ef4444',RW:'#ef4444',ST:'#ef4444' };
-
-  const startRows = xi.map(p=>`<tr style="background:rgba(201,168,76,.04)">
-    <td><span style="background:${posColor[p.slotPosition]||'#555'};color:#000;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700">${p.slotPosition}</span></td>
+ 
+  // ── XI : custom s'il existe, sinon auto ───────────────────
+  const xi     = MatchEngine._selectStartingXI(squad, curForm, tactics.customXI);
+  const xiIds  = new Set(xi.map(p => p.id || p.name));
+ 
+  const posColor = {
+    GK:'#f59e0b', CB:'#3b82f6', LB:'#3b82f6', RB:'#3b82f6',
+    CDM:'#10b981', CM:'#10b981', CAM:'#10b981',
+    LW:'#ef4444', RW:'#ef4444', ST:'#ef4444',
+  };
+ 
+  const startRows = xi.map(p => `<tr style="background:rgba(201,168,76,.04)">
+    <td><span style="background:${posColor[p.slotPosition]||'#555'};color:#000;
+      padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700">${p.slotPosition}</span></td>
     <td style="font-weight:600;color:var(--white)">${p.name}</td>
     <td style="color:var(--muted)">${p.age||'—'}</td>
     <td><b style="color:var(--gold);font-family:var(--font-mono)">${p.ovr||'—'}</b></td>
     <td style="color:var(--muted);font-size:11px">${canon.clubs[p.club]?.name||'—'}</td>
   </tr>`).join('');
-
-  const benchRows = squad.filter(p=>!xiIds.has(p.id||p.name)).map(p=>`<tr>
-    <td><span style="background:${posColor[p.position]||'#555'};color:#000;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700">${p.position}</span></td>
+ 
+  const benchRows = squad.filter(p => !xiIds.has(p.id || p.name)).map(p => `<tr>
+    <td><span style="background:${posColor[p.position]||'#555'};color:#000;
+      padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700">${p.position}</span></td>
     <td style="color:var(--muted)">${p.name}</td>
     <td style="color:var(--muted)">${p.age||'—'}</td>
     <td style="color:var(--muted)">${p.ovr||'—'}</td>
     <td style="color:var(--muted);font-size:11px">${canon.clubs[p.club]?.name||'—'}</td>
   </tr>`).join('');
-
-  const formBtns = formations.map(f=>`<button onclick="changeNatFormation('${natId}','${f}')"
-    style="background:${f===curForm?'var(--gold)':'var(--surface)'};color:${f===curForm?'#000':'var(--muted)'};border:1px solid ${f===curForm?'var(--gold)':'var(--border)'};border-radius:6px;padding:4px 9px;cursor:pointer;font-size:11px;font-family:var(--font-mono)">${f}</button>`).join('');
-
-  const pitch = _buildFormationPitch(xi, curForm, color);
-  
+ 
+  const formBtns = formations.map(f => `<button onclick="changeNatFormation('${natId}','${f}')"
+    style="background:${f===curForm?'var(--gold)':'var(--surface)'};
+    color:${f===curForm?'#000':'var(--muted)'};
+    border:1px solid ${f===curForm?'var(--gold)':'var(--border)'};
+    border-radius:6px;padding:4px 9px;cursor:pointer;font-size:11px;
+    font-family:var(--font-mono)">${f}</button>`).join('');
+ 
+  const pitch      = _buildFormationPitch(xi, curForm, color);
+  const hasCustomSq = !!(customSquadIds?.length);
+  const hasCustomXI = !!(tactics.customXI?.length);
+ 
   const modal = document.createElement('div');
   modal.id = 'nation-modal';
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:20px 16px;overflow-y:auto';
+  modal.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;
+    display:flex;align-items:flex-start;justify-content:center;
+    padding:20px 16px;overflow-y:auto`;
+ 
   modal.innerHTML = `
-    <div translate="no" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:900px;width:100%">
-      <div style="padding:18px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+    <div translate="no" style="background:var(--surface);border:1px solid var(--border);
+      border-radius:16px;max-width:900px;width:100%">
+ 
+      <!-- Header -->
+      <div style="padding:18px 24px;border-bottom:1px solid var(--border);
+        display:flex;justify-content:space-between;align-items:center">
         <div style="display:flex;align-items:center;gap:12px">
-          ${EuroEngine.getNationFlag(natId) ? `<span style="font-size:36px">${EuroEngine.getNationFlag(natId)}</span>` : ''}
+          <span style="font-size:36px">${flag}</span>
           <div>
-            <div style="font-family:var(--font-title);font-size:20px;color:${color}">${name} — Sélection nationale</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px">${squad.length} joueurs sélectionnés · Formation : <b style="color:var(--gold)">${curForm}</b></div>
+            <div style="font-size:20px;color:${color};font-weight:700">
+              ${name} — Sélection nationale
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">
+              ${squad.length} joueurs ·
+              Formation : <b style="color:var(--gold)">${curForm}</b>
+              ${hasCustomSq ? '<span style="color:var(--green);margin-left:8px">✓ Effectif personnalisé</span>' : ''}
+              ${hasCustomXI ? '<span style="color:var(--blue);margin-left:8px">✓ XI personnalisé</span>' : ''}
+            </div>
           </div>
         </div>
         <button onclick="document.getElementById('nation-modal').remove()"
-          style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px">✕</button>
+          style="background:none;border:1px solid var(--border);color:var(--muted);
+          border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px">✕</button>
       </div>
-      <div style="padding:14px 24px;border-bottom:1px solid var(--border)">
-        <div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px">FORMATION</div>
+ 
+      <!-- Boutons d'action -->
+      <div style="padding:10px 24px;border-bottom:1px solid var(--border);
+        display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button onclick="showNatSquadPicker('${natId}')"
+          style="background:var(--panel);border:1px solid var(--border);
+          color:var(--white);border-radius:7px;padding:6px 14px;
+          cursor:pointer;font-size:12px;font-weight:600">
+          👥 ${hasCustomSq ? 'Modifier l\'effectif' : 'Sélectionner les 26'}
+        </button>
+        <button onclick="showNatCustomXI('${natId}')"
+          style="background:var(--panel);border:1px solid var(--border);
+          color:var(--white);border-radius:7px;padding:6px 14px;
+          cursor:pointer;font-size:12px;font-weight:600">
+          ✏️ Personnaliser le XI
+        </button>
+        ${hasCustomSq || hasCustomXI ? `
+        <button onclick="resetNatCustom('${natId}')"
+          style="background:none;border:1px solid var(--border);
+          color:var(--muted);border-radius:7px;padding:6px 14px;
+          cursor:pointer;font-size:11px">
+          ↺ Réinitialiser
+        </button>` : ''}
+      </div>
+ 
+      <!-- Formation -->
+      <div style="padding:12px 24px;border-bottom:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px">
+          FORMATION
+        </div>
         <div style="display:flex;flex-wrap:wrap;gap:5px">${formBtns}</div>
       </div>
+ 
+      <!-- Terrain + tableau -->
       <div style="display:grid;grid-template-columns:260px 1fr">
         <div style="padding:14px;border-right:1px solid var(--border)">${pitch}</div>
-        <div style="padding:14px;overflow-y:auto;max-height:480px">
-          <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:6px">TITULAIRES</div>
+        <div style="padding:14px;overflow-y:auto;max-height:500px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:6px">
+            TITULAIRES
+          </div>
           <table class="standings-table" style="width:100%;margin-bottom:16px">
             <thead><tr><th>Slot</th><th>Joueur</th><th>Âge</th><th>OVR</th><th>Club</th></tr></thead>
             <tbody>${startRows}</tbody>
           </table>
-          <div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:6px">REMPLAÇANTS</div>
+          <div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:6px">
+            REMPLAÇANTS
+          </div>
           <table class="standings-table" style="width:100%">
             <thead><tr><th>Pos.</th><th>Joueur</th><th>Âge</th><th>OVR</th><th>Club</th></tr></thead>
             <tbody>${benchRows}</tbody>
@@ -3182,7 +3296,8 @@ window.showNationSquad = function(natId) {
         </div>
       </div>
     </div>`;
-  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+ 
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
   document.getElementById('nation-modal')?.remove();
   document.body.appendChild(modal);
 };
@@ -3193,6 +3308,277 @@ window.changeNatFormation = function(natId, formation) {
   EQ_DB.set('eq_tactics', CLUB_TACTICS).catch(()=>{});
   showNationSquad(natId);
 };
+
+  // ─── CUSTOM XI NATIONAL (personnaliser les 11 titulaires) ────────────
+window.showNatCustomXI = function(natId) {
+  const canon   = getCanon(); if (!canon) return;
+  const tacKey  = 'nat_' + natId;
+  const tactics = CLUB_TACTICS[tacKey] || { formation: MatchEngine.DEFAULT_FORMATION, customXI: null };
+  const curForm = tactics.formation;
+ 
+  const customSquadIds = CLUB_TACTICS['nat_squad_' + natId]?.playerIds;
+  const squad = customSquadIds?.length
+    ? customSquadIds.map(id => canon.players[id]).filter(Boolean)
+    : EuroEngine.buildNationalSquad(natId, canon, 26);
+ 
+  const slots   = Object.keys(MatchEngine.FORMATIONS[curForm] || {});
+  const currentXI = MatchEngine._selectStartingXI(squad, curForm, tactics.customXI);
+ 
+  // Reconstruit la liste slot → joueur actuel
+  const slotCurrent = {};
+  currentXI.forEach(p => { slotCurrent[p.slotPosition] = p.id || p.name; });
+ 
+  // Pour chaque slot, les options disponibles (joueurs qui peuvent y jouer)
+  const posCompat = {
+    GK:['GK'], CB:['CB'], LB:['LB','CB'], RB:['RB','CB'],
+    CDM:['CDM','CM'], CM:['CM','CDM','CAM'], CAM:['CAM','CM'],
+    LW:['LW','CAM'], RW:['RW','CAM'], ST:['ST'],
+  };
+ 
+  const formSlots = Object.entries(MatchEngine.FORMATIONS[curForm] || {}).flatMap(
+    ([pos, count]) => Array.from({length: count}, (_, i) => pos)
+  );
+ 
+  const dropdowns = formSlots.map((slot, i) => {
+    const compat = posCompat[slot] || [slot];
+    const options = squad
+      .filter(p => compat.includes(p.position))
+      .sort((a,b) => (b.ovr||0)-(a.ovr||0))
+      .map(p => `<option value="${p.id||p.name}" ${
+        (slotCurrent[slot]===p.id||slotCurrent[slot]===p.name)?'selected':''
+      }>${p.name} (${p.position} · ${p.ovr})</option>`)
+      .join('');
+ 
+    return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <span style="background:#3b82f6;color:#000;border-radius:4px;
+        padding:2px 7px;font-size:10px;font-weight:700;
+        min-width:42px;text-align:center">${slot}</span>
+      <select data-slot="${slot}"
+        style="flex:1;background:var(--panel);color:var(--white);
+        border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px">
+        ${options}
+      </select>
+    </div>`;
+  }).join('');
+ 
+  const modal = document.createElement('div');
+  modal.id = 'nat-xi-modal';
+  modal.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;
+    display:flex;align-items:center;justify-content:center;padding:20px`;
+  modal.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--gold);
+      border-radius:14px;width:100%;max-width:480px;padding:24px">
+      <div style="font-weight:700;font-size:16px;color:var(--gold);margin-bottom:16px">
+        ✏️ XI PERSONNALISÉ — ${EuroEngine.getNationName(natId)}
+      </div>
+      <div style="max-height:380px;overflow-y:auto;padding-right:4px">
+        ${dropdowns}
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px">
+        <button onclick="document.getElementById('nat-xi-modal').remove()"
+          style="background:none;border:1px solid var(--border);color:var(--muted);
+          border-radius:7px;padding:7px 16px;cursor:pointer">Annuler</button>
+        <button onclick="_saveNatCustomXI('${natId}')"
+          style="background:var(--gold);border:none;color:#000;
+          border-radius:7px;padding:7px 18px;cursor:pointer;font-weight:700">
+          ✓ Sauvegarder
+        </button>
+      </div>
+    </div>`;
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+  document.getElementById('nat-xi-modal')?.remove();
+  document.body.appendChild(modal);
+};
+ 
+window._saveNatCustomXI = function(natId) {
+  const tacKey  = 'nat_' + natId;
+  const selects = document.querySelectorAll('#nat-xi-modal select[data-slot]');
+  const customXI = Array.from(selects).map(sel => ({
+    slot:     sel.dataset.slot,
+    playerId: sel.value,
+  }));
+  if (!CLUB_TACTICS[tacKey]) CLUB_TACTICS[tacKey] = { formation: MatchEngine.DEFAULT_FORMATION };
+  CLUB_TACTICS[tacKey].customXI = customXI;
+  EQ_DB.set('eq_tactics', CLUB_TACTICS).catch(() => {});
+  document.getElementById('nat-xi-modal')?.remove();
+  showNationSquad(natId);
+};
+ 
+// ─── SÉLECTEUR DES 26 JOUEURS NATIONAUX ──────────────────────────────
+window.showNatSquadPicker = function(natId) {
+  const canon  = getCanon(); if (!canon) return;
+  const name   = EuroEngine.getNationName(natId);
+  const color  = EuroEngine.getNationColor(natId);
+ 
+  // Tous les joueurs de cette nationalité dans tout le jeu
+  const allNatPlayers = Object.values(canon.players)
+    .filter(p => p.nationality === natId)
+    .sort((a,b) => (b.ovr||0)-(a.ovr||0));
+ 
+  if (!allNatPlayers.length) {
+    alert('Aucun joueur de nationalité ' + name + ' trouvé dans le canon.');
+    return;
+  }
+ 
+  // Sélection actuelle : custom ou auto top-26
+  const customSquadIds = new Set(
+    CLUB_TACTICS['nat_squad_' + natId]?.playerIds ||
+    EuroEngine.buildNationalSquad(natId, canon, 26).map(p => p.id || p.name)
+  );
+ 
+  const posColor = { GK:'#f59e0b', CB:'#3b82f6', LB:'#3b82f6', RB:'#3b82f6',
+    CDM:'#10b981', CM:'#10b981', CAM:'#10b981', LW:'#ef4444', RW:'#ef4444', ST:'#ef4444' };
+ 
+  const rows = allNatPlayers.map(p => {
+    const pid     = p.id || p.name;
+    const checked = customSquadIds.has(pid) ? 'checked' : '';
+    const club    = canon.clubs[p.club]?.name || '—';
+    return `<tr>
+      <td style="padding:4px 8px">
+        <input type="checkbox" data-pid="${pid}" ${checked}
+          onchange="_natPickerToggle(this)"
+          style="width:15px;height:15px;cursor:pointer">
+      </td>
+      <td style="padding:4px 8px">
+        <span style="background:${posColor[p.position]||'#555'};color:#000;
+          border-radius:3px;padding:1px 6px;font-size:10px;font-weight:700">
+          ${p.position}
+        </span>
+      </td>
+      <td style="padding:4px 8px;font-weight:600;color:var(--white)">${p.name}</td>
+      <td style="padding:4px 8px;color:var(--muted)">${p.age||'—'}</td>
+      <td style="padding:4px 8px;font-family:var(--font-mono);color:var(--gold);
+        font-weight:700">${p.ovr||'—'}</td>
+      <td style="padding:4px 8px;color:var(--muted);font-size:11px">${club}</td>
+    </tr>`;
+  }).join('');
+ 
+  const modal = document.createElement('div');
+  modal.id = 'nat-picker-modal';
+  modal.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:10000;
+    display:flex;align-items:flex-start;justify-content:center;
+    padding:24px 16px;overflow-y:auto`;
+  modal.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);
+      border-radius:16px;width:100%;max-width:700px;margin:auto">
+      <div style="padding:18px 24px;border-bottom:1px solid var(--border);
+        display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700;font-size:17px;color:${color}">
+            👥 SÉLECTION — ${name}
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">
+            Coche exactement <b>26 joueurs</b> pour constituer l'effectif national.
+            Sélection actuelle : <b id="nat-picker-count">${customSquadIds.size}</b> / 26
+          </div>
+        </div>
+        <button onclick="document.getElementById('nat-picker-modal').remove()"
+          style="background:none;border:1px solid var(--border);color:var(--muted);
+          border-radius:8px;padding:6px 14px;cursor:pointer">✕</button>
+      </div>
+      <div style="padding:8px 24px;border-bottom:1px solid var(--border);
+        display:flex;gap:8px">
+        <button onclick="_natPickerSelectTop()"
+          style="background:var(--panel);border:1px solid var(--border);
+          color:var(--muted);border-radius:6px;padding:5px 12px;
+          cursor:pointer;font-size:11px">⚡ Auto top-26</button>
+        <button onclick="_natPickerClear()"
+          style="background:var(--panel);border:1px solid var(--border);
+          color:var(--muted);border-radius:6px;padding:5px 12px;
+          cursor:pointer;font-size:11px">✕ Tout désélectionner</button>
+      </div>
+      <div style="overflow-y:auto;max-height:440px">
+        <table style="width:100%;border-collapse:collapse">
+          <thead style="position:sticky;top:0;background:var(--panel);z-index:1">
+            <tr>
+              <th style="padding:8px;font-size:11px;color:var(--muted);text-align:left">✓</th>
+              <th style="padding:8px;font-size:11px;color:var(--muted);text-align:left">Pos.</th>
+              <th style="padding:8px;font-size:11px;color:var(--muted);text-align:left">Joueur</th>
+              <th style="padding:8px;font-size:11px;color:var(--muted)">Âge</th>
+              <th style="padding:8px;font-size:11px;color:var(--muted)">OVR</th>
+              <th style="padding:8px;font-size:11px;color:var(--muted);text-align:left">Club</th>
+            </tr>
+          </thead>
+          <tbody id="nat-picker-body">${rows}</tbody>
+        </table>
+      </div>
+      <div style="padding:14px 24px;border-top:1px solid var(--border);
+        display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:12px;color:var(--muted)">
+          <span id="nat-picker-count2">${customSquadIds.size}</span>/26 sélectionnés
+        </div>
+        <div style="display:flex;gap:10px">
+          <button onclick="document.getElementById('nat-picker-modal').remove()"
+            style="background:none;border:1px solid var(--border);color:var(--muted);
+            border-radius:7px;padding:7px 16px;cursor:pointer">Annuler</button>
+          <button onclick="_saveNatSquad('${natId}')"
+            style="background:var(--gold);border:none;color:#000;
+            border-radius:7px;padding:7px 18px;cursor:pointer;font-weight:700">
+            ✓ Confirmer la sélection
+          </button>
+        </div>
+      </div>
+    </div>`;
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+  document.getElementById('nat-picker-modal')?.remove();
+  // Stocker les joueurs pour le picker
+  window._natPickerPlayers = allNatPlayers;
+  document.body.appendChild(modal);
+};
+ 
+window._natPickerToggle = function(cb) {
+  const count = document.querySelectorAll('#nat-picker-body input:checked').length;
+  const c1 = document.getElementById('nat-picker-count');
+  const c2 = document.getElementById('nat-picker-count2');
+  if (c1) c1.textContent = count;
+  if (c2) c2.textContent = count;
+  // Empêche de cocher plus de 26
+  if (count > 26) { cb.checked = false; return; }
+};
+ 
+window._natPickerSelectTop = function() {
+  const boxes = document.querySelectorAll('#nat-picker-body input[type=checkbox]');
+  boxes.forEach((cb, i) => { cb.checked = i < 26; });
+  const c1 = document.getElementById('nat-picker-count');
+  const c2 = document.getElementById('nat-picker-count2');
+  if (c1) c1.textContent = 26;
+  if (c2) c2.textContent = 26;
+};
+ 
+window._natPickerClear = function() {
+  document.querySelectorAll('#nat-picker-body input:checked')
+    .forEach(cb => { cb.checked = false; });
+  const c1 = document.getElementById('nat-picker-count');
+  const c2 = document.getElementById('nat-picker-count2');
+  if (c1) c1.textContent = 0;
+  if (c2) c2.textContent = 0;
+};
+ 
+window._saveNatSquad = function(natId) {
+  const checked = document.querySelectorAll('#nat-picker-body input:checked');
+  if (checked.length !== 26) {
+    alert('Sélectionne exactement 26 joueurs (' + checked.length + ' actuellement).');
+    return;
+  }
+  const playerIds = Array.from(checked).map(cb => cb.dataset.pid);
+  CLUB_TACTICS['nat_squad_' + natId] = { playerIds };
+  // Reset le custom XI (il peut ne plus être valide avec le nouvel effectif)
+  if (CLUB_TACTICS['nat_' + natId]) CLUB_TACTICS['nat_' + natId].customXI = null;
+  EQ_DB.set('eq_tactics', CLUB_TACTICS).catch(() => {});
+  document.getElementById('nat-picker-modal')?.remove();
+  showNationSquad(natId);
+};
+ 
+// ─── RESET custom squad + custom XI ──────────────────────────────────
+window.resetNatCustom = function(natId) {
+  if (!confirm('Réinitialiser l\'effectif et le XI personnalisés pour ' +
+    EuroEngine.getNationName(natId) + ' ?')) return;
+  delete CLUB_TACTICS['nat_squad_' + natId];
+  if (CLUB_TACTICS['nat_' + natId]) CLUB_TACTICS['nat_' + natId].customXI = null;
+  EQ_DB.set('eq_tactics', CLUB_TACTICS).catch(() => {});
+  showNationSquad(natId);
+};
+ 
 
 function renderEuroStructure(canon, curYear, freq) {
   const euroYear = Math.ceil(curYear / freq) * freq;
