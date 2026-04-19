@@ -1005,10 +1005,16 @@ function _executeEvent(evt, canon) {
     mergeGhostNations(canon);
   }
 
-  if (evt.type === 'cle_md') {
-    // Initialise la CLE (draw seulement) si elle n'existe pas encore
+ if (evt.type === 'cle_md') {
+    // L0 : CLE n'existe pas encore → init from scratch (24 directs)
     if (!CLE_DATA || CLE_DATA.phase === 'idle') {
       CLE_DATA = CLEEngine.initLeaguePhaseMC(canon, season);
+      saveCLEData(CLE_DATA);
+    }
+    // L1 : qual terminées (phase = 'qual_r4') mais leaguePhase pas encore construite
+    else if (!CLE_DATA.leaguePhase || CLE_DATA.phase === 'qual_r4') {
+      const qualClubs = CLE_DATA.qualRounds?.r4?.qualified?.slice(0, 12) || [];
+      CLE_DATA = CLEEngine.buildLeaguePhaseMC(CLE_DATA, qualClubs, canon);
       saveCLEData(CLE_DATA);
     }
     CLE_DATA = CLEEngine.simulateLeagueMD(CLE_DATA, canon);
