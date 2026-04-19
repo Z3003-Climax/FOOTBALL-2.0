@@ -259,9 +259,9 @@ const GHOST_NATIONS_DATA = {
       "city": "Kahira",
       "rivalries": []
     },
-    "ZAMALEK_WESF": {
-      "id": "ZAMALEK_WESF",
-      "name": "Zamaleké FC",
+    "DAMAS_WESF": {
+      "id": "DAMAS_WESF",
+      "name": "DAMAS FC",
       "league": "SATRUNA_PREMIER",
       "nation": "wesfalie",
       "tier": "moyen",
@@ -523,9 +523,9 @@ const GHOST_NATIONS_DATA = {
       "city": "Copenhague",
       "rivalries": []
     },
-    "DANMARK_DYNAMO": {
-      "id": "DANMARK_DYNAMO",
-      "name": "Danmark Dynamo",
+    "DANMARK": {
+      "id": "DANMARK",
+      "name": "Danmark",
       "league": "VIKINGA_PREMIER",
       "nation": "vulgarie",
       "tier": "fort",
@@ -696,7 +696,7 @@ const GHOST_NATIONS_DATA = {
       "tier": "top",
       "stadium": "Metropolitano",
       "capacity": 68000,
-      "city": "Madrik",
+      "city": "Macao",
       "rivalries": []
     },
     "FC_SEVILLIO": {
@@ -754,9 +754,9 @@ const GHOST_NATIONS_DATA = {
       "city": "Villarejo",
       "rivalries": []
     },
-    "REAL_SOCIETE": {
-      "id": "REAL_SOCIETE",
-      "name": "Real Société",
+    "REAL_SOCIEDAD": {
+      "id": "REAL_SOCIEDAD",
+      "name": "Real Sociedad",
       "league": "LIGA_IBERICA",
       "nation": "porespagne",
       "tier": "moyen",
@@ -850,7 +850,7 @@ const GHOST_NATIONS_DATA = {
       "tier": "top",
       "stadium": "PAX",
       "capacity": 75000,
-      "city": "Munik",
+      "city": "Munchen",
       "rivalries": []
     },
     "BORUSSIA_DORTMÜND": {
@@ -916,7 +916,7 @@ const GHOST_NATIONS_DATA = {
       "tier": "fort",
       "stadium": "Tank Arena",
       "capacity": 52000,
-      "city": "Munik",
+      "city": "Munchen",
       "rivalries": []
     },
     "SCHALKA_04": {
@@ -930,15 +930,15 @@ const GHOST_NATIONS_DATA = {
       "city": "Gelsenkirchen",
       "rivalries": []
     },
-    "VFB_STUTTGARDO": {
-      "id": "VFB_STUTTGARDO",
-      "name": "VFB Stuttgardo",
+    "VFB_STUTTGARD": {
+      "id": "VFB_STUTTGARD",
+      "name": "VFB Stuttgard",
       "league": "BUNDESLIGA_PAX",
       "nation": "paxifista",
       "tier": "moyen",
       "stadium": "MHP Arena",
       "capacity": 60000,
-      "city": "Stuttgardo",
+      "city": "Stuttgard",
       "rivalries": []
     },
     "WOLFSBERG_VFL": {
@@ -996,15 +996,15 @@ const GHOST_NATIONS_DATA = {
       "city": "Köln",
       "rivalries": []
     },
-    "HAMBURGO_SV": {
-      "id": "HAMBURGO_SV",
-      "name": "Hamburgo SV",
+    "HAMBURG_SV": {
+      "id": "HAMBURG_SV",
+      "name": "Hamburg SV",
       "league": "BUNDESLIGA_PAX",
       "nation": "paxifista",
       "tier": "faible",
       "stadium": "Volksparkstadion",
       "capacity": 57000,
-      "city": "Hamburgo",
+      "city": "Hamburg",
       "rivalries": []
     },
     "WERDA_BREMEN": {
