@@ -5317,7 +5317,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 76,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090253"
     },
     "G090254": {
@@ -5327,7 +5327,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 80,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090254"
     },
     "G090255": {
@@ -5337,7 +5337,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 76,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090255"
     },
     "G090256": {
@@ -5347,7 +5347,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 81,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090256"
     },
     "G090257": {
@@ -5357,7 +5357,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 73,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090257"
     },
     "G090258": {
@@ -5367,7 +5367,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 80,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090258"
     },
     "G090259": {
@@ -5377,7 +5377,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 80,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090259"
     },
     "G090260": {
@@ -5387,7 +5387,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 77,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090260"
     },
     "G090261": {
@@ -5397,7 +5397,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 73,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090261"
     },
     "G090262": {
@@ -5407,7 +5407,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 81,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090262"
     },
     "G090263": {
@@ -5417,7 +5417,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 74,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090263"
     },
     "G090264": {
@@ -5427,7 +5427,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 74,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090264"
     },
     "G090265": {
@@ -5437,7 +5437,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 80,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090265"
     },
     "G090266": {
@@ -5447,7 +5447,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 78,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090266"
     },
     "G090267": {
@@ -5457,7 +5457,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 79,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090267"
     },
     "G090268": {
@@ -5467,7 +5467,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 78,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090268"
     },
     "G090269": {
@@ -5477,7 +5477,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 73,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090269"
     },
     "G090270": {
@@ -5487,7 +5487,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 80,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090270"
     },
     "G090271": {
@@ -5497,7 +5497,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 81,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090271"
     },
     "G090272": {
@@ -5507,7 +5507,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 76,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090272"
     },
     "G090273": {
@@ -5517,7 +5517,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 80,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090273"
     },
     "G090274": {
@@ -5527,7 +5527,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 75,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090274"
     },
     "G090275": {
@@ -5537,7 +5537,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 74,
       "canonical": false,
-      "club": "ZAMALEK_WESF",
+      "club": "DAMAS_WESF",
       "id": "G090275"
     },
     "G090276": {
@@ -10837,7 +10837,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 79,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090805"
     },
     "G090806": {
@@ -10847,7 +10847,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 80,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090806"
     },
     "G090807": {
@@ -10857,7 +10857,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 81,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090807"
     },
     "G090808": {
@@ -10867,7 +10867,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 83,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090808"
     },
     "G090809": {
@@ -10877,7 +10877,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 80,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090809"
     },
     "G090810": {
@@ -10887,7 +10887,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 77,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090810"
     },
     "G090811": {
@@ -10897,7 +10897,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 82,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090811"
     },
     "G090812": {
@@ -10907,7 +10907,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 80,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090812"
     },
     "G090813": {
@@ -10917,7 +10917,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 85,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090813"
     },
     "G090814": {
@@ -10927,7 +10927,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 81,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090814"
     },
     "G090815": {
@@ -10937,7 +10937,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 84,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090815"
     },
     "G090816": {
@@ -10947,7 +10947,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 84,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090816"
     },
     "G090817": {
@@ -10957,7 +10957,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 85,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090817"
     },
     "G090818": {
@@ -10967,7 +10967,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 78,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090818"
     },
     "G090819": {
@@ -10977,7 +10977,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 83,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090819"
     },
     "G090820": {
@@ -10987,7 +10987,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 83,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090820"
     },
     "G090821": {
@@ -10997,7 +10997,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 85,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090821"
     },
     "G090822": {
@@ -11007,7 +11007,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 78,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090822"
     },
     "G090823": {
@@ -11017,7 +11017,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 82,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090823"
     },
     "G090824": {
@@ -11027,7 +11027,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 77,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090824"
     },
     "G090825": {
@@ -11037,7 +11037,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 80,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090825"
     },
     "G090826": {
@@ -11047,7 +11047,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 80,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090826"
     },
     "G090827": {
@@ -11057,7 +11057,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 77,
       "canonical": false,
-      "club": "DANMARK_DYNAMO",
+      "club": "DANMARK",
       "id": "G090827"
     },
     "G090828": {
@@ -13827,7 +13827,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 88,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091104"
     },
     "G091105": {
@@ -13837,7 +13837,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 82,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091105"
     },
     "G091106": {
@@ -13847,7 +13847,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 81,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091106"
     },
     "G091107": {
@@ -13857,7 +13857,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 81,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091107"
     },
     "G091108": {
@@ -13867,7 +13867,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 86,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091108"
     },
     "G091109": {
@@ -13877,7 +13877,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 83,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091109"
     },
     "G091110": {
@@ -13887,7 +13887,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 85,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091110"
     },
     "G091111": {
@@ -13897,7 +13897,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 83,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091111"
     },
     "G091112": {
@@ -13907,7 +13907,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 89,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091112"
     },
     "G091113": {
@@ -13917,7 +13917,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 88,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091113"
     },
     "G091114": {
@@ -13927,7 +13927,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 87,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091114"
     },
     "G091115": {
@@ -13937,7 +13937,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 84,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091115"
     },
     "G091116": {
@@ -13947,7 +13947,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 85,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091116"
     },
     "G091117": {
@@ -13957,7 +13957,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 89,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091117"
     },
     "G091118": {
@@ -13967,7 +13967,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 87,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091118"
     },
     "G091119": {
@@ -13977,7 +13977,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 85,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091119"
     },
     "G091120": {
@@ -13987,7 +13987,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 81,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091120"
     },
     "G091121": {
@@ -13997,7 +13997,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 87,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091121"
     },
     "G091122": {
@@ -14007,7 +14007,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 82,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091122"
     },
     "G091123": {
@@ -14017,7 +14017,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 86,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091123"
     },
     "G091124": {
@@ -14027,7 +14027,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 85,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091124"
     },
     "G091125": {
@@ -14037,7 +14037,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 82,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091125"
     },
     "G091126": {
@@ -14047,7 +14047,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 86,
       "canonical": false,
-      "club": "REAL_TENERIFE",
+      "club": "REAL",
       "id": "G091126"
     },
     "G091127": {
@@ -14057,7 +14057,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 84,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091127"
     },
     "G091128": {
@@ -14067,7 +14067,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 89,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091128"
     },
     "G091129": {
@@ -14077,7 +14077,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 83,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091129"
     },
     "G091130": {
@@ -14087,7 +14087,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 82,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091130"
     },
     "G091131": {
@@ -14097,7 +14097,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 88,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091131"
     },
     "G091132": {
@@ -14107,7 +14107,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 82,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091132"
     },
     "G091133": {
@@ -14117,7 +14117,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 87,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091133"
     },
     "G091134": {
@@ -14127,7 +14127,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 83,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091134"
     },
     "G091135": {
@@ -14137,7 +14137,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 83,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091135"
     },
     "G091136": {
@@ -14147,7 +14147,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 87,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091136"
     },
     "G091137": {
@@ -14157,7 +14157,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 82,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091137"
     },
     "G091138": {
@@ -14167,7 +14167,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 89,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091138"
     },
     "G091139": {
@@ -14177,7 +14177,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 88,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091139"
     },
     "G091140": {
@@ -14187,7 +14187,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 89,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091140"
     },
     "G091141": {
@@ -14197,7 +14197,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 87,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091141"
     },
     "G091142": {
@@ -14207,7 +14207,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 87,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091142"
     },
     "G091143": {
@@ -14217,7 +14217,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 88,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091143"
     },
     "G091144": {
@@ -14227,7 +14227,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 87,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091144"
     },
     "G091145": {
@@ -14237,7 +14237,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 89,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091145"
     },
     "G091146": {
@@ -14247,7 +14247,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 83,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091146"
     },
     "G091147": {
@@ -14257,7 +14257,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 85,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091147"
     },
     "G091148": {
@@ -14267,7 +14267,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 85,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091148"
     },
     "G091149": {
@@ -14277,7 +14277,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 83,
       "canonical": false,
-      "club": "FC_BARCELONNE",
+      "club": "FC_BARKA",
       "id": "G091149"
     },
     "G091150": {
@@ -14287,7 +14287,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 84,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091150"
     },
     "G091151": {
@@ -14297,7 +14297,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 84,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091151"
     },
     "G091152": {
@@ -14307,7 +14307,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 87,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091152"
     },
     "G091153": {
@@ -14317,7 +14317,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 89,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091153"
     },
     "G091154": {
@@ -14327,7 +14327,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 87,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091154"
     },
     "G091155": {
@@ -14337,7 +14337,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 82,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091155"
     },
     "G091156": {
@@ -14347,7 +14347,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 89,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091156"
     },
     "G091157": {
@@ -14357,7 +14357,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 82,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091157"
     },
     "G091158": {
@@ -14367,7 +14367,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 89,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091158"
     },
     "G091159": {
@@ -14377,7 +14377,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 84,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091159"
     },
     "G091160": {
@@ -14387,7 +14387,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 89,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091160"
     },
     "G091161": {
@@ -14397,7 +14397,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 81,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091161"
     },
     "G091162": {
@@ -14407,7 +14407,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 84,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091162"
     },
     "G091163": {
@@ -14417,7 +14417,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 87,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091163"
     },
     "G091164": {
@@ -14427,7 +14427,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 85,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091164"
     },
     "G091165": {
@@ -14437,7 +14437,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 87,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091165"
     },
     "G091166": {
@@ -14447,7 +14447,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 87,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091166"
     },
     "G091167": {
@@ -14457,7 +14457,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 88,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091167"
     },
     "G091168": {
@@ -14467,7 +14467,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 89,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091168"
     },
     "G091169": {
@@ -14477,7 +14477,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 84,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091169"
     },
     "G091170": {
@@ -14487,7 +14487,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 82,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091170"
     },
     "G091171": {
@@ -14497,7 +14497,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 86,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091171"
     },
     "G091172": {
@@ -14507,7 +14507,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 86,
       "canonical": false,
-      "club": "ATLETIK_MADRIK",
+      "club": "ATLETIK",
       "id": "G091172"
     },
     "G091173": {
@@ -14747,7 +14747,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 78,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091196"
     },
     "G091197": {
@@ -14757,7 +14757,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 80,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091197"
     },
     "G091198": {
@@ -14767,7 +14767,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 78,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091198"
     },
     "G091199": {
@@ -14777,7 +14777,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 84,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091199"
     },
     "G091200": {
@@ -14787,7 +14787,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 79,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091200"
     },
     "G091201": {
@@ -14797,7 +14797,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 77,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091201"
     },
     "G091202": {
@@ -14807,7 +14807,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 82,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091202"
     },
     "G091203": {
@@ -14817,7 +14817,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 82,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091203"
     },
     "G091204": {
@@ -14827,7 +14827,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 81,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091204"
     },
     "G091205": {
@@ -14837,7 +14837,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 77,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091205"
     },
     "G091206": {
@@ -14847,7 +14847,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 81,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091206"
     },
     "G091207": {
@@ -14857,7 +14857,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 81,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091207"
     },
     "G091208": {
@@ -14867,7 +14867,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 79,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091208"
     },
     "G091209": {
@@ -14877,7 +14877,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 78,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091209"
     },
     "G091210": {
@@ -14887,7 +14887,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 77,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091210"
     },
     "G091211": {
@@ -14897,7 +14897,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 80,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091211"
     },
     "G091212": {
@@ -14907,7 +14907,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 78,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091212"
     },
     "G091213": {
@@ -14917,7 +14917,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 81,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091213"
     },
     "G091214": {
@@ -14927,7 +14927,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 83,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091214"
     },
     "G091215": {
@@ -14937,7 +14937,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 82,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091215"
     },
     "G091216": {
@@ -14947,7 +14947,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 77,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091216"
     },
     "G091217": {
@@ -14957,7 +14957,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 82,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091217"
     },
     "G091218": {
@@ -14967,7 +14967,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 77,
       "canonical": false,
-      "club": "SPORTING_LISBONNÉ",
+      "club": "SPORTING_LISBON",
       "id": "G091218"
     },
     "G091219": {
@@ -14977,7 +14977,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 78,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091219"
     },
     "G091220": {
@@ -14987,7 +14987,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 82,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091220"
     },
     "G091221": {
@@ -14997,7 +14997,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 77,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091221"
     },
     "G091222": {
@@ -15007,7 +15007,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 80,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091222"
     },
     "G091223": {
@@ -15017,7 +15017,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 79,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091223"
     },
     "G091224": {
@@ -15027,7 +15027,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 83,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091224"
     },
     "G091225": {
@@ -15037,7 +15037,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 82,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091225"
     },
     "G091226": {
@@ -15047,7 +15047,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 83,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091226"
     },
     "G091227": {
@@ -15057,7 +15057,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 80,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091227"
     },
     "G091228": {
@@ -15067,7 +15067,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 81,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091228"
     },
     "G091229": {
@@ -15077,7 +15077,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 84,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091229"
     },
     "G091230": {
@@ -15087,7 +15087,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 83,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091230"
     },
     "G091231": {
@@ -15097,7 +15097,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 80,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091231"
     },
     "G091232": {
@@ -15107,7 +15107,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 82,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091232"
     },
     "G091233": {
@@ -15117,7 +15117,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 78,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091233"
     },
     "G091234": {
@@ -15127,7 +15127,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 81,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091234"
     },
     "G091235": {
@@ -15137,7 +15137,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 84,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091235"
     },
     "G091236": {
@@ -15147,7 +15147,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 83,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091236"
     },
     "G091237": {
@@ -15157,7 +15157,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 82,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091237"
     },
     "G091238": {
@@ -15167,7 +15167,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 85,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091238"
     },
     "G091239": {
@@ -15177,7 +15177,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 83,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091239"
     },
     "G091240": {
@@ -15187,7 +15187,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 77,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091240"
     },
     "G091241": {
@@ -15197,7 +15197,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 77,
       "canonical": false,
-      "club": "BENFICA_LISBONNÉ",
+      "club": "BENFICA_LISBON",
       "id": "G091241"
     },
     "G091242": {
@@ -15667,7 +15667,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 80,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091288"
     },
     "G091289": {
@@ -15677,7 +15677,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 78,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091289"
     },
     "G091290": {
@@ -15687,7 +15687,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 80,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091290"
     },
     "G091291": {
@@ -15697,7 +15697,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 81,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091291"
     },
     "G091292": {
@@ -15707,7 +15707,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 74,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091292"
     },
     "G091293": {
@@ -15717,7 +15717,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 78,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091293"
     },
     "G091294": {
@@ -15727,7 +15727,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 79,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091294"
     },
     "G091295": {
@@ -15737,7 +15737,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 81,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091295"
     },
     "G091296": {
@@ -15747,7 +15747,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 79,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091296"
     },
     "G091297": {
@@ -15757,7 +15757,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 79,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091297"
     },
     "G091298": {
@@ -15767,7 +15767,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 73,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091298"
     },
     "G091299": {
@@ -15777,7 +15777,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 80,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091299"
     },
     "G091300": {
@@ -15787,7 +15787,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 73,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091300"
     },
     "G091301": {
@@ -15797,7 +15797,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 74,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091301"
     },
     "G091302": {
@@ -15807,7 +15807,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 75,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091302"
     },
     "G091303": {
@@ -15817,7 +15817,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 81,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091303"
     },
     "G091304": {
@@ -15827,7 +15827,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 78,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091304"
     },
     "G091305": {
@@ -15837,7 +15837,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 73,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091305"
     },
     "G091306": {
@@ -15847,7 +15847,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 81,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091306"
     },
     "G091307": {
@@ -15857,7 +15857,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 74,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091307"
     },
     "G091308": {
@@ -15867,7 +15867,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 81,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091308"
     },
     "G091309": {
@@ -15877,7 +15877,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 74,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091309"
     },
     "G091310": {
@@ -15887,7 +15887,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 77,
       "canonical": false,
-      "club": "REAL_SOCIETE",
+      "club": "REAL_SOCIEDAD",
       "id": "G091310"
     },
     "G091311": {
@@ -17507,7 +17507,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 89,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091472"
     },
     "G091473": {
@@ -17517,7 +17517,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 83,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091473"
     },
     "G091474": {
@@ -17527,7 +17527,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 89,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091474"
     },
     "G091475": {
@@ -17537,7 +17537,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 81,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091475"
     },
     "G091476": {
@@ -17547,7 +17547,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 82,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091476"
     },
     "G091477": {
@@ -17557,7 +17557,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 88,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091477"
     },
     "G091478": {
@@ -17567,7 +17567,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 88,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091478"
     },
     "G091479": {
@@ -17577,7 +17577,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 88,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091479"
     },
     "G091480": {
@@ -17587,7 +17587,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 83,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091480"
     },
     "G091481": {
@@ -17597,7 +17597,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 81,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091481"
     },
     "G091482": {
@@ -17607,7 +17607,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 88,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091482"
     },
     "G091483": {
@@ -17617,7 +17617,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 81,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091483"
     },
     "G091484": {
@@ -17627,7 +17627,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 87,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091484"
     },
     "G091485": {
@@ -17637,7 +17637,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 81,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091485"
     },
     "G091486": {
@@ -17647,7 +17647,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 88,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091486"
     },
     "G091487": {
@@ -17657,7 +17657,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 82,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091487"
     },
     "G091488": {
@@ -17667,7 +17667,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 82,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091488"
     },
     "G091489": {
@@ -17677,7 +17677,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 84,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091489"
     },
     "G091490": {
@@ -17687,7 +17687,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 88,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091490"
     },
     "G091491": {
@@ -17697,7 +17697,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 84,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091491"
     },
     "G091492": {
@@ -17707,7 +17707,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 89,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091492"
     },
     "G091493": {
@@ -17717,7 +17717,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 86,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091493"
     },
     "G091494": {
@@ -17727,7 +17727,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 82,
       "canonical": false,
-      "club": "FC_MUNIKEN",
+      "club": "FC_MUNCHEN",
       "id": "G091494"
     },
     "G091495": {
@@ -19347,7 +19347,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 77,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091656"
     },
     "G091657": {
@@ -19357,7 +19357,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 74,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091657"
     },
     "G091658": {
@@ -19367,7 +19367,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 76,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091658"
     },
     "G091659": {
@@ -19377,7 +19377,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 79,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091659"
     },
     "G091660": {
@@ -19387,7 +19387,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 77,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091660"
     },
     "G091661": {
@@ -19397,7 +19397,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 77,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091661"
     },
     "G091662": {
@@ -19407,7 +19407,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 75,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091662"
     },
     "G091663": {
@@ -19417,7 +19417,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 73,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091663"
     },
     "G091664": {
@@ -19427,7 +19427,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 81,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091664"
     },
     "G091665": {
@@ -19437,7 +19437,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 80,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091665"
     },
     "G091666": {
@@ -19447,7 +19447,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 73,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091666"
     },
     "G091667": {
@@ -19457,7 +19457,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 77,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091667"
     },
     "G091668": {
@@ -19467,7 +19467,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 76,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091668"
     },
     "G091669": {
@@ -19477,7 +19477,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 79,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091669"
     },
     "G091670": {
@@ -19487,7 +19487,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 74,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091670"
     },
     "G091671": {
@@ -19497,7 +19497,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 73,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091671"
     },
     "G091672": {
@@ -19507,7 +19507,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 81,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091672"
     },
     "G091673": {
@@ -19517,7 +19517,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 79,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091673"
     },
     "G091674": {
@@ -19527,7 +19527,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 80,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091674"
     },
     "G091675": {
@@ -19537,7 +19537,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 74,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091675"
     },
     "G091676": {
@@ -19547,7 +19547,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 77,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091676"
     },
     "G091677": {
@@ -19557,7 +19557,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 79,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091677"
     },
     "G091678": {
@@ -19567,7 +19567,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 77,
       "canonical": false,
-      "club": "VFB_STUTTGARDO",
+      "club": "VFB_STUTTGARD",
       "id": "G091678"
     },
     "G091679": {
@@ -19807,7 +19807,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 73,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091702"
     },
     "G091703": {
@@ -19817,7 +19817,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 81,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091703"
     },
     "G091704": {
@@ -19827,7 +19827,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 77,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091704"
     },
     "G091705": {
@@ -19837,7 +19837,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 79,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091705"
     },
     "G091706": {
@@ -19847,7 +19847,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 78,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091706"
     },
     "G091707": {
@@ -19857,7 +19857,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 79,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091707"
     },
     "G091708": {
@@ -19867,7 +19867,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 76,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091708"
     },
     "G091709": {
@@ -19877,7 +19877,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 73,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091709"
     },
     "G091710": {
@@ -19887,7 +19887,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 75,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091710"
     },
     "G091711": {
@@ -19897,7 +19897,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 78,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091711"
     },
     "G091712": {
@@ -19907,7 +19907,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 76,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091712"
     },
     "G091713": {
@@ -19917,7 +19917,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 75,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091713"
     },
     "G091714": {
@@ -19927,7 +19927,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 73,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091714"
     },
     "G091715": {
@@ -19937,7 +19937,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 75,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091715"
     },
     "G091716": {
@@ -19947,7 +19947,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 80,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091716"
     },
     "G091717": {
@@ -19957,7 +19957,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 78,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091717"
     },
     "G091718": {
@@ -19967,7 +19967,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 80,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091718"
     },
     "G091719": {
@@ -19977,7 +19977,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 73,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091719"
     },
     "G091720": {
@@ -19987,7 +19987,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 75,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091720"
     },
     "G091721": {
@@ -19997,7 +19997,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 77,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091721"
     },
     "G091722": {
@@ -20007,7 +20007,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 78,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091722"
     },
     "G091723": {
@@ -20017,7 +20017,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 76,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091723"
     },
     "G091724": {
@@ -20027,7 +20027,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 78,
       "canonical": false,
-      "club": "FRIBURGO_SC",
+      "club": "FRIBURG_SC",
       "id": "G091724"
     },
     "G091725": {
@@ -20727,7 +20727,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 71,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091794"
     },
     "G091795": {
@@ -20737,7 +20737,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 69,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091795"
     },
     "G091796": {
@@ -20747,7 +20747,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 72,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091796"
     },
     "G091797": {
@@ -20757,7 +20757,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 70,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091797"
     },
     "G091798": {
@@ -20767,7 +20767,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 75,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091798"
     },
     "G091799": {
@@ -20777,7 +20777,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 76,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091799"
     },
     "G091800": {
@@ -20787,7 +20787,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 71,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091800"
     },
     "G091801": {
@@ -20797,7 +20797,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 72,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091801"
     },
     "G091802": {
@@ -20807,7 +20807,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 76,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091802"
     },
     "G091803": {
@@ -20817,7 +20817,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 77,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091803"
     },
     "G091804": {
@@ -20827,7 +20827,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 77,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091804"
     },
     "G091805": {
@@ -20837,7 +20837,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 72,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091805"
     },
     "G091806": {
@@ -20847,7 +20847,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 75,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091806"
     },
     "G091807": {
@@ -20857,7 +20857,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 70,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091807"
     },
     "G091808": {
@@ -20867,7 +20867,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 75,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091808"
     },
     "G091809": {
@@ -20877,7 +20877,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 75,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091809"
     },
     "G091810": {
@@ -20887,7 +20887,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 74,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091810"
     },
     "G091811": {
@@ -20897,7 +20897,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 72,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091811"
     },
     "G091812": {
@@ -20907,7 +20907,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 70,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091812"
     },
     "G091813": {
@@ -20917,7 +20917,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 77,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091813"
     },
     "G091814": {
@@ -20927,7 +20927,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 75,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091814"
     },
     "G091815": {
@@ -20937,7 +20937,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 73,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091815"
     },
     "G091816": {
@@ -20947,7 +20947,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 77,
       "canonical": false,
-      "club": "HAMBURGO_SV",
+      "club": "HAMBURG_SV",
       "id": "G091816"
     },
     "G091817": {
@@ -21417,7 +21417,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 89,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091863"
     },
     "G091864": {
@@ -21427,7 +21427,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 88,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091864"
     },
     "G091865": {
@@ -21437,7 +21437,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 85,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091865"
     },
     "G091866": {
@@ -21447,7 +21447,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 82,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091866"
     },
     "G091867": {
@@ -21457,7 +21457,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 82,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091867"
     },
     "G091868": {
@@ -21467,7 +21467,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 85,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091868"
     },
     "G091869": {
@@ -21477,7 +21477,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 88,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091869"
     },
     "G091870": {
@@ -21487,7 +21487,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 88,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091870"
     },
     "G091871": {
@@ -21497,7 +21497,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 82,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091871"
     },
     "G091872": {
@@ -21507,7 +21507,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 83,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091872"
     },
     "G091873": {
@@ -21517,7 +21517,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 89,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091873"
     },
     "G091874": {
@@ -21527,7 +21527,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 88,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091874"
     },
     "G091875": {
@@ -21537,7 +21537,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 86,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091875"
     },
     "G091876": {
@@ -21547,7 +21547,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 81,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091876"
     },
     "G091877": {
@@ -21557,7 +21557,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 87,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091877"
     },
     "G091878": {
@@ -21567,7 +21567,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 82,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091878"
     },
     "G091879": {
@@ -21577,7 +21577,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 88,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091879"
     },
     "G091880": {
@@ -21587,7 +21587,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 83,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091880"
     },
     "G091881": {
@@ -21597,7 +21597,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 89,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091881"
     },
     "G091882": {
@@ -21607,7 +21607,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 82,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091882"
     },
     "G091883": {
@@ -21617,7 +21617,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 86,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091883"
     },
     "G091884": {
@@ -21627,7 +21627,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 89,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091884"
     },
     "G091885": {
@@ -21637,7 +21637,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 89,
       "canonical": false,
-      "club": "MANCHBURY_CITY",
+      "club": "MANSHINE_CITY",
       "id": "G091885"
     },
     "G091886": {
@@ -22337,7 +22337,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 77,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091955"
     },
     "G091956": {
@@ -22347,7 +22347,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 82,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091956"
     },
     "G091957": {
@@ -22357,7 +22357,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 78,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091957"
     },
     "G091958": {
@@ -22367,7 +22367,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 79,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091958"
     },
     "G091959": {
@@ -22377,7 +22377,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 84,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091959"
     },
     "G091960": {
@@ -22387,7 +22387,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 79,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091960"
     },
     "G091961": {
@@ -22397,7 +22397,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 80,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091961"
     },
     "G091962": {
@@ -22407,7 +22407,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 80,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091962"
     },
     "G091963": {
@@ -22417,7 +22417,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 83,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091963"
     },
     "G091964": {
@@ -22427,7 +22427,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 78,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091964"
     },
     "G091965": {
@@ -22437,7 +22437,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 84,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091965"
     },
     "G091966": {
@@ -22447,7 +22447,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 84,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091966"
     },
     "G091967": {
@@ -22457,7 +22457,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 83,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091967"
     },
     "G091968": {
@@ -22467,7 +22467,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 85,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091968"
     },
     "G091969": {
@@ -22477,7 +22477,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 83,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091969"
     },
     "G091970": {
@@ -22487,7 +22487,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 81,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091970"
     },
     "G091971": {
@@ -22497,7 +22497,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 84,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091971"
     },
     "G091972": {
@@ -22507,7 +22507,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 83,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091972"
     },
     "G091973": {
@@ -22517,7 +22517,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 80,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091973"
     },
     "G091974": {
@@ -22527,7 +22527,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 82,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091974"
     },
     "G091975": {
@@ -22537,7 +22537,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 77,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091975"
     },
     "G091976": {
@@ -22547,7 +22547,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 84,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091976"
     },
     "G091977": {
@@ -22557,7 +22557,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 78,
       "canonical": false,
-      "club": "CHELSKI_FC",
+      "club": "CHELSEA_FC",
       "id": "G091977"
     },
     "G091978": {
@@ -22567,7 +22567,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 78,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091978"
     },
     "G091979": {
@@ -22577,7 +22577,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 78,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091979"
     },
     "G091980": {
@@ -22587,7 +22587,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 85,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091980"
     },
     "G091981": {
@@ -22597,7 +22597,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 83,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091981"
     },
     "G091982": {
@@ -22607,7 +22607,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 79,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091982"
     },
     "G091983": {
@@ -22617,7 +22617,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 81,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091983"
     },
     "G091984": {
@@ -22627,7 +22627,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LB",
       "ovr": 81,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091984"
     },
     "G091985": {
@@ -22637,7 +22637,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 79,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091985"
     },
     "G091986": {
@@ -22647,7 +22647,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RB",
       "ovr": 79,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091986"
     },
     "G091987": {
@@ -22657,7 +22657,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CDM",
       "ovr": 81,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091987"
     },
     "G091988": {
@@ -22667,7 +22667,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 77,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091988"
     },
     "G091989": {
@@ -22677,7 +22677,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 78,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091989"
     },
     "G091990": {
@@ -22687,7 +22687,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 84,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091990"
     },
     "G091991": {
@@ -22697,7 +22697,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 82,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091991"
     },
     "G091992": {
@@ -22707,7 +22707,7 @@ const GHOST_NATIONS_DATA = {
       "position": "RW",
       "ovr": 82,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091992"
     },
     "G091993": {
@@ -22717,7 +22717,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 85,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091993"
     },
     "G091994": {
@@ -22727,7 +22727,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 81,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091994"
     },
     "G091995": {
@@ -22737,7 +22737,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CM",
       "ovr": 82,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091995"
     },
     "G091996": {
@@ -22747,7 +22747,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CAM",
       "ovr": 84,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091996"
     },
     "G091997": {
@@ -22757,7 +22757,7 @@ const GHOST_NATIONS_DATA = {
       "position": "LW",
       "ovr": 77,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091997"
     },
     "G091998": {
@@ -22767,7 +22767,7 @@ const GHOST_NATIONS_DATA = {
       "position": "ST",
       "ovr": 78,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091998"
     },
     "G091999": {
@@ -22777,7 +22777,7 @@ const GHOST_NATIONS_DATA = {
       "position": "GK",
       "ovr": 81,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G091999"
     },
     "G092000": {
@@ -22787,7 +22787,7 @@ const GHOST_NATIONS_DATA = {
       "position": "CB",
       "ovr": 84,
       "canonical": false,
-      "club": "ASSTON_HILL",
+      "club": "ASHTON_HILL",
       "id": "G092000"
     },
     "G092001": {
