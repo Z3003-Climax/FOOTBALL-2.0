@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equestria Football — Engine 1A</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c12; --surface:#0d1420; --surface2:#111927;
+  --border:#1c2a40; --border2:#243550;
+  --home:#e8354a; --home-glow:rgba(232,53,74,.18); --home-dim:#5a1520;
+  --away:#2f7fe8; --away-glow:rgba(47,127,232,.18); --away-dim:#0f2d5a;
+  --gold:#f0b429; --green:#22c55e; --red:#ef4444; --yellow:#eab308;
+  --text:#d4ddf0; --muted:#3d5070; --mono:'Share Tech Mono',monospace;
+  --head:'Barlow Condensed',sans-serif; --body:'Barlow',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);}
+
+/* scrollbars */
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+/* ── ROOT GRID ── */
+#root{display:grid;grid-template-rows:56px 1fr 24px;grid-template-columns:310px 1fr 300px;height:100vh;}
+
+/* ══════════════════════════════════════════════
+   TOP BAR — SCOREBOARD
+══════════════════════════════════════════════ */
+#topbar{
+  grid-column:1/-1;
+  background:linear-gradient(180deg,#0a1525 0%,var(--bg) 100%);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;position:relative;overflow:hidden;
+}
+#topbar::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg, var(--home-dim), transparent 30%, transparent 70%, var(--away-dim));
+}
+
+.tb-team{
+  flex:1;display:flex;align-items:center;gap:10px;padding:0 16px;
+}
+.tb-team.away{flex-direction:row-reverse;}
+
+.tb-emblem{
+  width:34px;height:34px;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--head);font-weight:900;font-size:11px;letter-spacing:.5px;
+  border:1px solid rgba(255,255,255,.12);flex-shrink:0;
+}
+.tb-emblem.home{background:var(--home);color:#fff;}
+.tb-emblem.away{background:var(--away);color:#fff;}
+
+.tb-info{display:flex;flex-direction:column;gap:1px;}
+.tb-info.away{text-align:right;}
+.tb-club{font-family:var(--head);font-size:15px;font-weight:900;letter-spacing:.3px;line-height:1;}
+.tb-sub{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.5px;}
+
+/* score */
+.tb-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:200px;}
+.tb-score{display:flex;align-items:center;gap:6px;}
+.tb-num{
+  font-family:var(--head);font-size:44px;font-weight:900;line-height:1;min-width:34px;text-align:center;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.tb-num.home{color:var(--home);}
+.tb-num.away{color:var(--away);}
+.tb-num.pop{transform:scale(1.4);}
+.tb-sep{font-family:var(--mono);font-size:22px;color:var(--border2);margin:0 2px;}
+.tb-clock{font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:2px;}
+.tb-status{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+
+/* live dot */
+#live{
+  position:absolute;top:10px;right:14px;
+  font-family:var(--mono);font-size:10px;color:var(--home);letter-spacing:1px;
+  display:flex;align-items:center;gap:5px;
+}
+#live-dot{width:6px;height:6px;border-radius:50%;background:var(--home);animation:blink 1.3s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* ══════════════════════════════════════════════
+   LEFT PANEL
+══════════════════════════════════════════════ */
+#left{
+  background:var(--surface);border-right:1px solid var(--border);
+  overflow-y:auto;display:flex;flex-direction:column;
+}
+
+.sec{border-bottom:1px solid var(--border);padding:10px 14px;}
+.sec-label{
+  font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* Formation selector */
+.form-pick{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;}
+.fp{
+  padding:4px 8px;border-radius:3px;border:1px solid var(--border2);
+  background:transparent;color:var(--muted);cursor:pointer;
+  font-family:var(--mono);font-size:10px;transition:all .12s;
+}
+.fp:hover{border-color:var(--text);color:var(--text);}
+.fp.active.home{background:var(--home);border-color:var(--home);color:#fff;}
+.fp.active.away{background:var(--away);border-color:var(--away);color:#fff;}
+
+/* Tactic pills */
+.tac-row{display:flex;gap:4px;margin-bottom:8px;}
+.tac{
+  flex:1;padding:5px 0;border-radius:3px;border:1px solid var(--border2);
+  background:transparent;color:var(--muted);cursor:pointer;
+  font-family:var(--mono);font-size:10px;text-align:center;transition:all .12s;letter-spacing:.3px;
+}
+.tac:hover{border-color:var(--text);color:var(--text);}
+.tac.active.home{background:var(--home);border-color:var(--home);color:#fff;}
+.tac.active.away{background:var(--away);border-color:var(--away);color:#fff;}
+
+/* Player grid */
+.pl-list{display:flex;flex-direction:column;gap:1px;}
+.pl{
+  display:grid;grid-template-columns:28px 12px 1fr 22px 30px;
+  align-items:center;gap:4px;
+  padding:3px 0;border-bottom:1px solid rgba(255,255,255,.03);
+  font-family:var(--mono);font-size:10.5px;
+}
+.pl:last-child{border-bottom:none;}
+.pl-num{color:var(--muted);text-align:right;}
+.pl-nat{font-size:9px;}
+.pl-name{color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pl-pos{font-size:9px;color:var(--muted);text-align:center;}
+.pl-ovr{font-family:var(--head);font-size:13px;font-weight:900;text-align:right;}
+.hi{color:var(--green);} .md{color:var(--gold);} .lo{color:var(--red);}
+
+/* controls */
+.ctrl{display:flex;flex-direction:column;gap:6px;padding:12px 14px;}
+.btn-main{
+  padding:9px;border-radius:4px;border:none;cursor:pointer;
+  font-family:var(--head);font-size:13px;font-weight:900;letter-spacing:1px;
+  background:var(--green);color:#000;transition:all .15s;
+}
+.btn-main:hover{filter:brightness(1.1);}
+.btn-main:disabled{background:var(--border);color:var(--muted);cursor:default;filter:none;}
+.btn-row2{display:flex;gap:5px;}
+.btn-sec{
+  flex:1;padding:7px;border-radius:4px;border:1px solid var(--border2);
+  background:transparent;color:var(--muted);cursor:pointer;
+  font-family:var(--head);font-size:11px;font-weight:700;letter-spacing:.5px;transition:all .12s;
+}
+.btn-sec:hover{background:var(--border);color:var(--text);}
+
+/* ══════════════════════════════════════════════
+   CENTER PANEL
+══════════════════════════════════════════════ */
+#center{display:flex;flex-direction:column;overflow:hidden;}
+
+/* Pitch visual */
+#pitch-wrap{
+  flex-shrink:0;padding:10px 14px 6px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+}
+#pitch-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;margin-bottom:6px;}
+#pitch-canvas{width:100%;height:64px;border-radius:3px;display:block;}
+
+/* Event log */
+#log-wrap{flex:1;overflow-y:auto;padding:10px 14px;}
+.ev{
+  display:grid;grid-template-columns:32px 20px 1fr;
+  align-items:start;gap:8px;padding:5px 0;
+  border-bottom:1px solid rgba(255,255,255,.035);
+  animation:fadeUp .25s ease;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+.ev:last-child{border-bottom:none;}
+.ev-min{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right;padding-top:2px;}
+.ev-icon{font-size:13px;text-align:center;}
+.ev-txt{font-family:var(--mono);font-size:11px;line-height:1.6;color:#7a92b5;}
+.ev-txt .nm{color:var(--text);font-weight:bold;}
+.ev-txt .h{color:var(--home);}
+.ev-txt .a{color:var(--away);}
+
+/* Special events */
+.ev.goal{
+  background:linear-gradient(90deg,rgba(232,53,74,.1) 0%,transparent 80%);
+  border-radius:4px;padding:7px 8px;margin:3px 0;
+  border-left:2px solid var(--home);border-bottom:none;
+}
+.ev.goal.ag{
+  background:linear-gradient(90deg,rgba(47,127,232,.1) 0%,transparent 80%);
+  border-left-color:var(--away);
+}
+.ev.goal .ev-txt{color:var(--text);font-size:12px;}
+.ev.goal .score-tag{
+  font-family:var(--head);font-size:15px;font-weight:900;
+  background:rgba(255,255,255,.08);padding:1px 8px;border-radius:3px;margin-left:6px;
+  vertical-align:middle;
+}
+.ev.halftime,.ev.fulltime{
+  grid-column:1/-1;text-align:center;
+  font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted);
+  padding:8px 0;border-bottom:1px dashed var(--border) !important;
+  border-top:1px dashed var(--border);margin:4px 0;
+}
+.ev.save .ev-txt{color:#60a5fa;}
+.ev.yc .ev-txt{color:var(--yellow);}
+.ev.rc .ev-txt{color:var(--red);}
+
+/* ══════════════════════════════════════════════
+   RIGHT PANEL — STATS
+══════════════════════════════════════════════ */
+#right{
+  background:var(--surface);border-left:1px solid var(--border);
+  overflow-y:auto;display:flex;flex-direction:column;
+}
+
+/* Rating cards */
+.rat-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:10px;}
+.rat-card{
+  background:var(--surface2);border:1px solid var(--border);border-radius:4px;
+  padding:7px 9px;display:flex;flex-direction:column;gap:2px;
+}
+.rc-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;}
+.rc-val{font-family:var(--head);font-size:26px;font-weight:900;line-height:1;}
+.rc-val.h{color:var(--home);}
+.rc-val.a{color:var(--away);}
+.rc-sub{font-family:var(--mono);font-size:9px;color:var(--muted);}
+
+/* xG row */
+.xg-row{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--surface2);border:1px solid var(--border);border-radius:4px;
+  padding:6px 10px;margin-bottom:10px;
+}
+.xg-val{font-family:var(--head);font-size:20px;font-weight:900;}
+.xg-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;text-align:center;}
+
+/* Possession */
+.poss-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.poss-num{font-family:var(--head);font-size:17px;font-weight:900;min-width:36px;}
+.poss-num.h{color:var(--home);}
+.poss-num.a{color:var(--away);text-align:right;}
+.poss-bar{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden;display:flex;}
+.pb-h{background:var(--home);height:100%;transition:width .5s ease;}
+.pb-a{background:var(--away);height:100%;transition:width .5s ease;}
+
+/* stat rows */
+.sr{display:flex;flex-direction:column;gap:3px;margin-bottom:8px;}
+.sr-top{display:flex;justify-content:space-between;align-items:baseline;}
+.sr-val{font-family:var(--head);font-size:14px;font-weight:900;}
+.sr-val.h{color:var(--home);}
+.sr-val.a{color:var(--away);}
+.sr-name{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;}
+.sr-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;display:flex;}
+.sb-h{background:var(--home);height:100%;transition:width .5s;}
+.sb-a{background:var(--away);height:100%;transition:width .5s;}
+
+/* momentum */
+.mo-bar{position:relative;height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:3px;}
+.mo-fill{height:100%;border-radius:4px;transition:all .5s;}
+.mo-mid{position:absolute;left:50%;top:0;width:2px;height:100%;background:rgba(255,255,255,.12);transform:translateX(-1px);}
+
+/* scorers */
+.sc-item{
+  display:flex;align-items:flex-start;gap:7px;
+  padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);
+  font-family:var(--mono);font-size:10.5px;
+}
+.sc-item:last-child{border-bottom:none;}
+.sc-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.sc-body{flex:1;}
+.sc-name{color:var(--text);}
+.sc-assist{font-size:9px;color:var(--muted);}
+.sc-min{color:var(--muted);font-size:10px;flex-shrink:0;}
+
+/* ══════════════════════════════════════════════
+   BOTTOM TICKER
+══════════════════════════════════════════════ */
+#bottombar{
+  grid-column:1/-1;
+  background:#04070d;border-top:1px solid var(--border);
+  display:flex;align-items:center;overflow:hidden;
+}
+.bb-tag{
+  background:var(--gold);color:#000;padding:0 10px;height:100%;
+  display:flex;align-items:center;
+  font-family:var(--mono);font-size:9px;font-weight:bold;letter-spacing:2px;
+  flex-shrink:0;
+}
+#bb-scroll{flex:1;overflow:hidden;position:relative;height:100%;}
+#bb-inner{
+  font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.3px;
+  white-space:nowrap;position:absolute;top:50%;transform:translateY(-50%);
+  animation:scroll-left 50s linear infinite;
+}
+@keyframes scroll-left{from{left:100%}to{left:-300%}}
+</style>
+</head>
+<body>
+<div id="root">
+
+<!-- ═══ TOP BAR ═══ -->
+<div id="topbar">
+  <div class="tb-team home">
+    <div class="tb-emblem home" id="em-h">BIL</div>
+    <div class="tb-info home">
+      <div class="tb-club" id="name-h">Bayern Ilumyss</div>
+      <div class="tb-sub">PRO LIGA ISHGAR · DOMICILE</div>
+    </div>
+  </div>
+
+  <div class="tb-center">
+    <div class="tb-score">
+      <div class="tb-num home" id="sc-h">0</div>
+      <div class="tb-sep">:</div>
+      <div class="tb-num away" id="sc-a">0</div>
+    </div>
+    <div class="tb-clock" id="tb-clock">0'</div>
+    <div class="tb-status" id="tb-status">PRÊT</div>
+  </div>
+
+  <div class="tb-team away">
+    <div class="tb-emblem away" id="em-a">FTF</div>
+    <div class="tb-info away">
+      <div class="tb-club" id="name-a">Fairy Tail FC</div>
+      <div class="tb-sub">PRO LIGA ISHGAR · EXTÉRIEUR</div>
+    </div>
+  </div>
+
+  <div id="live"><div id="live-dot"></div>LIVE</div>
+</div>
+
+<!-- ═══ LEFT PANEL ═══ -->
+<div id="left">
+
+  <!-- HOME -->
+  <div class="sec">
+    <div class="sec-label" style="color:var(--home)">Bayern Ilumyss</div>
+
+    <div class="sec-label" style="color:var(--muted);margin-bottom:4px;font-size:9px">FORMATION</div>
+    <div class="form-pick" id="form-home"></div>
+
+    <div class="sec-label" style="color:var(--muted);margin-bottom:4px;font-size:9px">TACTIQUE</div>
+    <div class="tac-row" id="tac-home"></div>
+
+    <div class="pl-list" id="roster-home"></div>
+  </div>
+
+  <!-- AWAY -->
+  <div class="sec">
+    <div class="sec-label" style="color:var(--away)">Fairy Tail FC</div>
+
+    <div class="sec-label" style="color:var(--muted);margin-bottom:4px;font-size:9px">FORMATION</div>
+    <div class="form-pick" id="form-away"></div>
+
+    <div class="sec-label" style="color:var(--muted);margin-bottom:4px;font-size:9px">TACTIQUE</div>
+    <div class="tac-row" id="tac-away"></div>
+
+    <div class="pl-list" id="roster-away"></div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="ctrl">
+    <button class="btn-main" id="btn-run">▶  SIMULER LE MATCH</button>
+    <div class="btn-row2">
+      <button class="btn-sec" id="btn-step">⏭ Pas-à-pas</button>
+      <button class="btn-sec" id="btn-reset">↺ Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CENTER PANEL ═══ -->
+<div id="center">
+  <div id="pitch-wrap">
+    <div id="pitch-label">ZONE DE PRESSION · TEMPS RÉEL</div>
+    <canvas id="pitch-canvas"></canvas>
+  </div>
+  <div id="log-wrap">
+    <div id="elog">
+      <div class="ev">
+        <div class="ev-min"></div>
+        <div class="ev-icon">📋</div>
+        <div class="ev-txt">Lance un match pour voir les événements en direct.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RIGHT PANEL ═══ -->
+<div id="right">
+
+  <div class="sec">
+    <div class="sec-label">Ratings calculés</div>
+    <div class="rat-grid">
+      <div class="rat-card"><div class="rc-label">ATT HOME</div><div class="rc-val h" id="r-att-h">—</div><div class="rc-sub">Bayern Ilumyss</div></div>
+      <div class="rat-card"><div class="rc-label">DEF HOME</div><div class="rc-val h" id="r-def-h">—</div><div class="rc-sub">Bayern Ilumyss</div></div>
+      <div class="rat-card"><div class="rc-label">ATT AWAY</div><div class="rc-val a" id="r-att-a">—</div><div class="rc-sub">Fairy Tail FC</div></div>
+      <div class="rat-card"><div class="rc-label">DEF AWAY</div><div class="rc-val a" id="r-def-a">—</div><div class="rc-sub">Fairy Tail FC</div></div>
+    </div>
+    <div class="xg-row">
+      <div><div class="rc-label">xG HOME</div><div class="xg-val" style="color:var(--home)" id="xg-h">0.00</div></div>
+      <div class="xg-lbl">EXPECTED<br>GOALS</div>
+      <div style="text-align:right"><div class="rc-label">xG AWAY</div><div class="xg-val" style="color:var(--away)" id="xg-a">0.00</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-label">Possession</div>
+    <div class="poss-row">
+      <div class="poss-num h" id="p-h">50%</div>
+      <div class="poss-bar"><div class="pb-h" id="pb-h" style="width:50%"></div><div class="pb-a" id="pb-a" style="width:50%"></div></div>
+      <div class="poss-num a" id="p-a">50%</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-label">Statistiques</div>
+    <div class="sr"><div class="sr-top"><span class="sr-val h" id="s-sh-h">0</span><span class="sr-name">Tirs</span><span class="sr-val a" id="s-sh-a">0</span></div><div class="sr-bar"><div class="sb-h" id="b-sh-h" style="width:50%"></div><div class="sb-a" id="b-sh-a" style="width:50%"></div></div></div>
+    <div class="sr"><div class="sr-top"><span class="sr-val h" id="s-sot-h">0</span><span class="sr-name">Cadrés</span><span class="sr-val a" id="s-sot-a">0</span></div><div class="sr-bar"><div class="sb-h" id="b-sot-h" style="width:50%"></div><div class="sb-a" id="b-sot-a" style="width:50%"></div></div></div>
+    <div class="sr"><div class="sr-top"><span class="sr-val h" id="s-cor-h">0</span><span class="sr-name">Corners</span><span class="sr-val a" id="s-cor-a">0</span></div><div class="sr-bar"><div class="sb-h" id="b-cor-h" style="width:50%"></div><div class="sb-a" id="b-cor-a" style="width:50%"></div></div></div>
+    <div class="sr"><div class="sr-top"><span class="sr-val h" id="s-fo-h">0</span><span class="sr-name">Fautes</span><span class="sr-val a" id="s-fo-a">0</span></div><div class="sr-bar"><div class="sb-h" id="b-fo-h" style="width:50%"></div><div class="sb-a" id="b-fo-a" style="width:50%"></div></div></div>
+    <div class="sr"><div class="sr-top"><span class="sr-val h" id="s-yc-h">0</span><span class="sr-name">🟨 Jaunes</span><span class="sr-val a" id="s-yc-a">0</span></div><div class="sr-bar"><div class="sb-h" id="b-yc-h" style="width:50%"></div><div class="sb-a" id="b-yc-a" style="width:50%"></div></div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-label">Momentum</div>
+    <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:4px">
+      <span style="color:var(--home)">◀ HOME</span>
+      <span id="mo-lbl">ÉQUILIBRÉ</span>
+      <span style="color:var(--away)">AWAY ▶</span>
+    </div>
+    <div class="mo-bar">
+      <div class="mo-fill" id="mo-fill"></div>
+      <div class="mo-mid"></div>
+    </div>
+  </div>
+
+  <div class="sec" style="border-bottom:none;flex:1">
+    <div class="sec-label">Buteurs</div>
+    <div id="scorers"><div style="font-family:var(--mono);font-size:10px;color:var(--muted)">Aucun but marqué</div></div>
+  </div>
+
+</div>
+
+<!-- ═══ BOTTOM BAR ═══ -->
+<div id="bottombar">
+  <div class="bb-tag">EFU</div>
+  <div id="bb-scroll">
+    <div id="bb-inner">
+      ⚽ Pro Liga Ishgar · Journée 12 · Ankhseram Arena (45 000 places) &nbsp;|&nbsp;
+      🏆 Bayern Ilumyss — 8× Champion d'Ishgar &nbsp;|&nbsp;
+      🌍 Equestria Football Universe · 7 nations · 1 rêve &nbsp;|&nbsp;
+      ⭐ Gildarts Clive (OVR 90) meilleur buteur de la Pro Liga Ishgar &nbsp;|&nbsp;
+      📊 Zeref Dragneel (OVR 91) — xG le plus élevé du championnat &nbsp;|&nbsp;
+      🗓 CLE 2024/25 — Phase de groupes en cours &nbsp;|&nbsp;
+      ⚽ Pro Liga Ishgar · Journée 12 · Ankhseram Arena (45 000 places)
+    </div>
+  </div>
+</div>
+
+</div><!-- #root -->
+
+<script>
+'use strict';
+
+// ════════════════════════════════════════════════════════════
+//  CANON DATA (fidèle à canon.js)
+// ════════════════════════════════════════════════════════════
+
+// Formations disponibles → positions par poste
+const FORMATIONS = {
+  '4-3-3': {
+    label:'4-3-3',
+    slots:['GK','LB','CB','CB','RB','CDM','CM','CM','LW','ST','RW']
+  },
+  '4-4-2': {
+    label:'4-4-2',
+    slots:['GK','LB','CB','CB','RB','LM','CM','CM','RM','ST','ST']
+  },
+  '4-2-3-1': {
+    label:'4-2-3-1',
+    slots:['GK','LB','CB','CB','RB','CDM','CDM','LAM','CAM','RAM','ST']
+  },
+  '3-5-2': {
+    label:'3-5-2',
+    slots:['GK','CB','CB','CB','LM','CM','CDM','CM','RM','ST','ST']
+  },
+  '5-3-2': {
+    label:'5-3-2',
+    slots:['GK','LB','CB','CB','CB','RB','CM','CM','CM','ST','ST']
+  },
+};
+
+// Poids OVR par poste
+const POS_W = {
+  GK: {att:0.00,def:1.00}, LB:{att:0.25,def:0.70}, RB:{att:0.25,def:0.70},
+  CB: {att:0.05,def:0.90}, CDM:{att:0.35,def:0.60}, CM:{att:0.55,def:0.40},
+  LM: {att:0.65,def:0.30}, RM:{att:0.65,def:0.30},
+  LAM:{att:0.80,def:0.15}, CAM:{att:0.80,def:0.15}, RAM:{att:0.80,def:0.15},
+  LW: {att:0.85,def:0.15}, RW:{att:0.85,def:0.15}, ST:{att:1.00,def:0.05},
+};
+
+// Nations (flag emoji par nation)
+const NAT_FLAG = {
+  Ishgar:'🇮🇸', Javanie:'🇯🇦', Brislovia:'🇧🇷', Savanna:'🇸🇦',
+  Bermudes:'🇧🇲', Desertiqua:'🇩🇶', PTM:'🇵🇹',
+};
+
+const TEAMS = {
+  home: {
+    id:'BIL', name:'Bayern Ilumyss', stadium:'Ankhseram Arena',
+    capacity:45000, nation:'Ishgar',
+    color:'var(--home)', tactic:'balanced', formation:'4-3-3',
+    homeAdvantage:true,
+    squad:[
+      // GK
+      {name:'Acnologia',        nat:'Ishgar', pos:'GK',  ovr:82, form:1.00, num:1},
+      // DEF
+      {name:'Erza Scarlet',     nat:'Ishgar', pos:'CB',  ovr:80, form:1.02, num:4},
+      {name:'Gray Fullbuster',  nat:'Ishgar', pos:'CB',  ovr:78, form:0.98, num:5},
+      {name:'Elfman Strauss',   nat:'Ishgar', pos:'LB',  ovr:75, form:1.00, num:3},
+      {name:'Bickslow',         nat:'Ishgar', pos:'RB',  ovr:74, form:1.01, num:2},
+      // MID
+      {name:'Freed Justine',    nat:'Ishgar', pos:'CDM', ovr:79, form:1.00, num:6},
+      {name:'Laxus Dreyar',     nat:'Ishgar', pos:'CM',  ovr:85, form:1.05, num:8},
+      {name:'Evergreen',        nat:'Ishgar', pos:'CM',  ovr:76, form:0.97, num:7},
+      // FWD
+      {name:'Natsu Dragnir',    nat:'Ishgar', pos:'LW',  ovr:88, form:1.08, num:11},
+      {name:'Gildarts Clive',   nat:'Ishgar', pos:'ST',  ovr:90, form:1.00, num:9},
+      {name:'Jellal Fernandez', nat:'Ishgar', pos:'RW',  ovr:87, form:1.03, num:10},
+    ]
+  },
+  away: {
+    id:'FTF', name:'Fairy Tail FC', stadium:'Magnolia Park',
+    capacity:32000, nation:'Ishgar',
+    color:'var(--away)', tactic:'balanced', formation:'4-3-3',
+    homeAdvantage:false,
+    squad:[
+      // GK
+      {name:'Mavis Vermillion', nat:'Ishgar', pos:'GK',  ovr:80, form:1.00, num:1},
+      // DEF
+      {name:'Wendy Marvell',    nat:'Ishgar', pos:'CB',  ovr:76, form:1.00, num:5},
+      {name:'Cana Alberona',    nat:'Ishgar', pos:'CB',  ovr:75, form:0.99, num:4},
+      {name:'Mirajane Strauss', nat:'Ishgar', pos:'LB',  ovr:78, form:1.02, num:3},
+      {name:'Juvia Lockser',    nat:'Ishgar', pos:'RB',  ovr:74, form:1.00, num:2},
+      // MID
+      {name:'Levy McGarden',    nat:'Ishgar', pos:'CDM', ovr:77, form:1.00, num:6},
+      {name:'Lucy Heartfilia',  nat:'Ishgar', pos:'CM',  ovr:76, form:1.01, num:8},
+      {name:'Carla',            nat:'Ishgar', pos:'CM',  ovr:75, form:0.98, num:7},
+      // FWD
+      {name:'Romeo Conbolt',    nat:'Ishgar', pos:'LW',  ovr:80, form:1.04, num:11},
+      {name:'Zeref Dragneel',   nat:'Ishgar', pos:'ST',  ovr:91, form:1.00, num:9},
+      {name:'August',           nat:'Ishgar', pos:'RW',  ovr:89, form:1.05, num:10},
+    ]
+  }
+};
+
+// ════════════════════════════════════════════════════════════
+//  CONSTANTES MOTEUR
+// ════════════════════════════════════════════════════════════
+const HOME_ADV   = 1.08;
+const TACTICS_DEF = {
+  defensive:{ attMult:.80, defMult:1.20, shotFreq:.70, pressFreq:.60 },
+  balanced:  { attMult:1.00,defMult:1.00, shotFreq:1.00,pressFreq:1.00 },
+  offensive: { attMult:1.25,defMult:.80,  shotFreq:1.35,pressFreq:1.30 },
+};
+const P_SHOT=.08, P_FOUL=.12, P_CORNER=.06, P_YELLOW=.30, P_RED=.04;
+
+// ════════════════════════════════════════════════════════════
+//  RENDER UI CONTROLS
+// ════════════════════════════════════════════════════════════
+function ovrCls(o){ return o>=85?'hi':o>=77?'md':'lo'; }
+function formEmoji(f){ return f>=1.04?'▲':f<0.99?'▼':'·'; }
+function formColor(f){ return f>=1.04?'var(--green)':f<0.99?'var(--red)':'var(--muted)'; }
+
+function renderRoster(key){
+  const team = TEAMS[key];
+  const formation = FORMATIONS[team.formation];
+  // Map players to formation slots (first 11 by squad order)
+  const starting = team.squad.slice(0, 11);
+  const el = document.getElementById('roster-'+key);
+  el.innerHTML = starting.map((p,i)=>`
+    <div class="pl">
+      <span class="pl-num">${p.num}</span>
+      <span class="pl-nat" title="${p.nat}">${NAT_FLAG[p.nat]||'🏳'}</span>
+      <span class="pl-name">${p.name}</span>
+      <span class="pl-pos" style="color:${key==='home'?'var(--home)':'var(--away)'}">${formation.slots[i]||p.pos}</span>
+      <span class="pl-ovr ${ovrCls(p.ovr)}">${p.ovr}</span>
+    </div>`).join('');
+}
+
+function renderFormPicker(key){
+  const el = document.getElementById('form-'+key);
+  el.innerHTML = Object.keys(FORMATIONS).map(f=>`
+    <button class="fp ${TEAMS[key].formation===f?'active '+key:''}" data-team="${key}" data-f="${f}">${f}</button>`
+  ).join('');
+}
+
+function renderTacPicker(key){
+  const el = document.getElementById('tac-'+key);
+  const tacs = [{k:'defensive',l:'🛡 Défensif'},{k:'balanced',l:'⚖ Équilibré'},{k:'offensive',l:'⚔ Offensif'}];
+  el.innerHTML = tacs.map(t=>`
+    <button class="tac ${TEAMS[key].tactic===t.k?'active '+key:''}" data-team="${key}" data-t="${t.k}">${t.l}</button>`
+  ).join('');
+}
+
+function buildLeftPanel(){
+  ['home','away'].forEach(key=>{
+    renderFormPicker(key);
+    renderTacPicker(key);
+    renderRoster(key);
+  });
+}
+buildLeftPanel();
+
+// Click handlers — formation
+document.addEventListener('click', e=>{
+  const fp = e.target.closest('.fp');
+  if(fp){
+    const key=fp.dataset.team, f=fp.dataset.f;
+    TEAMS[key].formation=f;
+    renderFormPicker(key); renderRoster(key);
+    if(M){ M.ratings=computeRatings(); updateHUD(); }
+  }
+  const tac = e.target.closest('.tac');
+  if(tac){
+    const key=tac.dataset.team, t=tac.dataset.t;
+    TEAMS[key].tactic=t;
+    renderTacPicker(key);
+    if(M){ M.ratings=computeRatings(); updateHUD(); }
+  }
+});
+
+// ════════════════════════════════════════════════════════════
+//  MINI PITCH CANVAS
+// ════════════════════════════════════════════════════════════
+const PC = document.getElementById('pitch-canvas');
+function resizePC(){
+  const wrap=document.getElementById('pitch-wrap');
+  PC.width=wrap.clientWidth-28; PC.height=64;
+}
+resizePC(); window.addEventListener('resize',resizePC);
+
+let pressureVal=.5;
+function drawPitch(momentum){
+  const ctx=PC.getContext('2d');
+  const W=PC.width, H=PC.height;
+  ctx.clearRect(0,0,W,H);
+  // Grass stripes
+  const ns=12;
+  for(let i=0;i<ns;i++){
+    ctx.fillStyle=i%2===0?'#18421e':'#143618';
+    ctx.fillRect(i*(W/ns),0,W/ns,H);
+  }
+  // Lines
+  ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.lineWidth=1;
+  ctx.strokeRect(1,1,W-2,H-2);
+  ctx.beginPath(); ctx.moveTo(W/2,1); ctx.lineTo(W/2,H-1); ctx.stroke();
+  ctx.beginPath(); ctx.arc(W/2,H/2,H*.22,0,Math.PI*2); ctx.stroke();
+  // Penalty boxes
+  const pa=W*.13, ph=H*.5;
+  ctx.strokeRect(1, (H-ph)/2, pa, ph);
+  ctx.strokeRect(W-1-pa, (H-ph)/2, pa, ph);
+
+  // Pressure blob
+  pressureVal += ((1-momentum) - pressureVal) * .1;
+  const px = pressureVal * W;
+  const col = momentum<.5 ? '232,53,74' : '47,127,232';
+  const g = ctx.createRadialGradient(px,H/2,0,px,H/2,W*.28);
+  g.addColorStop(0,`rgba(${col},.35)`);
+  g.addColorStop(1,`rgba(${col},0)`);
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+
+  // Ball dot
+  ctx.fillStyle='#ffffff';
+  ctx.beginPath(); ctx.arc(px,H/2,4,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,.5)'; ctx.lineWidth=1; ctx.stroke();
+}
+drawPitch(.5);
+
+// ════════════════════════════════════════════════════════════
+//  ENGINE
+// ════════════════════════════════════════════════════════════
+let M=null, interval=null;
+
+function computeRatings(){
+  const calc=(key)=>{
+    const team=TEAMS[key];
+    const tac=TACTICS_DEF[team.tactic];
+    const hadv=team.homeAdvantage?HOME_ADV:1;
+    const form=FORMATIONS[team.formation];
+    const starting=team.squad.slice(0,11);
+    let as=0,aw=0,ds=0,dw=0;
+    starting.forEach((p,i)=>{
+      const slot=form.slots[i]||p.pos;
+      const w=POS_W[slot]||POS_W[p.pos]||{att:.5,def:.5};
+      const eff=p.ovr*p.form*hadv;
+      as+=eff*w.att; aw+=w.att; ds+=eff*w.def; dw+=w.def;
+    });
+    return { attack:(as/aw)*tac.attMult, defense:(ds/dw)*tac.defMult };
+  };
+  return { home:calc('home'), away:calc('away') };
+}
+
+function newMatch(){
+  return {
+    minute:0, finished:false,
+    score:{home:0,away:0},
+    stats:{
+      home:{shots:0,sot:0,corners:0,fouls:0,yc:0,rc:0,poss:50},
+      away:{shots:0,sot:0,corners:0,fouls:0,yc:0,rc:0,poss:50},
+    },
+    xg:{home:0,away:0},
+    scorers:[], momentum:.5,
+    possAcc:{home:0,away:0},
+    ratings:computeRatings(),
+  };
+}
+
+const rnd=()=>Math.random();
+const pick=arr=>arr[Math.floor(rnd()*arr.length)];
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+
+function getAttacker(key){
+  return pick(TEAMS[key].squad.filter(p=>['ST','LW','RW','CM','CAM','LAM','RAM','LM','RM'].includes(p.pos)));
+}
+function getAny(key){ return pick(TEAMS[key].squad.slice(0,11)); }
+function avgOvr(key,...positions){
+  const pp=TEAMS[key].squad.filter(p=>positions.includes(p.pos));
+  if(!pp.length) return 75;
+  return pp.reduce((s,p)=>s+p.ovr*p.form,0)/pp.length;
+}
+
+function simMinute(min){
+  const R=M.ratings;
+  const tH=TACTICS_DEF[TEAMS.home.tactic];
+  const tA=TACTICS_DEF[TEAMS.away.tactic];
+
+  // Possession
+  const mH=avgOvr('home','CM','CDM','CAM')*(TEAMS.home.homeAdvantage?HOME_ADV:1);
+  const mA=avgOvr('away','CM','CDM','CAM');
+  const pf=mH/(mH+mA);
+  M.possAcc.home+=pf; M.possAcc.away+=(1-pf);
+  const tot=M.possAcc.home+M.possAcc.away;
+  M.stats.home.poss=Math.round(M.possAcc.home/tot*100);
+  M.stats.away.poss=100-M.stats.home.poss;
+
+  // Fautes
+  ['home','away'].forEach(side=>{
+    const tac=side==='home'?tH:tA;
+    if(rnd()<P_FOUL*tac.pressFreq){
+      M.stats[side].fouls++;
+      const fouler=getAny(side);
+      if(rnd()<P_YELLOW){
+        M.stats[side].yc++;
+        if(rnd()<P_RED){
+          M.stats[side].rc++;
+          addEv(min,'🟥',`<span class="nm">${fouler.name}</span> reçoit un carton <strong>ROUGE</strong>`, 'rc');
+        } else {
+          addEv(min,'🟨',`<span class="nm">${fouler.name}</span> prend un carton jaune`, 'yc');
+        }
+      }
+    }
+  });
+
+  // Corners
+  ['home','away'].forEach(side=>{
+    if(rnd()<P_CORNER){ M.stats[side].corners++; if(rnd()<.22) tryShot(min,side,true); }
+  });
+
+  // Tirs
+  ['home','away'].forEach(side=>{
+    const opp=side==='home'?'away':'home';
+    const tac=side==='home'?tH:tA;
+    const prob=P_SHOT*tac.shotFreq*(R[side].attack/R[opp].defense);
+    if(rnd()<prob) tryShot(min,side,false);
+  });
+
+  // Momentum
+  const ph=R.home.attack/(R.home.attack+R.away.attack);
+  M.momentum=M.momentum*.97+ph*.03;
+}
+
+function tryShot(min,side,fromCorner){
+  const opp=side==='home'?'away':'home';
+  const R=M.ratings;
+  M.stats[side].shots++;
+  const shooter=getAttacker(side);
+  const assister=rnd()<.6?getAny(side):null;
+  const gk=TEAMS[opp].squad.find(p=>p.pos==='GK');
+
+  const onTarget=rnd()<.40*(R[side].attack/80);
+  if(!onTarget){
+    addEv(min,'🏃',`Tir de <span class="nm">${shooter.name}</span> — hors cadre`,'');
+    return;
+  }
+  M.stats[side].sot++;
+
+  const xgShot=clamp((shooter.ovr/100)*(R[side].attack/R[opp].defense)*(fromCorner?.12:.18),.03,.65);
+  M.xg[side]=+(M.xg[side]+xgShot).toFixed(3);
+
+  const gkStr=gk?gk.ovr*gk.form*(1+(R[opp].defense-75)/200):75;
+  const saveP=clamp(gkStr/120,.30,.75);
+
+  if(rnd()>saveP){
+    M.score[side]++;
+    const hsc=M.score.home, asc=M.score.away;
+    const asTxt=assister&&assister.name!==shooter.name
+      ?` <span style="color:var(--muted);font-size:10px">🅰 ${assister.name}</span>`:'';
+    const cls=`goal${side==='away'?' ag':''}`;
+    addEv(min,'⚽',
+      `<span class="nm ${side==='home'?'h':'a'}">${shooter.name}</span>${asTxt}` +
+      `<span class="score-tag">${hsc} : ${asc}</span>`, cls);
+    M.scorers.push({name:shooter.name,team:side,min,assist:assister?.name});
+    M.momentum+=side==='home'?-.15:.15;
+    M.momentum=clamp(M.momentum,.1,.9);
+    // Pulse score
+    const el=document.getElementById('sc-'+side);
+    el.classList.add('pop');
+    setTimeout(()=>el.classList.remove('pop'),350);
+  } else {
+    addEv(min,'🧤',`Arrêt de <span class="nm">${gk?.name||'GK'}</span> sur tir de <span class="nm">${shooter.name}</span>`,'save');
+  }
+}
+
+function addEv(min,icon,txt,cls){
+  const log=document.getElementById('elog');
+  const d=document.createElement('div');
+  if(cls==='halftime'||cls==='fulltime'){
+    d.className='ev '+cls;
+    d.innerHTML=`━━━ ${txt} ━━━`;
+  } else {
+    d.className='ev '+cls;
+    d.innerHTML=`<div class="ev-min">${min>0?min+"'":''}</div><div class="ev-icon">${icon}</div><div class="ev-txt">${txt}</div>`;
+  }
+  log.appendChild(d);
+  const w=document.getElementById('log-wrap');
+  w.scrollTop=w.scrollHeight;
+}
+
+function updateHUD(){
+  if(!M) return;
+  document.getElementById('tb-clock').textContent=M.minute+"'";
+  document.getElementById('sc-h').textContent=M.score.home;
+  document.getElementById('sc-a').textContent=M.score.away;
+
+  const R=M.ratings;
+  document.getElementById('r-att-h').textContent=R.home.attack.toFixed(1);
+  document.getElementById('r-def-h').textContent=R.home.defense.toFixed(1);
+  document.getElementById('r-att-a').textContent=R.away.attack.toFixed(1);
+  document.getElementById('r-def-a').textContent=R.away.defense.toFixed(1);
+  document.getElementById('xg-h').textContent=M.xg.home.toFixed(2);
+  document.getElementById('xg-a').textContent=M.xg.away.toFixed(2);
+
+  const s=M.stats;
+  document.getElementById('p-h').textContent=s.home.poss+'%';
+  document.getElementById('p-a').textContent=s.away.poss+'%';
+  document.getElementById('pb-h').style.width=s.home.poss+'%';
+  document.getElementById('pb-a').style.width=s.away.poss+'%';
+
+  function upd(hId,aId,bhId,baId,hv,av){
+    document.getElementById(hId).textContent=hv;
+    document.getElementById(aId).textContent=av;
+    const t=hv+av||1;
+    document.getElementById(bhId).style.width=(hv/t*100)+'%';
+    document.getElementById(baId).style.width=(av/t*100)+'%';
+  }
+  upd('s-sh-h','s-sh-a','b-sh-h','b-sh-a',s.home.shots,s.away.shots);
+  upd('s-sot-h','s-sot-a','b-sot-h','b-sot-a',s.home.sot,s.away.sot);
+  upd('s-cor-h','s-cor-a','b-cor-h','b-cor-a',s.home.corners,s.away.corners);
+  upd('s-fo-h','s-fo-a','b-fo-h','b-fo-a',s.home.fouls,s.away.fouls);
+  upd('s-yc-h','s-yc-a','b-yc-h','b-yc-a',s.home.yc,s.away.yc);
+
+  // Momentum
+  const mo=M.momentum;
+  const w=Math.abs(mo-.5)*100;
+  const ml=mo<.5?(mo*100):50;
+  const fill=document.getElementById('mo-fill');
+  fill.style.width=w+'%'; fill.style.marginLeft=ml+'%';
+  fill.style.background=mo<.5?'var(--home)':'var(--away)';
+  document.getElementById('mo-lbl').textContent=mo<.42?'HOME DOMINE ⚔':mo>.58?'⚔ AWAY DOMINE':'ÉQUILIBRÉ';
+
+  drawPitch(M.momentum);
+
+  // Scorers
+  const sc=document.getElementById('scorers');
+  if(!M.scorers.length){
+    sc.innerHTML='<div style="font-family:var(--mono);font-size:10px;color:var(--muted)">Aucun but marqué</div>';
+  } else {
+    sc.innerHTML=M.scorers.map(s=>`
+      <div class="sc-item">
+        <div class="sc-dot" style="background:${s.team==='home'?'var(--home)':'var(--away)'}"></div>
+        <div class="sc-body">
+          <div class="sc-name">${s.name}</div>
+          ${s.assist?`<div class="sc-assist">🅰 ${s.assist}</div>`:''}
+        </div>
+        <div class="sc-min">${s.min}'</div>
+      </div>`).join('');
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+//  CONTROLS
+// ════════════════════════════════════════════════════════════
+function resetMatch(){
+  clearInterval(interval); interval=null; M=null;
+  document.getElementById('elog').innerHTML=`
+    <div class="ev"><div class="ev-min"></div><div class="ev-icon">📋</div>
+    <div class="ev-txt">Lance un match pour voir les événements en direct.</div></div>`;
+  ['sc-h','sc-a'].forEach(id=>document.getElementById(id).textContent='0');
+  document.getElementById('tb-clock').textContent="0'";
+  document.getElementById('tb-status').textContent='PRÊT';
+  document.getElementById('scorers').innerHTML='<div style="font-family:var(--mono);font-size:10px;color:var(--muted)">Aucun but marqué</div>';
+  document.getElementById('btn-run').disabled=false;
+  drawPitch(.5);
+}
+
+function runFull(){
+  if(M&&!M.finished) return;
+  M=newMatch(); clearInterval(interval);
+  document.getElementById('btn-run').disabled=true;
+  document.getElementById('tb-status').textContent='1ÈRE MI-TEMPS';
+  updateHUD();
+  let min=1;
+  interval=setInterval(()=>{
+    if(min===46){
+      addEv(0,'⏱','MI-TEMPS','halftime');
+      document.getElementById('tb-status').textContent='2ÈME MI-TEMPS';
+    }
+    if(min>90){
+      addEv(0,'🔔','FIN DU MATCH','fulltime');
+      M.finished=true; M.minute=90;
+      document.getElementById('tb-status').textContent='TERMINÉ ✓';
+      document.getElementById('btn-run').disabled=false;
+      clearInterval(interval); updateHUD(); return;
+    }
+    M.minute=min; simMinute(min); updateHUD(); min++;
+  }, 65);
+}
+
+function stepMatch(){
+  if(!M){
+    M=newMatch(); updateHUD();
+    document.getElementById('tb-status').textContent='PAS-À-PAS';
+  }
+  if(M.finished){ resetMatch(); return; }
+  M.minute++;
+  const min=M.minute;
+  if(min===45) addEv(0,'⏱','MI-TEMPS','halftime');
+  if(min>90){
+    addEv(0,'🔔','FIN DU MATCH','fulltime');
+    M.finished=true; M.minute=90;
+    document.getElementById('tb-status').textContent='TERMINÉ ✓';
+    updateHUD(); return;
+  }
+  simMinute(min); updateHUD();
+}
+
+document.getElementById('btn-run').addEventListener('click',runFull);
+document.getElementById('btn-step').addEventListener('click',stepMatch);
+document.getElementById('btn-reset').addEventListener('click',resetMatch);
+
+// Init ratings display
+setTimeout(()=>{ const tmp=newMatch(); M=tmp; updateHUD(); M=null; }, 80);
+</script>
+</body>
+</html>
